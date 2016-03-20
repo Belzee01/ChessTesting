@@ -46,7 +46,7 @@
          <bottom>
             <AnchorPane prefHeight="99.0" prefWidth="648.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="openChatButton" layoutX="56.0" layoutY="36.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="115.0" text="Otwórz czat" />
+                  <Button fx:id="openChatButton" layoutX="56.0" layoutY="36.0" mnemonicParsing="false" onAction="#openChatWindow" prefHeight="27.0" prefWidth="115.0" text="Otwórz czat" />
                </children></AnchorPane>
          </bottom>
       </BorderPane>

@@ -21,12 +21,13 @@
                   <Label layoutX="76.0" layoutY="140.0" prefHeight="29.0" prefWidth="148.0" text="Podaj numer portu" />
                   <TextField fx:id="listeningPortNumber" layoutX="235.0" layoutY="142.0" prefHeight="25.0" prefWidth="54.0" />
                   <Label fx:id="myIP" layoutX="235.0" layoutY="65.0" prefHeight="29.0" prefWidth="170.0" text="192.168.0.1" />
-                  <Button fx:id="createGameButton" layoutX="159.0" layoutY="309.0" mnemonicParsing="false" onAction="#createGame" prefHeight="52.0" prefWidth="183.0" text="Stwórz">
+                  <Button fx:id="createGameButton" layoutX="159.0" layoutY="323.0" mnemonicParsing="false" onAction="#createGame" prefHeight="52.0" prefWidth="183.0" text="Stwórz">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
                   <Button fx:id="creatingBackButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backButtonAction" text="Wstecz" />
+                  <Label fx:id="wrongPort" layoutX="150.0" layoutY="292.0" prefHeight="26.0" prefWidth="201.0" textFill="#f20707" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -46,7 +47,7 @@
                   </Button>
                   <TextField fx:id="hostIP" layoutX="235.0" layoutY="66.0" />
                   <Button fx:id="joiningBackButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backButtonAction" text="Wstecz" />
-                  <Label fx:id="wrongIP" layoutX="156.0" layoutY="291.0" prefHeight="26.0" prefWidth="237.0" textFill="#f20707">
+                  <Label fx:id="wrongData" layoutX="108.0" layoutY="291.0" prefHeight="26.0" prefWidth="285.0" textFill="#f20707">
                      <font>
                         <Font size="14.0" />
                      </font>

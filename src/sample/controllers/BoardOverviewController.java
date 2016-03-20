@@ -1,9 +1,16 @@
 package sample.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class BoardOverviewController {
     @FXML
@@ -98,6 +105,23 @@ public class BoardOverviewController {
         refreshBoard();
     }
 
+
+    public void openChatWindow(ActionEvent event) throws Exception{
+        Stage stage = new Stage();
+        BorderPane root = new BorderPane();
+        try{
+            root = FXMLLoader.load(getClass().getResource("../view/ChatWindow.fxml"));
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        root.setStyle("-fx-background-color: #C4C4C4;");
+        Scene scene = new Scene(root, 300, 300);
+        stage.setTitle("Czat");
+        stage.setScene(scene);
+        stage.show();
+
+    }
 
     /*
     public void paintBoard(String even, String odd) {

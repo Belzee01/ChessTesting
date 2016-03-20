@@ -60,7 +60,10 @@ public class GameCreatingController implements Initializable{
     private Button creatingBackButton;
 
     @FXML
-    private Label wrongIP;
+    private Label wrongData;
+
+    @FXML
+    private Label wrongPort;
 
 
 
@@ -87,8 +90,14 @@ public class GameCreatingController implements Initializable{
     }
 
     public void createGame(ActionEvent event) throws Exception{
-        //connectAsServer(Integer.valueOf(listeningPortNumber.getText()));
-        System.out.println("Port nasłuhujący: "+listeningPortNumber.getText());
+        if(checkPort(listeningPortNumber.getText())) {
+            //connectAsServer(Integer.valueOf(listeningPortNumber.getText()));
+            System.out.println("Port nasłuhujący: " + listeningPortNumber.getText());
+        }
+        else{
+            wrongPort.setText("Niewłaściwy nr portu");
+            return;
+        }
 
         try{
             primaryStage = (Stage) createGameButton.getScene().getWindow();
@@ -106,14 +115,16 @@ public class GameCreatingController implements Initializable{
     }
 
     public void joinGame(ActionEvent event){
-        if(chceckIPAddress(hostIP.getText())){
+        if(checkIPAddress(hostIP.getText()) && checkPort(hostPortNumber.getText())){
             //connectAsClient(Integer.valueOf(hostIP.getText(), listeningPortNumber.getText()));
             System.out.println("IP hosta: " + hostIP.getText()+"    Port hosta: "+hostPortNumber.getText());
         }
         else{
-            wrongIP.setText("Niewłaściwy adres IP!!!");
+            wrongData.setText("Niewłaściwy adres IP lu nr portu!!!");
             return;
         }
+
+
 
         try{
             primaryStage = (Stage) createGameButton.getScene().getWindow();
@@ -129,7 +140,7 @@ public class GameCreatingController implements Initializable{
         primaryStage.show();
     }
 
-    public boolean chceckIPAddress(String ip){
+    public boolean checkIPAddress(String ip){
         String[] checkers = ip.split("\\.");
         if(checkers.length != 4){
             return false;
@@ -139,6 +150,17 @@ public class GameCreatingController implements Initializable{
                     if(!Character.isDigit(checkers[i].charAt(j)))
                         return false;
                 }
+        }
+        return true;
+    }
+    
+    public boolean checkPort(String port){
+        if(port.length()==0)
+            return false;
+        for(int i=0; i<port.length(); i++){
+            if(!Character.isDigit(port.charAt(i))){
+                return false;
+            }
         }
         return true;
     }

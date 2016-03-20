@@ -26,7 +26,7 @@ public class ChatWindowController {
 
 
     public void sendAction(ActionEvent event){
-        Text nick = new Text("krzysiek");
+        Text nick = new Text("MyNick");
         nick.setFill(Color.GREEN);
         Text text = new Text(": " + textArea.getText() + "\n");
         textFlow.getChildren().addAll(nick, text);
