@@ -12,19 +12,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import sample.services.GameCreatingService;
+import sample.services.NetValidator;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.ResourceBundle;
 
 
 public class GameCreatingController implements Initializable{
 
-    //ChessService service;
+    NetValidator validator;
+    GameCreatingService service;
 
     private Stage primaryStage;
     private BorderPane rootLayout;
@@ -69,7 +68,9 @@ public class GameCreatingController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        myIP.setText(getCurrentEnvironmentNetworkIp());
+        validator = new NetValidator();
+        service = new GameCreatingService();
+        myIP.setText(service.getCurrentEnvironmentNetworkIp());
     }
 
     public void backButtonAction(ActionEvent event) throws IOException{
@@ -90,9 +91,7 @@ public class GameCreatingController implements Initializable{
     }
 
     public void createGame(ActionEvent event) throws Exception{
-        if(checkPort(listeningPortNumber.getText())) {
-            //connectAsServer(Integer.valueOf(listeningPortNumber.getText()));
-            System.out.println("Port nasłuhujący: " + listeningPortNumber.getText());
+        if(validator.checkPort(listeningPortNumber.getText())) {
         }
         else{
             wrongPort.setText("Niewłaściwy nr portu");
@@ -115,16 +114,10 @@ public class GameCreatingController implements Initializable{
     }
 
     public void joinGame(ActionEvent event){
-        if(checkIPAddress(hostIP.getText()) && checkPort(hostPortNumber.getText())){
-            //connectAsClient(Integer.valueOf(hostIP.getText(), listeningPortNumber.getText()));
-            System.out.println("IP hosta: " + hostIP.getText()+"    Port hosta: "+hostPortNumber.getText());
-        }
-        else{
+        if(!(validator.checkIPAddress(hostIP.getText()) && validator.checkPort(hostPortNumber.getText()))){
             wrongData.setText("Niewłaściwy adres IP lu nr portu!!!");
             return;
         }
-
-
 
         try{
             primaryStage = (Stage) createGameButton.getScene().getWindow();
@@ -138,64 +131,6 @@ public class GameCreatingController implements Initializable{
         Scene scene = new Scene(rootLayout);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    public boolean checkIPAddress(String ip){
-        String[] checkers = ip.split("\\.");
-        if(checkers.length != 4){
-            return false;
-        }
-        for(int i=0; i<checkers.length; i++){
-                for (int j=0; j<checkers[i].length(); j++){
-                    if(!Character.isDigit(checkers[i].charAt(j)))
-                        return false;
-                }
-        }
-        return true;
-    }
-    
-    public boolean checkPort(String port){
-        if(port.length()==0)
-            return false;
-        for(int i=0; i<port.length(); i++){
-            if(!Character.isDigit(port.charAt(i))){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static String currentHostIpAddress;
-
-  /*
-  * Metoda zwracająca adres ip komputera
-  */
-  public static String getCurrentEnvironmentNetworkIp() {
-        if (currentHostIpAddress == null) {
-            Enumeration<NetworkInterface> netInterfaces = null;
-            try {
-                netInterfaces = NetworkInterface.getNetworkInterfaces();
-
-                while (netInterfaces.hasMoreElements()) {
-                    NetworkInterface ni = netInterfaces.nextElement();
-                    Enumeration<InetAddress> address = ni.getInetAddresses();
-                    while (address.hasMoreElements()) {
-                        InetAddress addr = address.nextElement();
-                        if (!addr.isLoopbackAddress() && addr.isSiteLocalAddress()
-                                && !(addr.getHostAddress().indexOf(":") > -1)) {
-                            currentHostIpAddress = addr.getHostAddress();
-                        }
-                    }
-                }
-                if (currentHostIpAddress == null) {
-                    currentHostIpAddress = "127.0.0.1";
-                }
-
-            } catch (SocketException e) {
-                currentHostIpAddress = "127.0.0.1";
-            }
-        }
-        return currentHostIpAddress;
     }
 
 

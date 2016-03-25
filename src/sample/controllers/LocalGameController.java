@@ -52,10 +52,10 @@ public class LocalGameController implements Initializable {
 
     }
 
-    public void startLocalGame(ActionEvent event) throws Exception{
-        System.out.println("Nick pierwszego gracza: "+ firstNick.getText());
-        System.out.println("Nick drugiego gracza: "+ secondNick.getText());
-        System.out.println("Czas: "+ localGameTimeBox.getValue());
+    /**
+     * Handler służący do wyświetlenie okna gry lokalnej (na razie niezaimplementowane)
+     */
+    public void startLocalGame(ActionEvent event){
     }
 
 }

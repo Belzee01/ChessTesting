@@ -105,8 +105,10 @@ public class BoardOverviewController {
         refreshBoard();
     }
 
-
-    public void openChatWindow(ActionEvent event) throws Exception{
+    /**
+     * Handler odpowiadający za otwarcie okna do czatu.
+     */
+    public void openChatWindow(ActionEvent event){
         Stage stage = new Stage();
         BorderPane root = new BorderPane();
         try{
