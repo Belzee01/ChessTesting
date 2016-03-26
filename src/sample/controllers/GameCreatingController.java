@@ -90,7 +90,10 @@ public class GameCreatingController implements Initializable{
 
     }
 
-    public void createGame(ActionEvent event) throws Exception{
+    /**
+     * Handler odpowiedzialny za tworzenie gry na podstawie wprowadzonych parametrów
+     */
+    public void createGame(ActionEvent event){
         if(validator.checkPort(listeningPortNumber.getText())) {
         }
         else{
@@ -113,6 +116,9 @@ public class GameCreatingController implements Initializable{
 
     }
 
+    /**
+     * Handler odpowiedzialny za dołączanie do rozgrywki założonej przez drugiego gracza
+     */
     public void joinGame(ActionEvent event){
         if(!(validator.checkIPAddress(hostIP.getText()) && validator.checkPort(hostPortNumber.getText()))){
             wrongData.setText("Niewłaściwy adres IP lu nr portu!!!");
@@ -146,6 +152,9 @@ public class GameCreatingController implements Initializable{
         }
     }*/
 
+    /**
+     * Metoda wyświetlająca szachownicę
+     */
     private void showBoardOverview() {
         try {
             FXMLLoader loader = new FXMLLoader();

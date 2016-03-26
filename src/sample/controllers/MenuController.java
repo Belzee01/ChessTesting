@@ -37,6 +37,10 @@ public class MenuController {
     private Button backToGameType;
 
 
+    /**
+     * Handler odpowiedzialny za przełączanie między oknami menu
+     * @throws IOException
+     */
     public void handleButtonAction(ActionEvent event) throws IOException{
         Stage stage = new Stage();
         Parent root = new Parent() {};

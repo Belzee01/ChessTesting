@@ -22,6 +22,10 @@ public class ChatWindowController {
     private TextArea textArea;
 
 
+    /**
+     * Handler odpowiedzialny za przesyłąnie wiadomości i wyświetlanie jej na ekrany obu graczy
+     * (przesyłanie nie jest jeszcze zaimplementowane)
+     */
     public void sendAction(ActionEvent event){
         Text nick = new Text("MyNick");
         nick.setFill(Color.GREEN);

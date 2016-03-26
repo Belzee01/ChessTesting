@@ -39,5 +39,4 @@ public class GameService {
         board.changeFiguresPosition(moveX, moveY, '0');
     }
 
-
 }

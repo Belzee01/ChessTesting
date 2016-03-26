@@ -13,6 +13,10 @@ public class GameCreatingService {
 
     public static String currentHostIpAddress;
 
+    /**
+     * Metoda używana do wyświetlania IP w oknie tworzenia gry
+     * @return aktualny adres IP komputera
+     */
     public static String getCurrentEnvironmentNetworkIp() {
         if (currentHostIpAddress == null) {
             Enumeration<NetworkInterface> netInterfaces = null;
