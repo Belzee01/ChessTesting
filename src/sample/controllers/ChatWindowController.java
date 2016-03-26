@@ -22,9 +22,6 @@ public class ChatWindowController {
     private TextArea textArea;
 
 
-
-
-
     public void sendAction(ActionEvent event){
         Text nick = new Text("MyNick");
         nick.setFill(Color.GREEN);

@@ -4,17 +4,28 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import sample.models.Board;
+import sample.models.Images;
+import sample.services.GameService;
 
 import java.io.IOException;
 
+
+/**
+ * Kontroler wyglądu szachownicy
+ */
 public class BoardOverviewController {
     @FXML
     private GridPane gridPane;
+    private GameService gameService = GameService.getInstance();
+    private Board board = gameService.getBoard();
+    private Images images = new Images();
 
     private String evenColor;
     private String oddColor;
@@ -22,9 +33,12 @@ public class BoardOverviewController {
     public BoardOverviewController() {
     }
 
+    /**
+     * Inicjalizacja koloru pól szachownicy
+     * @param evenColor kolor parzystych pól na szachownicy
+     * @param oddColor kolor nieparzystych pól na szachownicy
+     */
     public void initBoard(String evenColor, String oddColor) {
-        GameController.setFigures();
-        GameController.setMoves();
         final String CSS = "-fx-background-color: ";
         final String SEMICOLON = ";";
         this.evenColor = CSS + evenColor + SEMICOLON;
@@ -32,6 +46,9 @@ public class BoardOverviewController {
         refreshBoard();
     }
 
+    /**
+     * Odświeżenie szachownicy (kolorownie pól, wywołanie metody drawFigures)
+     */
     private void refreshBoard() {
         gridPane.getChildren().clear();
 
@@ -54,19 +71,21 @@ public class BoardOverviewController {
         drawFigures();
     }
 
-
+    /**
+     * Rysowanie figur i dodawanie eventów.
+     */
     private void drawFigures() {
-        char [][] figuresPosition = GameController.getFiguresPosition();
+        char [][] figuresPosition = board.getFiguresPosition();
 
         for(int i=0; i<8; ++i)
             for(int j=0; j<8; ++j) {
                 if (figuresPosition[i][j]==0)
                     continue;
-                ImageView iv = new ImageView(Images.getFigureImage(figuresPosition[i][j]));
+                ImageView iv = new ImageView(images.getFigureImage(figuresPosition[i][j]));
                 iv.fitWidthProperty().bind(gridPane.widthProperty().divide(8));
                 iv.fitHeightProperty().bind(gridPane.heightProperty().divide(8));
 
-                if(GameController.COLOR.compareTo("WHITE") == 0) {
+                if(GameService.COLOR.compareTo("WHITE") == 0) {
                     if (figuresPosition[i][j] > 'a' && figuresPosition[i][j] < 'z')
                         iv.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> showMoves(iv));
                     else
@@ -82,15 +101,19 @@ public class BoardOverviewController {
             }
     }
 
-
+    /**
+     * Handler wyświetlający możliwe ruchy dla wybranaj figury
+     * @param IV obiekt klasy ImageView dla którego sprawdzane są możliwe ruchy
+     */
     private void showMoves(ImageView IV) {
         refreshBoard();
-        GameController.setMove(GridPane.getRowIndex(IV), GridPane.getColumnIndex(IV));
-        boolean [][] possibleMoves = GameController.getPossibleMoves();
+        gameService.setMoveX(GridPane.getRowIndex(IV));
+        gameService.setMoveY(GridPane.getColumnIndex(IV));
+        boolean [][] possibleMoves = board.getPossibleMoves();
         for(int i=0; i<8; ++i)
             for(int j=0; j<8; ++j)
                 if(possibleMoves[i][j]) {
-                    ImageView iv = new ImageView(Images.getMoveImage(j, i));
+                    ImageView iv = new ImageView(images.getMoveImage(j, i));
                     iv.fitWidthProperty().bind(gridPane.widthProperty().divide(8));
                     iv.fitHeightProperty().bind(gridPane.heightProperty().divide(8));
                     iv.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> move(iv));
@@ -100,8 +123,12 @@ public class BoardOverviewController {
                 }
     }
 
+    /**
+     * Handler odpowiadający za dokonywanie ruchu po kliknięciu w wybrany z możliwych ruchów dla figury wywołującej event w miejsce możliwego ruchu iv
+     * @param iv obiekt klasy ImageView miejsce w które zostaje przesunięta figura dla której metoda zostaje wywołana
+     */
     private void move(ImageView iv) {
-        GameController.move(GridPane.getRowIndex(iv), GridPane.getColumnIndex(iv));
+        gameService.move(GridPane.getRowIndex(iv), GridPane.getColumnIndex(iv));
         refreshBoard();
     }
 
