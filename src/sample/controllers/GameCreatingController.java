@@ -70,7 +70,7 @@ public class GameCreatingController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         validator = new NetValidator();
         service = new GameCreatingService();
-        myIP.setText(service.getCurrentEnvironmentNetworkIp());
+        myIP.setText(service.getCurrentHostIpAddress());
     }
 
     public void backButtonAction(ActionEvent event) throws IOException{

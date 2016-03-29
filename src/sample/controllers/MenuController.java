@@ -68,8 +68,6 @@ public class MenuController {
             root = FXMLLoader.load(getClass().getResource("../view/gameType.fxml"));
         }
 
-        else{}
-
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

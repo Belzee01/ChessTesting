@@ -13,7 +13,10 @@ public class Board {
     @Getter @Setter
     private String board;
 
+    @Getter @Setter
     private boolean [][] possibleMoves;
+
+    @Getter
     private char [][] figuresPosition;
 
 
@@ -29,13 +32,6 @@ public class Board {
         setPossibleMoves();
     }
 
-   public char[][] getFiguresPosition() { return figuresPosition; }
-
-    public boolean[][] getPossibleMoves() {
-        return possibleMoves;
-    }
-
-
 
 
     public void setPossibleMoves() {
@@ -45,7 +41,6 @@ public class Board {
                 possibleMoves[i][j] = true;
             }
     }
-
 
 
     public void changeFiguresPosition(int x, int y, char z){
