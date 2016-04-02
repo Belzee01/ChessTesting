@@ -28,7 +28,6 @@ public class Board {
             for(int j=0; j<8; j++)
                 figuresPosition[i][j] = this.board.charAt(8*i+j);
 
-        possibleMoves = new boolean[8][8];
         setPossibleMoves();
     }
 
