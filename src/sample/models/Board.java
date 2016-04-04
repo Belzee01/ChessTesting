@@ -45,5 +45,6 @@ public class Board {
 
     public void changeFiguresPosition(int x, int y, char z){
         figuresPosition[x][y] = z;
+
     }
 }

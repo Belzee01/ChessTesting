@@ -36,7 +36,7 @@ public class GameService {
 
     public void move(int x, int y) {
         board.changeFiguresPosition(x,y, board.getFiguresPosition()[moveX][moveY]);
-        board.changeFiguresPosition(moveX, moveY, '0');
+        board.changeFiguresPosition(moveX, moveY, ' ');
     }
 
 }
