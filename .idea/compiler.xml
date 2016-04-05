@@ -17,7 +17,7 @@
       <profile default="true" name="Default" enabled="true">
         <processorPath useClasspath="true" />
       </profile>
-      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+      <profile default="false" name="Annotation profile for SecondTry" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -25,5 +25,8 @@
         <module name="SecondTry" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="SecondTry" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
