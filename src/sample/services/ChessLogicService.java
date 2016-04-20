@@ -1,13 +1,17 @@
 package sample.services;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import sample.models.Board;
 
 import java.util.*;
 
 @AllArgsConstructor
 public class ChessLogicService {
+    @Getter @Setter
     private Board board;
+
     ChessLogicService(){
         if(board == null)
             board = new Board();
@@ -62,13 +66,19 @@ public class ChessLogicService {
     }
 
     private int pos(int x1, int y1) {
-        return x1 + (7 - y1) * 8;
+        if (x1 < 0 || x1 > 7 || y1 < 0 || y1 > 7) {
+            return 0;
+        }
+        else
+            return x1 + (7 - y1) * 8;
     }
 
     private String get(String board, int x1, int y1) {
         if (x1 < 0 || x1 > 7 || y1 < 0 || y1 > 7)
             return "X";
-        return "" + board.charAt(pos(x1, y1));
+
+        int pos=pos(x1, y1);
+        return "" + board.charAt(pos);
     }
 
     String set(String board, int x1, int y1, String piece) {
@@ -78,15 +88,48 @@ public class ChessLogicService {
 
     private String[] getPossibleMoves(String board, boolean white) {
         List result = new ArrayList();
-        for (int x = 0; x < 8; x++)
+        for (int x = 0; x < 8; x++){
             for (int y = 0; y < 8; y++) {
                 String piece = get(board, x, y);
-                if ((white && isWhite(piece)) || (!white && isBlack(piece))) {
-                    String[] boards = getPossibleMoves(board, x, y);
-                    result.addAll(Arrays.asList(boards));
+
+                String[] boards = getPossibleMoves(board, x, y);
+                result.addAll(Arrays.asList(boards));
+
+            }
+        }
+        return (String[]) result.toArray(new String[result.size()]);
+    }
+
+    public boolean[][] getPossibleMovesArray(int x,int y){
+        boolean  maskArray[][] =new boolean[8][8];
+        String oldBoard=board.getBoard();
+        String possibleMoves[]=getPossibleMoves(oldBoard,x,y);
+
+        String foo=get(oldBoard,x,y);
+        System.out.println(x+":"+y);
+
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                maskArray[i][j]=false;
+                for(int k=0;k<possibleMoves.length;k++){
+                    if(!get(oldBoard,i,j).equals(get(possibleMoves[k],i,j))) {
+                        maskArray[i][j]=true;
+                    }
                 }
             }
-        return (String[]) result.toArray(new String[result.size()]);
+        }
+        return maskArray;
+    }
+
+    public char[][] getFiguresArray(){
+        char [][] figuresArray=new char[8][8];
+
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                figuresArray[i][j]=get(board.getBoard(),j,i).charAt(0);
+            }
+        }
+        return figuresArray;
     }
 
     private boolean isWhite(String piece) {

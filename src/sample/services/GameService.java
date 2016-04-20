@@ -34,9 +34,6 @@ public class GameService {
     private int moveY;
     public static final String COLOR = "WHITE";
 
-    public void move(int x, int y) {
-        board.changeFiguresPosition(x,y, board.getFiguresPosition()[moveX][moveY]);
-        board.changeFiguresPosition(moveX, moveY, ' ');
-    }
+
 
 }

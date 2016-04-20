@@ -1,6 +1,7 @@
 package sample.controllers;
 
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,8 +13,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import sample.GameEngine;
 import sample.services.GameCreatingService;
 import sample.services.NetValidator;
+import sample.services.TCPClientConnectionService;
+import sample.services.TCPServerConnectionService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -108,11 +112,21 @@ public class GameCreatingController implements Initializable{
             e.printStackTrace();
         }
 
-        showBoardOverview();
+        GameEngine.getInstance().setTcpConnectionService(new TCPServerConnectionService(Integer.valueOf(listeningPortNumber.getText())));
 
-        Scene scene = new Scene(rootLayout);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        GameEngine.getInstance().getTcpConnectionService().setOnConnectionEstablished(data -> {
+            Platform.runLater(() ->{
+                System.out.println("Established as server");
+                showBoardOverview();
+                Scene scene=new Scene(rootLayout);
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            });
+        });
+
+        GameEngine.getInstance().setNick(serverNick.getText());
+        GameEngine.getInstance().getTcpConnectionService().startConnection();
+        GameEngine.getInstance().setServerRole(true);
 
     }
 
@@ -132,25 +146,23 @@ public class GameCreatingController implements Initializable{
             e.printStackTrace();
         }
 
-        showBoardOverview();
+        GameEngine.getInstance().setTcpConnectionService(new TCPClientConnectionService(hostIP.getText(),Integer.valueOf(hostPortNumber.getText())));
 
-        Scene scene = new Scene(rootLayout);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        GameEngine.getInstance().getTcpConnectionService().setOnConnectionEstablished(data -> {
+            Platform.runLater(() ->{
+                System.out.println("Established as client");
+                showBoardOverview();
+                Scene scene=new Scene(rootLayout);
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            });
+        });
+
+        GameEngine.getInstance().setNick(clientNick.getText());
+        GameEngine.getInstance().getTcpConnectionService().startConnection();
+        GameEngine.getInstance().setServerRole(false);
     }
 
-
-   /* private void initRootLayout() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(GameCreatingController.class.getResource("view/RootLayout.fxml"));
-            rootLayout = loader.load();
-            primaryStage.setScene(new Scene(rootLayout));
-            primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     /**
      * Metoda wyświetlająca szachownicę

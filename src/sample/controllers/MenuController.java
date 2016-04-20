@@ -71,9 +71,5 @@ public class MenuController {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
-
-
-
     }
 }

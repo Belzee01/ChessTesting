@@ -1,18 +1,20 @@
 package sample.controllers;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import sample.GameEngine;
 import sample.models.Board;
 import sample.models.Images;
-import sample.services.GameService;
+import sample.models.Message;
+import sample.services.ChessLogicService;
 
 import java.io.IOException;
 
@@ -23,14 +25,34 @@ import java.io.IOException;
 public class BoardOverviewController {
     @FXML
     private GridPane gridPane;
-    private GameService gameService = GameService.getInstance();
-    private Board board = gameService.getBoard();
+    private GameEngine gameEngine = GameEngine.getInstance();
     private Images images = new Images();
 
     private String evenColor;
     private String oddColor;
 
     public BoardOverviewController() {
+        GameEngine.getInstance().setChessLogicService(new ChessLogicService(new Board()));
+
+        GameEngine.getInstance().getTcpConnectionService().setOnReceiveNewData(data -> {
+            Platform.runLater(() ->{
+                if (data instanceof Board) {
+
+
+                    System.out.println("Received new data \n :" + ((Board) data).getBoard());
+                    GameEngine.getInstance().getChessLogicService().setBoard((Board) data);
+                    refreshBoard();
+                    //GameEngine.getInstance().getTcpConnectionService().sendObject((Board)data);
+
+
+                }
+                if(data instanceof Message){
+                    GameEngine.getInstance().getChatWindowController().receive((Message)data);
+                }
+
+
+            });
+        });
     }
 
     /**
@@ -75,29 +97,33 @@ public class BoardOverviewController {
      * Rysowanie figur i dodawanie eventów.
      */
     private void drawFigures() {
-        char [][] figuresPosition = board.getFiguresPosition();
+        char [][] figuresPosition = gameEngine.getChessLogicService().getFiguresArray();
 
         for(int i=0; i<8; ++i)
             for(int j=0; j<8; ++j) {
-                if (figuresPosition[i][j]==0)
+                if (figuresPosition[j][i]==0)
                     continue;
-                ImageView iv = new ImageView(images.getFigureImage(figuresPosition[i][j]));
+                ImageView iv = new ImageView(images.getFigureImage(figuresPosition[j][i]));
                 iv.fitWidthProperty().bind(gridPane.widthProperty().divide(8));
                 iv.fitHeightProperty().bind(gridPane.heightProperty().divide(8));
 
-                if(GameService.COLOR.compareTo("WHITE") == 0) {
-                    if (figuresPosition[i][j] > 'a' && figuresPosition[i][j] < 'z')
+                if(GameEngine.getInstance().isServerRole()) {
+                    if (figuresPosition[j][i] > 'a' && figuresPosition[j][i] < 'z') {
                         iv.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> showMoves(iv));
-                    else
+                    }
+                    else {
                         iv.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> refreshBoard());
+                    }
                 } else {
-                    if (figuresPosition[i][j] > 'A' && figuresPosition[i][j] < 'Z')
+                    if (figuresPosition[j][i] > 'A' && figuresPosition[j][i] < 'Z') {
                         iv.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> showMoves(iv));
-                    else
+                    }
+                    else {
                         iv.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> refreshBoard());
+                    }
                 }
 
-                gridPane.add(iv, j, i);
+                gridPane.add(iv, i, j);
             }
     }
 
@@ -106,21 +132,27 @@ public class BoardOverviewController {
      * @param IV obiekt klasy ImageView dla którego sprawdzane są możliwe ruchy
      */
     private void showMoves(ImageView IV) {
-        refreshBoard();
-        gameService.setMoveX(GridPane.getRowIndex(IV));
-        gameService.setMoveY(GridPane.getColumnIndex(IV));
-        boolean [][] possibleMoves = board.getPossibleMoves();
-        for(int i=0; i<8; ++i)
-            for(int j=0; j<8; ++j)
-                if(possibleMoves[i][j]) {
-                    ImageView iv = new ImageView(images.getMoveImage(j, i));
-                    iv.fitWidthProperty().bind(gridPane.widthProperty().divide(8));
-                    iv.fitHeightProperty().bind(gridPane.heightProperty().divide(8));
-                    iv.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> move(iv));
+        if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
+            refreshBoard();
 
-                     /* add image */
-                    gridPane.add(iv, i, j);
+            gameEngine.setMoveX(GridPane.getColumnIndex(IV));
+            gameEngine.setMoveY(GridPane.getRowIndex(IV));
+            boolean[][] possibleMoves = gameEngine.getChessLogicService().getPossibleMovesArray(GridPane.getColumnIndex(IV), GridPane.getRowIndex(IV));
+
+
+            for (int i = 0; i < 8; ++i) {
+                for (int j = 0; j < 8; ++j) {
+                    if (possibleMoves[i][j]) {
+                        ImageView iv = new ImageView(images.getMoveImage(j, i));
+                        iv.fitWidthProperty().bind(gridPane.widthProperty().divide(8));
+                        iv.fitHeightProperty().bind(gridPane.heightProperty().divide(8));
+                        iv.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> move(iv));
+
+                        gridPane.add(iv, i, j);
+                    }
                 }
+            }
+        }
     }
 
     /**
@@ -128,8 +160,10 @@ public class BoardOverviewController {
      * @param iv obiekt klasy ImageView miejsce w które zostaje przesunięta figura dla której metoda zostaje wywołana
      */
     private void move(ImageView iv) {
-        gameService.move(GridPane.getRowIndex(iv), GridPane.getColumnIndex(iv));
-        refreshBoard();
+        if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
+            gameEngine.move(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
+            refreshBoard();
+        }
     }
 
     /**
@@ -138,6 +172,7 @@ public class BoardOverviewController {
     public void openChatWindow(ActionEvent event){
         Stage stage = new Stage();
         BorderPane root = new BorderPane();
+
         try{
             root = FXMLLoader.load(getClass().getResource("../view/ChatWindow.fxml"));
         }catch (IOException e) {
@@ -145,33 +180,11 @@ public class BoardOverviewController {
         }
 
         root.setStyle("-fx-background-color: #C4C4C4;");
+
         Scene scene = new Scene(root, 300, 300);
         stage.setTitle("Czat");
         stage.setScene(scene);
         stage.show();
 
     }
-
-    /*
-    public void paintBoard(String even, String odd) {
-        int column = 0;
-        boolean row = true;
-        final String css = "-fx-background-color: ";
-
-        for(Node node: board.getChildren()) {
-            if(column==8) {
-                column = 0;
-                row = !row;
-            }
-            if(row) {
-                if(column%2==0) node.setStyle(css + even + ";");
-                else node.setStyle(css + odd + ";");
-            } else {
-                if(column%2==0) node.setStyle(css + odd + ";");
-                else node.setStyle(css + even + ";");
-            }
-            ++column;
-        }
-    }
-*/
 }

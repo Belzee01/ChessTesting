@@ -3,6 +3,7 @@ package sample.models;
 
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import sample.GameEngine;
 import sample.services.GameService;
 
 
@@ -43,7 +44,7 @@ public class Images {
      * @return obiekt Image
      */
     public Image getMoveImage(int positionX, int positionY) {
-        char [][] figuresPosition = board.getFiguresPosition();
+        char [][] figuresPosition = GameEngine.getInstance().getChessLogicService().getFiguresArray();
         if(figuresPosition[positionX][positionY] == ' ')
             return MOVE;
         return CAPTURE;
