@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sample.models.StyleCss;
+
+import javax.swing.text.Style;
 
 public class Main extends Application {
 
@@ -13,7 +16,10 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("view/newGame.fxml"));
         primaryStage.setTitle("Chess");
-        primaryStage.setScene(new Scene(root, 500, 500));
+        StyleCss style = StyleCss.getInstance();
+        style.setStyle("dark");
+        Scene scene = StyleCss.getInstance().getScene(root, 500, 500);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

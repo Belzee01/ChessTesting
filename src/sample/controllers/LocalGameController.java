@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sample.models.StyleCss;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,7 +47,7 @@ public class LocalGameController implements Initializable {
             stage = (Stage) backToGameType.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("../view/gameType.fxml"));
         }
-        Scene scene = new Scene(root);
+        Scene scene = StyleCss.getInstance().getScene(root);
         stage.setScene(scene);
         stage.show();
 

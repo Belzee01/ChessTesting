@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.ChatWindowController">
+   <children>
+      <Label layoutX="32.0" layoutY="36.0" text="Przeciwnik zaproponował remis">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="101.0" layoutY="71.0" text="Zgadzasz się?">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="Accept" layoutX="63.0" layoutY="117.0" mnemonicParsing="false" onAction="#acceptDraw" prefHeight="32.0" prefWidth="77.0" text="Tak" />
+      <Button fx:id="Decline" layoutX="162.0" layoutY="117.0" mnemonicParsing="false" onAction="#declineDraw" prefHeight="32.0" prefWidth="77.0" text="Nie" />
+   </children>
+</AnchorPane>

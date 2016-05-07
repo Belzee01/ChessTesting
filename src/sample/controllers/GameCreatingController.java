@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import sample.GameEngine;
+import sample.models.StyleCss;
 import sample.services.GameCreatingService;
 import sample.services.NetValidator;
 import sample.services.TCPClientConnectionService;
@@ -88,7 +89,7 @@ public class GameCreatingController implements Initializable{
             stage = (Stage) creatingBackButton.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("../view/gameType.fxml"));
         }
-        Scene scene = new Scene(root);
+        Scene scene = StyleCss.getInstance().getScene(root);
         stage.setScene(scene);
         stage.show();
 
@@ -118,7 +119,7 @@ public class GameCreatingController implements Initializable{
             Platform.runLater(() ->{
                 System.out.println("Established as server");
                 showBoardOverview();
-                Scene scene=new Scene(rootLayout);
+                Scene scene= StyleCss.getInstance().getScene(rootLayout);
                 primaryStage.setScene(scene);
                 primaryStage.show();
             });
@@ -152,7 +153,7 @@ public class GameCreatingController implements Initializable{
             Platform.runLater(() ->{
                 System.out.println("Established as client");
                 showBoardOverview();
-                Scene scene=new Scene(rootLayout);
+                Scene scene=StyleCss.getInstance().getScene(rootLayout);
                 primaryStage.setScene(scene);
                 primaryStage.show();
             });
