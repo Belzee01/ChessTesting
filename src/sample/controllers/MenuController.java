@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import sample.models.StyleCss;
 
 import java.io.IOException;
 
@@ -68,7 +69,7 @@ public class MenuController {
             root = FXMLLoader.load(getClass().getResource("../view/gameType.fxml"));
         }
 
-        Scene scene = new Scene(root);
+        Scene scene = StyleCss.getInstance().getScene(root);
         stage.setScene(scene);
         stage.show();
     }

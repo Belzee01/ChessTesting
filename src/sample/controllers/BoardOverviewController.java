@@ -191,7 +191,7 @@ public class BoardOverviewController {
 
         root.setStyle("-fx-background-color: #C4C4C4;");
 
-        Scene scene = new Scene(root, 300, 300);
+        Scene scene = StyleCss.getInstance().getScene(root, 300, 300);
         stage.setTitle("Czat");
         stage.setScene(scene);
         stage.show();
@@ -209,7 +209,7 @@ public class BoardOverviewController {
         }
 
 
-        Scene scene = new Scene(root, 300, 300);
+        Scene scene = StyleCss.getInstance().getScene(root, 300, 300);
         stage.setTitle("Prośba o remis");
         stage.setScene(scene);
         stage.show();
@@ -226,7 +226,7 @@ public class BoardOverviewController {
         }
 
 
-        Scene scene = new Scene(root, 300, 300);
+        Scene scene = StyleCss.getInstance().getScene(root, 300, 300);
         stage.setTitle("Odpowiedź");
         stage.setScene(scene);
         stage.show();
