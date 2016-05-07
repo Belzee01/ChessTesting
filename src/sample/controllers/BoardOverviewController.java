@@ -6,14 +6,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import sample.GameEngine;
-import sample.models.Board;
-import sample.models.Images;
-import sample.models.Message;
+import sample.models.*;
 import sample.services.ChessLogicService;
 
 import java.io.IOException;
@@ -27,6 +26,7 @@ public class BoardOverviewController {
     private GridPane gridPane;
     private GameEngine gameEngine = GameEngine.getInstance();
     private Images images = new Images();
+
 
     private String evenColor;
     private String oddColor;
@@ -49,22 +49,32 @@ public class BoardOverviewController {
                 if(data instanceof Message){
                     GameEngine.getInstance().getChatWindowController().receive((Message)data);
                 }
+                if(data instanceof DrawRequest){
+                    showDrawRequest();
+                }
+                if(data instanceof DrawAnswer){
+                    DrawAnswer answer = (DrawAnswer)data;
+                    if(answer.isAccepted())
+                        showDrawAnswer(true);
+                }
 
 
             });
         });
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(BoardOverviewController.class.getResource("../view/ChatWindow.fxml"));
+
     }
 
     /**
      * Inicjalizacja koloru pól szachownicy
-     * @param evenColor kolor parzystych pól na szachownicy
-     * @param oddColor kolor nieparzystych pól na szachownicy
      */
-    public void initBoard(String evenColor, String oddColor) {
+    public void initBoard() {
         final String CSS = "-fx-background-color: ";
         final String SEMICOLON = ";";
-        this.evenColor = CSS + evenColor + SEMICOLON;
-        this.oddColor = CSS + oddColor + SEMICOLON;
+        this.evenColor = CSS + "#fffdca" + SEMICOLON;
+        this.oddColor = CSS + "#a58240" + SEMICOLON;
         refreshBoard();
     }
 
@@ -186,5 +196,39 @@ public class BoardOverviewController {
         stage.setScene(scene);
         stage.show();
 
+    }
+
+    public void showDrawRequest(){
+        Stage stage = new Stage();
+        AnchorPane root = new AnchorPane();
+
+        try{
+            root = FXMLLoader.load(getClass().getResource("../view/DrawRequest.fxml"));
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        Scene scene = new Scene(root, 300, 300);
+        stage.setTitle("Prośba o remis");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void showDrawAnswer(boolean accepted){
+        Stage stage = new Stage();
+        AnchorPane root = new AnchorPane();
+
+        try{
+            root = FXMLLoader.load(getClass().getResource("../view/DrawAnswer.fxml"));
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        Scene scene = new Scene(root, 300, 300);
+        stage.setTitle("Odpowiedź");
+        stage.setScene(scene);
+        stage.show();
     }
 }

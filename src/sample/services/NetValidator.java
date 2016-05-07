@@ -37,6 +37,8 @@ public class NetValidator {
                 return false;
             }
         }
-        return true;
+        if(Integer.valueOf(port)>49152 && Integer.valueOf(port)<65535)
+            return true;
+        else return false;
     }
 }
