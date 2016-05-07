@@ -19,6 +19,7 @@ public class GameCreatingService {
     private String currentHostIpAddress;
 
     public GameCreatingService() {
+        currentHostIpAddress = "127.0.0.1";
         Enumeration<NetworkInterface> netInterfaces = null;
         try {
             netInterfaces = NetworkInterface.getNetworkInterfaces();
@@ -33,13 +34,7 @@ public class GameCreatingService {
                     }
                 }
             }
-            if (currentHostIpAddress == null) {
-                currentHostIpAddress = "127.0.0.1";
-            }
 
-        } catch (SocketException e) {
-            currentHostIpAddress = "127.0.0.1";
-        }
-
+        } catch (SocketException e) {e.printStackTrace();}
     }
 }

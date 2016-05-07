@@ -13,6 +13,10 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import sample.GameEngine;
 import sample.models.*;
+import sample.models.Board;
+import sample.models.CheckMessage;
+import sample.models.Images;
+import sample.models.Message;
 import sample.services.ChessLogicService;
 
 import java.io.IOException;
@@ -27,7 +31,6 @@ public class BoardOverviewController {
     private GameEngine gameEngine = GameEngine.getInstance();
     private Images images = new Images();
 
-
     private String evenColor;
     private String oddColor;
 
@@ -37,17 +40,15 @@ public class BoardOverviewController {
         GameEngine.getInstance().getTcpConnectionService().setOnReceiveNewData(data -> {
             Platform.runLater(() ->{
                 if (data instanceof Board) {
-
-
-                    System.out.println("Received new data \n :" + ((Board) data).getBoard());
                     GameEngine.getInstance().getChessLogicService().setBoard((Board) data);
                     refreshBoard();
-                    //GameEngine.getInstance().getTcpConnectionService().sendObject((Board)data);
-
-
                 }
                 if(data instanceof Message){
                     GameEngine.getInstance().getChatWindowController().receive((Message)data);
+                }
+                if(data instanceof CheckMessage){
+                    CheckMessage msg=(CheckMessage) data;
+                    onCheckedAppear(msg.getCheckedColor());
                 }
                 if(data instanceof DrawRequest){
                     showDrawRequest();
@@ -66,7 +67,25 @@ public class BoardOverviewController {
         loader.setLocation(BoardOverviewController.class.getResource("../view/ChatWindow.fxml"));
 
     }
-
+    public void onCheckedAppear(int checkColor){
+        GameEngine.getInstance().setCheckState(checkColor);
+        int myColor=0;
+        if(GameEngine.getInstance().isServerRole()==false){
+            myColor=1;
+        }
+        if(myColor==checkColor){
+            onChecked();
+        }
+        else{
+            onEnemyChecked();
+        }
+    }
+    public void onChecked(){
+        System.out.println("I'm checked");
+    }
+    public void onEnemyChecked(){
+        System.out.println("Enemy checked");
+    }
     /**
      * Inicjalizacja koloru pól szachownicy
      */
@@ -150,6 +169,8 @@ public class BoardOverviewController {
             boolean[][] possibleMoves = gameEngine.getChessLogicService().getPossibleMovesArray(GridPane.getColumnIndex(IV), GridPane.getRowIndex(IV));
 
 
+            possibleMoves[gameEngine.getMoveX()][gameEngine.getMoveY()]=false;
+
             for (int i = 0; i < 8; ++i) {
                 for (int j = 0; j < 8; ++j) {
                     if (possibleMoves[i][j]) {
@@ -172,6 +193,9 @@ public class BoardOverviewController {
     private void move(ImageView iv) {
         if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
             gameEngine.move(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
+            if(gameEngine.getInstance().getCheckState()!=-1){
+                onCheckedAppear(gameEngine.getInstance().getCheckState());
+            }
             refreshBoard();
         }
     }
