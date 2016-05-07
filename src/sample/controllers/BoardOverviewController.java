@@ -37,14 +37,8 @@ public class BoardOverviewController {
         GameEngine.getInstance().getTcpConnectionService().setOnReceiveNewData(data -> {
             Platform.runLater(() ->{
                 if (data instanceof Board) {
-
-
-                    System.out.println("Received new data \n :" + ((Board) data).getBoard());
                     GameEngine.getInstance().getChessLogicService().setBoard((Board) data);
                     refreshBoard();
-                    //GameEngine.getInstance().getTcpConnectionService().sendObject((Board)data);
-
-
                 }
                 if(data instanceof Message){
                     GameEngine.getInstance().getChatWindowController().receive((Message)data);
@@ -57,8 +51,6 @@ public class BoardOverviewController {
                     if(answer.isAccepted())
                         showDrawAnswer(true);
                 }
-
-
             });
         });
 
@@ -149,7 +141,6 @@ public class BoardOverviewController {
             gameEngine.setMoveY(GridPane.getRowIndex(IV));
             boolean[][] possibleMoves = gameEngine.getChessLogicService().getPossibleMovesArray(GridPane.getColumnIndex(IV), GridPane.getRowIndex(IV));
 
-
             for (int i = 0; i < 8; ++i) {
                 for (int j = 0; j < 8; ++j) {
                     if (possibleMoves[i][j]) {
@@ -208,7 +199,6 @@ public class BoardOverviewController {
             e.printStackTrace();
         }
 
-
         Scene scene = StyleCss.getInstance().getScene(root, 300, 300);
         stage.setTitle("Prośba o remis");
         stage.setScene(scene);
@@ -224,7 +214,6 @@ public class BoardOverviewController {
         }catch (IOException e) {
             e.printStackTrace();
         }
-
 
         Scene scene = StyleCss.getInstance().getScene(root, 300, 300);
         stage.setTitle("Odpowiedź");
