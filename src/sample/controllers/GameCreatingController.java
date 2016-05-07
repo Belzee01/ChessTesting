@@ -170,13 +170,19 @@ public class GameCreatingController implements Initializable{
     private void showBoardOverview() {
         try {
             FXMLLoader loader = new FXMLLoader();
+            FXMLLoader chatLoader = new FXMLLoader();
             loader.setLocation(GameCreatingController.class.getResource("../view/BoardOverview.fxml"));
+            chatLoader.setLocation(GameCreatingController.class.getResource("../view/ChatWindow.fxml"));
             rootLayout.setCenter(loader.load());
+            rootLayout.setRight(chatLoader.load());
 
             // Give the controller access to the main app.
 
             BoardOverviewController controller = loader.getController();
-            controller.initBoard("#fffdca", "#a58240");
+            controller.initBoard();
+
+            ChatWindowController chatController = chatLoader.getController();
+            chatController.initChatWindow();
 
         } catch (IOException e) {
             e.printStackTrace();
