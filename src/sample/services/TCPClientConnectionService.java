@@ -1,10 +1,14 @@
 package sample.services;
 
+import lombok.Getter;
+
 /**
  * TCP client  controller, provide non-blocking (from JavaFX application point of view) communication
  */
 public class TCPClientConnectionService extends TCPConnectionService {
+    @Getter
     private String ip;
+    @Getter
     private int port;
 
     /**
@@ -22,6 +26,7 @@ public class TCPClientConnectionService extends TCPConnectionService {
         return false;
     }
 
+    /*
     @Override
     public int getPort(){
         return port;
@@ -31,4 +36,5 @@ public class TCPClientConnectionService extends TCPConnectionService {
     public String getIp(){
         return ip;
     }
+    */
 }

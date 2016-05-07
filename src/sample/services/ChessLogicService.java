@@ -7,12 +7,14 @@ import sample.models.Board;
 
 import java.util.*;
 
+
 @AllArgsConstructor
 public class ChessLogicService {
+
     @Getter @Setter
     private Board board;
 
-    ChessLogicService(){
+    public ChessLogicService(){
         if(board == null)
             board = new Board();
     }
@@ -25,14 +27,19 @@ public class ChessLogicService {
         return board.getBoard().indexOf("k") == -1 || board.getBoard().indexOf("K") == -1;
     }
 
-    public void getWinner() {
-        if (board.getBoard().indexOf("K") == -1)
-            System.out.println("Black wins");
-        else if (board.getBoard().indexOf("k") == -1)
-            System.out.println("White wins");
-        else
-            System.out.println("Stalemate");
+    /*
+    return 1 if black won, 0 if white, -1 if none
+     */
+    public int getWinner(){
+        if (board.getBoard().indexOf("k")==-1){
+            return 0;
+        }
+        else if(board.getBoard().indexOf("K")==-1){
+            return 1;
+        }
+        return -1;
     }
+
 
     public void whiteMove() {
         do {
@@ -171,6 +178,24 @@ public class ChessLogicService {
     private boolean isDifferentColor(String piece, String other) {
         return (isWhite(piece) && isBlack(other))
                 || (isBlack(piece) && isWhite(other));
+    }
+
+    /**
+     * Return -1 if no check detected , 0 if white check, 1 if black check
+     * @return
+     */
+    public int getCheck(){
+        String [] availableMoves=getPossibleMoves(board.getBoard(),board.getServerTurn());
+        for(int i=0;i<availableMoves.length;i++){
+            if(availableMoves[i].indexOf("K")==-1 ){
+                return 1;
+            }
+            else if(availableMoves[i].indexOf("k")==-1){
+                return 0;
+            }
+
+        }
+        return -1;
     }
 
     ///////////////// Walidator ruchow
