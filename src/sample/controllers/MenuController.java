@@ -37,6 +37,9 @@ public class MenuController {
     @FXML
     private Button backToGameType;
 
+    @FXML
+    private Button optionsButton;
+
 
     /**
      * Handler odpowiedzialny za przełączanie między oknami menu
@@ -48,6 +51,10 @@ public class MenuController {
         if(event.getSource() == newGameButton){
             stage = (Stage) newGameButton.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("../view/gameType.fxml"));
+        }
+        else if(event.getSource() == optionsButton) {
+            stage = (Stage) optionsButton.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("../view/Options.fxml"));
         }
         else if(event.getSource() == exitButton){
             System.exit(0);

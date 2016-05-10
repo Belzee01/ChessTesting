@@ -15,6 +15,7 @@ import sample.GameEngine;
 import sample.models.*;
 import sample.services.ChessLogicService;
 
+import javax.swing.text.Style;
 import java.io.IOException;
 
 
@@ -47,7 +48,7 @@ public class BoardOverviewController {
 
                 }
                 if(data instanceof Message){
-                    GameEngine.getInstance().getChatWindowController().receive((Message)data);
+                    GameEngine.getInstance().getCommunicationController().receive((Message)data);
                 }
                 if(data instanceof DrawRequest){
                     showDrawRequest();
@@ -56,6 +57,11 @@ public class BoardOverviewController {
                     DrawAnswer answer = (DrawAnswer)data;
                     if(answer.isAccepted())
                         showDrawAnswer(true);
+                    else
+                        showDrawAnswer(false);
+                }
+                if(data instanceof ResignationMessage){
+                    showResignationMessage();
                 }
 
 
@@ -176,27 +182,6 @@ public class BoardOverviewController {
         }
     }
 
-    /**
-     * Handler odpowiadający za otwarcie okna do czatu.
-     */
-    public void openChatWindow(ActionEvent event){
-        Stage stage = new Stage();
-        BorderPane root = new BorderPane();
-
-        try{
-            root = FXMLLoader.load(getClass().getResource("../view/ChatWindow.fxml"));
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        root.setStyle("-fx-background-color: #C4C4C4;");
-
-        Scene scene = StyleCss.getInstance().getScene(root, 300, 300);
-        stage.setTitle("Czat");
-        stage.setScene(scene);
-        stage.show();
-
-    }
 
     public void showDrawRequest(){
         Stage stage = new Stage();
@@ -220,15 +205,36 @@ public class BoardOverviewController {
         AnchorPane root = new AnchorPane();
 
         try{
-            root = FXMLLoader.load(getClass().getResource("../view/DrawAnswer.fxml"));
-        }catch (IOException e) {
+            if(accepted)
+                root = FXMLLoader.load(getClass().getResource("../view/DrawPositiveAnswer.fxml"));
+            else
+                root = FXMLLoader.load(getClass().getResource("../view/DrawNegativeAnswer.fxml"));
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         Scene scene = StyleCss.getInstance().getScene(root, 300, 300);
         stage.setTitle("Odpowiedź");
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+
+    }
+
+    public void showResignationMessage(){
+        Stage stage = new Stage();
+        AnchorPane anchorPane = new AnchorPane();
+
+        try{
+            anchorPane = FXMLLoader.load(getClass().getResource("../view/Resignation.fxml"));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        Scene scene = StyleCss.getInstance().getScene(anchorPane, 300, 300);
+        stage.setTitle("Rezygnacja");
+        stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 }

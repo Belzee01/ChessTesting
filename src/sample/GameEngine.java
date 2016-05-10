@@ -2,7 +2,7 @@ package sample;
 
 import lombok.Getter;
 import lombok.Setter;
-import sample.controllers.ChatWindowController;
+import sample.controllers.CommunicationController;
 import sample.services.ChessLogicService;
 import sample.services.TCPConnectionService;
 
@@ -26,7 +26,7 @@ public class GameEngine {
     ChessLogicService chessLogicService;
 
     @Getter @Setter
-    ChatWindowController chatWindowController;
+    CommunicationController communicationController;
 
     public GameEngine(){}
 
