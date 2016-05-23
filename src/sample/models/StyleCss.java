@@ -10,7 +10,7 @@ public class StyleCss {
 
     private static StyleCss style = null;
     private String path = null;
-    private StyleCss() {};
+    private StyleCss() {}
 
     /**
      * Klasyczny singleton
@@ -23,6 +23,10 @@ public class StyleCss {
         return style;
     }
 
+    /**
+     * Ustawia styl.
+     * @param styleName - nazwa pliku css.
+     */
     public void setStyle(String styleName) {
         if (styleName != null)
             if (styleName.equals("classic")) {
