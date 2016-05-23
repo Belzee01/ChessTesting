@@ -18,11 +18,7 @@ public class ChessLogicService {
         if(board == null)
             board = new Board();
     }
-
-    public void display(){
-
-    }
-
+    
     public boolean gameOver() {
         return board.getBoard().indexOf("k") == -1 || board.getBoard().indexOf("K") == -1;
     }
@@ -41,19 +37,6 @@ public class ChessLogicService {
     }
 
 
-    public void whiteMove() {
-        do {
-            String mockMove = " ";//get coordinates from controller
-            String newBoard = getNewBoard(board, mockMove);
-            String[] boards = getPossibleMoves(board.getBoard(), true);
-            for (int i = 0; i < boards.length; i++) {
-                if (boards[i].equals(newBoard)) {
-                    board.setBoard(newBoard);
-                    return;
-                }
-            }
-        } while (true);
-    }
 
     public String getNewBoard(Board board, String move) {
         String row = "abcdefgh";
@@ -366,71 +349,5 @@ public class ChessLogicService {
         return new String[0];
     }
 
-    private void blackMove() {
-        String[] boards = getPossibleMoves(board.getBoard(), false);
-        boards = evalBest(boards, 1);
-        board.setBoard(boards[Math.abs(new Random().nextInt()) % boards.length]);
-    }
 
-    private int value(String piece) {
-        if (isPawn(piece))
-            return 1;
-        if (isBishop(piece) || isKnight(piece))
-            return 3;
-        if (isRook(piece))
-            return 5;
-        if (isQueen(piece))
-            return 9;
-        return 0;
-    }
-
-    private String[] evalBest(String[] boards, int depth) {
-        int bestEval = Integer.MIN_VALUE;
-        List bestBoards = new ArrayList();
-        for (int i = 0; i < boards.length; i++) {
-            int eval = eval(boards[i], false, depth);
-            if (eval > bestEval) {
-                bestEval = eval;
-                bestBoards.clear();
-                bestBoards.add(boards[i]);
-            }
-            if (eval == bestEval)
-                bestBoards.add(boards[i]);
-        }
-        return (String[]) bestBoards.toArray(new String[bestBoards.size()]);
-    }
-
-    private int eval(String board, boolean white, int depth) {
-        if (depth == 0)
-            return eval(board);
-        String[] otherPlayerBoards = getPossibleMoves(board, !white);
-        int bestBlackEval = Integer.MIN_VALUE;
-        int bestWhiteEval = Integer.MAX_VALUE;
-        for (int i = 0; i < otherPlayerBoards.length; i++) {
-            int eval = eval(otherPlayerBoards[i], !white, depth - 1);
-            if (eval > bestBlackEval)
-                bestBlackEval = eval;
-            if (eval < bestWhiteEval)
-                bestWhiteEval = eval;
-        }
-        return white ? bestBlackEval : bestWhiteEval;
-    }
-
-    int eval(String board) {
-        if (board.indexOf("K") == -1)
-            return Integer.MAX_VALUE;
-        if (board.indexOf("k") == -1)
-            return Integer.MIN_VALUE;
-        int score = 0;
-        for (int x = 0; x <= 7; x++)
-            for (int y = 0; y <= 7; y++) {
-                String piece = get(board, x, y);
-                int value = value(piece);
-                if (isBlack(piece))
-                    score += value;
-                else
-                    score -= value;
-            }
-        return score;
-    }
 }
