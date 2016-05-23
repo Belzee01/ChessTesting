@@ -10,11 +10,15 @@
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="300.0">
          <center>
-            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <children>
-                  <TextFlow fx:id="textFlow" prefHeight="223.0" prefWidth="275.0" HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
+            <ScrollPane prefViewportHeight="146.0" prefViewportWidth="268.0">
+               <content>
+                  <HBox prefHeight="139.0" prefWidth="246.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <TextFlow fx:id="textFlow" prefHeight="143.0" prefWidth="277.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+               </content>
+            </ScrollPane>
          </center>
          <bottom>
             <HBox prefHeight="77.0" prefWidth="600.0" BorderPane.alignment="CENTER">

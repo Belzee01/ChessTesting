@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.embed.swing.*?>
@@ -27,7 +28,7 @@
                      </font>
                   </Button>
                   <Button fx:id="creatingBackButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backButtonAction" text="Wstecz" />
-                  <Label fx:id="wrongPort" layoutX="150.0" layoutY="292.0" prefHeight="26.0" prefWidth="201.0" textFill="#f20707" />
+                  <Label fx:id="wrongPort" layoutX="150.0" layoutY="292.0" prefHeight="26.0" prefWidth="201.0" textFill="#f00707" />
                </children></AnchorPane>
       </content>
     </Tab>
