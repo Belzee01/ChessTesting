@@ -69,8 +69,6 @@ public class GameCreatingController implements Initializable{
     @FXML
     private Label wrongPort;
 
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         validator = new NetValidator();
@@ -113,7 +111,8 @@ public class GameCreatingController implements Initializable{
             e.printStackTrace();
         }
 
-        GameEngine.getInstance().setTcpConnectionService(new TCPServerConnectionService(Integer.valueOf(listeningPortNumber.getText())));
+        GameEngine.getInstance().setTcpConnectionService(
+                new TCPServerConnectionService(Integer.valueOf(listeningPortNumber.getText())));
 
         GameEngine.getInstance().getTcpConnectionService().setOnConnectionEstablished(data -> {
             Platform.runLater(() ->{

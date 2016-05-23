@@ -5,22 +5,27 @@ import lombok.Getter;
 import lombok.Setter;
 import sample.models.Board;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @AllArgsConstructor
 public class ChessLogicService {
-    @Getter @Setter
+    @Getter
+    @Setter
     private Board board;
 
-    ChessLogicService(){
-        if(board == null)
+    public ChessLogicService() {
+        if (board == null)
             board = new Board();
     }
 
-    public void display(){
+    //To do
+    public void display() {
 
     }
 
+    //To do - unused method
     public boolean gameOver() {
         return board.getBoard().indexOf("k") == -1 || board.getBoard().indexOf("K") == -1;
     }
@@ -34,29 +39,30 @@ public class ChessLogicService {
             System.out.println("Stalemate");
     }
 
-    public void whiteMove() {
-        do {
-            String mockMove = " ";//get coordinates from controller
-            String newBoard = getNewBoard(board, mockMove);
-            String[] boards = getPossibleMoves(board.getBoard(), true);
-            for (int i = 0; i < boards.length; i++) {
-                if (boards[i].equals(newBoard)) {
-                    board.setBoard(newBoard);
-                    return;
-                }
-            }
-        } while (true);
-    }
+    //To do - unused method
+//    public void whiteMove() {
+//        do {
+//            String mockMove = " ";//get coordinates from controller
+//            String newBoard = getNewBoard(board, mockMove);
+//            String[] boards = getPossibleMoves(board.getBoard(), true);
+//            for (int i = 0; i < boards.length; i++) {
+//                if (boards[i].equals(newBoard)) {
+//                    board.setBoard(newBoard);
+//                    return;
+//                }
+//            }
+//        } while (true);
+//    }
 
-    public String getNewBoard(Board board, String move) {
-        String row = "abcdefgh";
-        String column = "12345678";
-        int x1 = row.indexOf(move.charAt(0));
-        int y1 = column.indexOf(move.charAt(1));
-        int x2 = row.indexOf(move.charAt(2));
-        int y2 = column.indexOf(move.charAt(3));
-        return move(board.getBoard(), x1, y1, x2, y2);
-    }
+//    public String getNewBoard(Board board, String move) {
+//        String row = "abcdefgh";
+//        String column = "12345678";
+//        int x1 = row.indexOf(move.charAt(0));
+//        int y1 = column.indexOf(move.charAt(1));
+//        int x2 = row.indexOf(move.charAt(2));
+//        int y2 = column.indexOf(move.charAt(3));
+//        return move(board.getBoard(), x1, y1, x2, y2);
+//    }
 
     public String move(String board, int x1, int y1, int x2, int y2) {
         String piece = get(board, x1, y1);
@@ -65,30 +71,29 @@ public class ChessLogicService {
         return board;
     }
 
-    private int pos(int x1, int y1) {
+    public int pos(int x1, int y1) {
         if (x1 < 0 || x1 > 7 || y1 < 0 || y1 > 7) {
             return 0;
-        }
-        else
+        } else
             return x1 + (7 - y1) * 8;
     }
 
-    private String get(String board, int x1, int y1) {
+    public String get(String board, int x1, int y1) {
         if (x1 < 0 || x1 > 7 || y1 < 0 || y1 > 7)
             return "X";
 
-        int pos=pos(x1, y1);
+        int pos = pos(x1, y1);
         return "" + board.charAt(pos);
     }
 
-    String set(String board, int x1, int y1, String piece) {
+    public String set(String board, int x1, int y1, String piece) {
         int pos = pos(x1, y1);
         return board.substring(0, pos) + piece + board.substring(pos + 1);
     }
 
-    private String[] getPossibleMoves(String board, boolean white) {
+    public String[] getPossibleMoves(String board, boolean white) {
         List result = new ArrayList();
-        for (int x = 0; x < 8; x++){
+        for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 String piece = get(board, x, y);
 
@@ -100,20 +105,20 @@ public class ChessLogicService {
         return (String[]) result.toArray(new String[result.size()]);
     }
 
-    public boolean[][] getPossibleMovesArray(int x,int y){
-        boolean  maskArray[][] =new boolean[8][8];
-        String oldBoard=board.getBoard();
-        String possibleMoves[]=getPossibleMoves(oldBoard,x,y);
+    public boolean[][] getPossibleMovesArray(int x, int y) {
+        boolean maskArray[][] = new boolean[8][8];
+        String oldBoard = board.getBoard();
+        String possibleMoves[] = getPossibleMoves(oldBoard, x, y);
 
-        String foo=get(oldBoard,x,y);
-        System.out.println(x+":"+y);
+        String foo = get(oldBoard, x, y);
+        System.out.println(x + ":" + y);
 
-        for(int i=0;i<8;i++){
-            for(int j=0;j<8;j++){
-                maskArray[i][j]=false;
-                for(int k=0;k<possibleMoves.length;k++){
-                    if(!get(oldBoard,i,j).equals(get(possibleMoves[k],i,j))) {
-                        maskArray[i][j]=true;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                maskArray[i][j] = false;
+                for (int k = 0; k < possibleMoves.length; k++) {
+                    if (!get(oldBoard, i, j).equals(get(possibleMoves[k], i, j))) {
+                        maskArray[i][j] = true;
                     }
                 }
             }
@@ -121,60 +126,64 @@ public class ChessLogicService {
         return maskArray;
     }
 
-    public char[][] getFiguresArray(){
-        char [][] figuresArray=new char[8][8];
+    public char[][] getFiguresArray() {
+        char[][] figuresArray = new char[8][8];
 
-        for(int i=0;i<8;i++){
-            for(int j=0;j<8;j++){
-                figuresArray[i][j]=get(board.getBoard(),j,i).charAt(0);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                figuresArray[i][j] = get(board.getBoard(), j, i).charAt(0);
             }
         }
         return figuresArray;
     }
 
-    private boolean isWhite(String piece) {
+
+    public boolean isWhite(String piece) {
         return "PRNBQK".indexOf(piece) != -1;
     }
 
-    private boolean isBlack(String piece) {
+
+    public boolean isBlack(String piece) {
         return "prnbqk".indexOf(piece) != -1;
     }
 
-    private boolean isPawn(String piece) {
+
+    public boolean isPawn(String piece) {
         return "Pp".indexOf(piece) != -1;
     }
 
-    private boolean isRook(String piece) {
+    public boolean isRook(String piece) {
         return "Rr".indexOf(piece) != -1;
     }
 
-    private boolean isKnight(String piece) {
+    public boolean isKnight(String piece) {
         return "Nn".indexOf(piece) != -1;
     }
 
-    private boolean isBishop(String piece) {
+    public boolean isBishop(String piece) {
         return "Bb".indexOf(piece) != -1;
     }
 
-    private boolean isQueen(String piece) {
+    public boolean isQueen(String piece) {
         return "Qq".indexOf(piece) != -1;
     }
 
-    private boolean isKing(String piece) {
+
+    public boolean isKing(String piece) {
         return "Kk".indexOf(piece) != -1;
     }
 
-    private boolean isEmpty(String piece) {
+    public boolean isEmpty(String piece) {
         return piece.equals(" ");
     }
 
-    private boolean isDifferentColor(String piece, String other) {
+    public boolean isDifferentColor(String piece, String other) {
         return (isWhite(piece) && isBlack(other))
                 || (isBlack(piece) && isWhite(other));
     }
 
     ///////////////// Walidator ruchow
-    private String[] getPossibleMovesPawn(String board, int x, int y) {
+    public String[] getPossibleMovesPawn(String board, int x, int y) {
         List result = new ArrayList();
         if (isWhite(get(board, x, y))) {
             if (isEmpty(get(board, x, y + 1))) {
@@ -204,7 +213,7 @@ public class ChessLogicService {
         return (String[]) result.toArray(new String[result.size()]);
     }
 
-    private String[] getPossibleMovesRook(String board, int x, int y) {
+    public String[] getPossibleMovesRook(String board, int x, int y) {
         List result = new ArrayList();
         String piece = get(board, x, y);
         for (int i = 1; i <= 7; i++) {
@@ -246,7 +255,7 @@ public class ChessLogicService {
         return (String[]) result.toArray(new String[result.size()]);
     }
 
-    private String[] getPossibleMovesBishop(String board, int x, int y) {
+    public String[] getPossibleMovesBishop(String board, int x, int y) {
         List result = new ArrayList();
         String piece = get(board, x, y);
         for (int i = 1; i <= 7; i++) {
@@ -288,12 +297,12 @@ public class ChessLogicService {
         return (String[]) result.toArray(new String[result.size()]);
     }
 
-    private String[] getPossibleMovesKnight(String board, int x, int y) {
+    public String[] getPossibleMovesKnight(String board, int x, int y) {
         List result = new ArrayList();
         String piece = get(board, x, y);
-        int[][] moves = { { x - 1, y + 2 }, { x + 1, y + 2 }, { x - 2, y + 1 },
-                { x + 2, y + 1 }, { x - 2, y - 1 }, { x + 2, y - 1 }, { x - 1, y - 2 },
-                { x + 1, y - 2 } };
+        int[][] moves = {{x - 1, y + 2}, {x + 1, y + 2}, {x - 2, y + 1},
+                {x + 2, y + 1}, {x - 2, y - 1}, {x + 2, y - 1}, {x - 1, y - 2},
+                {x + 1, y - 2}};
         for (int i = 0; i < moves.length; i++) {
             String destPiece = get(board, moves[i][0], moves[i][1]);
             if (isEmpty(destPiece) || isDifferentColor(piece, destPiece))
@@ -302,7 +311,7 @@ public class ChessLogicService {
         return (String[]) result.toArray(new String[result.size()]);
     }
 
-    private String[] getPossibleMovesQueen(String board, int x, int y) {
+    public String[] getPossibleMovesQueen(String board, int x, int y) {
         String[] movesBishop = getPossibleMovesBishop(board, x, y);
         String[] movesRook = getPossibleMovesRook(board, x, y);
         String[] result = new String[movesBishop.length + movesRook.length];
@@ -312,7 +321,7 @@ public class ChessLogicService {
         return result;
     }
 
-    private String[] getPossibleMovesKing(String board, int x, int y) {
+    public String[] getPossibleMovesKing(String board, int x, int y) {
         List result = new ArrayList();
         String piece = get(board, x, y);
         for (int i = -1; i <= 1; i++)
@@ -324,7 +333,7 @@ public class ChessLogicService {
         return (String[]) result.toArray(new String[result.size()]);
     }
 
-    private String[] getPossibleMoves(String board, int x, int y) {
+    public String[] getPossibleMoves(String board, int x, int y) {
         String piece = get(board, x, y);
         if (isPawn(piece))
             return getPossibleMovesPawn(board, x, y);
@@ -340,14 +349,14 @@ public class ChessLogicService {
             return getPossibleMovesKing(board, x, y);
         return new String[0];
     }
+//
+//    public void blackMove() {
+//        String[] boards = getPossibleMoves(board.getBoard(), false);
+//        boards = evalBest(boards, 1);
+//        board.setBoard(boards[Math.abs(new Random().nextInt()) % boards.length]);
+//    }
 
-    private void blackMove() {
-        String[] boards = getPossibleMoves(board.getBoard(), false);
-        boards = evalBest(boards, 1);
-        board.setBoard(boards[Math.abs(new Random().nextInt()) % boards.length]);
-    }
-
-    private int value(String piece) {
+    public int value(String piece) {
         if (isPawn(piece))
             return 1;
         if (isBishop(piece) || isKnight(piece))
@@ -359,7 +368,7 @@ public class ChessLogicService {
         return 0;
     }
 
-    private String[] evalBest(String[] boards, int depth) {
+    public String[] evalBest(String[] boards, int depth) {
         int bestEval = Integer.MIN_VALUE;
         List bestBoards = new ArrayList();
         for (int i = 0; i < boards.length; i++) {
@@ -375,7 +384,7 @@ public class ChessLogicService {
         return (String[]) bestBoards.toArray(new String[bestBoards.size()]);
     }
 
-    private int eval(String board, boolean white, int depth) {
+    public int eval(String board, boolean white, int depth) {
         if (depth == 0)
             return eval(board);
         String[] otherPlayerBoards = getPossibleMoves(board, !white);
@@ -391,7 +400,7 @@ public class ChessLogicService {
         return white ? bestBlackEval : bestWhiteEval;
     }
 
-    int eval(String board) {
+    public int eval(String board) {
         if (board.indexOf("K") == -1)
             return Integer.MAX_VALUE;
         if (board.indexOf("k") == -1)

@@ -43,7 +43,8 @@ public class GameEngine {
     public static final String COLOR = "WHITE";
 
     public void move(int x, int y) {
-        chessLogicService.getBoard().setBoard(chessLogicService.move(chessLogicService.getBoard().getBoard(),moveX,moveY,x,y));
+        chessLogicService.getBoard()
+                .setBoard(chessLogicService.move(chessLogicService.getBoard().getBoard(),moveX,moveY,x,y));
 
         // change player
         chessLogicService.getBoard().setServerTurn(!serverRole);

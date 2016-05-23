@@ -160,6 +160,7 @@ public class BoardOverviewController {
      * Handler odpowiadający za dokonywanie ruchu po kliknięciu w wybrany z możliwych ruchów dla figury wywołującej event w miejsce możliwego ruchu iv
      * @param iv obiekt klasy ImageView miejsce w które zostaje przesunięta figura dla której metoda zostaje wywołana
      */
+
     private void move(ImageView iv) {
         if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
             gameEngine.move(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
@@ -220,4 +221,6 @@ public class BoardOverviewController {
         stage.setScene(scene);
         stage.show();
     }
+
+
 }
