@@ -25,6 +25,10 @@ public class StyleCss {
 
     public void setStyle(String styleName) {
         if (styleName != null)
+            if (styleName.equals("classic")) {
+                this.path = null;
+                return;
+            }
             this.path = StyleCss.class.getResource("../view/styles/"+styleName+".css").toString();
     }
 

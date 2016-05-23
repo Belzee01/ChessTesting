@@ -201,7 +201,6 @@ public class BoardOverviewController {
         if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
             gameEngine.move(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
             refreshBoard();
-            Sounds.getInstance().playMove();
         }
     }
 

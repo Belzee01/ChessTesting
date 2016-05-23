@@ -35,7 +35,7 @@ public class OptionsController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        stylesList = FXCollections.observableArrayList("dark", "light");
+        stylesList = FXCollections.observableArrayList("classic", "dark", "blue", "green", "yellow");
         stylesBox.setItems(stylesList);
 
         soundsList = FXCollections.observableArrayList("Bez dźwięku", "default sound");
