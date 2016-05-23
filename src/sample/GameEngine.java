@@ -3,6 +3,7 @@ package sample;
 import lombok.Getter;
 import lombok.Setter;
 import sample.controllers.CommunicationController;
+import sample.models.CheckMessage;
 import sample.services.ChessLogicService;
 import sample.services.TCPConnectionService;
 
@@ -12,6 +13,9 @@ import sample.services.TCPConnectionService;
  */
 public class GameEngine {
     private static GameEngine gameEngine = null;
+
+    @Getter @Setter
+    int checkState;
 
     @Getter @Setter
     String nick;
@@ -43,13 +47,18 @@ public class GameEngine {
     public static final String COLOR = "WHITE";
 
     public void move(int x, int y) {
-        chessLogicService.getBoard().setBoard(chessLogicService.move(chessLogicService.getBoard().getBoard(),moveX,moveY,x,y));
+        chessLogicService.getBoard().setBoard(chessLogicService.move(chessLogicService.getBoard().getBoard(), moveX, moveY, x, y));
 
         // change player
         chessLogicService.getBoard().setServerTurn(!serverRole);
 
         // synchronize with remote
         tcpConnectionService.sendObject(chessLogicService.getBoard());
-    }
 
+        checkState = chessLogicService.getCheck();
+        if (checkState != -1) {
+            tcpConnectionService.sendObject(new CheckMessage(checkState));
+        }
+
+    }
 }
