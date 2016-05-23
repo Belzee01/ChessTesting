@@ -23,7 +23,6 @@ public class Main extends Application {
         primaryStage.show();
 
         Sounds.getInstance().setSounds("...");
-
     }
 
 
