@@ -43,6 +43,10 @@ public class OptionsController implements Initializable{
     }
 
     public void applyOptions(ActionEvent event){
+        String styleName = stylesBox.getValue();
+        //System.out.println(style);
+        StyleCss.getInstance().setStyle(styleName);
+
         Stage stage;
         AnchorPane anchorPane = new AnchorPane();
         try{
