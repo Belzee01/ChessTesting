@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="1000.0" maxWidth="1000.0" minHeight="100.0" minWidth="100.0" prefHeight="594.0" prefWidth="648.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.BoardOverviewController">
+<AnchorPane fx:id="boardAnchorPane" maxHeight="1000.0" maxWidth="1000.0" minHeight="100.0" minWidth="100.0" prefHeight="594.0" prefWidth="648.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.BoardOverviewController">
    <children>
       <GridPane fx:id="gridPane" prefHeight="495.0" prefWidth="648.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
