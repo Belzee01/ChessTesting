@@ -43,6 +43,7 @@ public class BoardOverviewController {
             Platform.runLater(() ->{
                 if (data instanceof Board) {
                     GameEngine.getInstance().getChessLogicService().setBoard((Board) data);
+                    Sounds.getInstance().playMove();
                     refreshBoard();
                 }
                 if(data instanceof Message){
