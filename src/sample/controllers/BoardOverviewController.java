@@ -88,6 +88,8 @@ public class BoardOverviewController {
     }
     /**
      * Inicjalizacja koloru pól szachownicy
+     * @param evenColor kolor parzystych pól na szachownicy
+     * @param oddColor kolor nieparzystych pól na szachownicy
      */
     public void initBoard() {
         final String CSS = "-fx-background-color: ";
@@ -193,9 +195,6 @@ public class BoardOverviewController {
     private void move(ImageView iv) {
         if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
             gameEngine.move(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
-            if(gameEngine.getInstance().getCheckState()!=-1){
-                onCheckedAppear(gameEngine.getInstance().getCheckState());
-            }
             refreshBoard();
         }
     }
