@@ -44,6 +44,9 @@ public class CommunicationController {
     @FXML
     private Button opponentResignedButton;
 
+    @FXML
+    private Button ErrorConfirmButton;
+
 
 
     /**
@@ -113,6 +116,11 @@ public class CommunicationController {
     public void opponentResignation(ActionEvent event){
         /* KONIEC GRY - PRZECIWNIK ZREZYGNOWAŁ */
         Stage stage = (Stage) opponentResignedButton.getScene().getWindow();
+        stage.close();
+    }
+
+    public void connectionErrorConfirm(ActionEvent event){
+        Stage stage = (Stage) ErrorConfirmButton.getScene().getWindow();
         stage.close();
     }
 

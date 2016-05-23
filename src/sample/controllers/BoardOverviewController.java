@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.GameEngine;
 import sample.models.*;
@@ -184,8 +185,11 @@ public class BoardOverviewController {
 
 
     public void showDrawRequest(){
+        Stage parentStage = (Stage)gridPane.getScene().getWindow();
         Stage stage = new Stage();
         AnchorPane root = new AnchorPane();
+        stage.initOwner(parentStage);
+        stage.initModality(Modality.WINDOW_MODAL);
 
         try{
             root = FXMLLoader.load(getClass().getResource("../view/DrawRequest.fxml"));
@@ -201,8 +205,11 @@ public class BoardOverviewController {
     }
 
     public void showDrawAnswer(boolean accepted){
+        Stage parentStage = (Stage)gridPane.getScene().getWindow();
         Stage stage = new Stage();
         AnchorPane root = new AnchorPane();
+        stage.initOwner(parentStage);
+        stage.initModality(Modality.WINDOW_MODAL);
 
         try{
             if(accepted)
@@ -222,8 +229,11 @@ public class BoardOverviewController {
     }
 
     public void showResignationMessage(){
+        Stage parentStage = (Stage)gridPane.getScene().getWindow();
         Stage stage = new Stage();
         AnchorPane anchorPane = new AnchorPane();
+        stage.initOwner(parentStage);
+        stage.initModality(Modality.WINDOW_MODAL);
 
         try{
             anchorPane = FXMLLoader.load(getClass().getResource("../view/Resignation.fxml"));
