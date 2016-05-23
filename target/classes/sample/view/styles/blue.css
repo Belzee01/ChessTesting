@@ -1,7 +1,7 @@
 .root {
-    -fx-base: #323232;
-    -fx-background: #323232;
-    -fx-control-inner-background: #323232;
+    -fx-base: #3c7fb1;
+    -fx-background: #3c7fb1;
+    -fx-control-inner-background: #3c7fb1;
 }
 
 .text-field:focused{
