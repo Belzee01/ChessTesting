@@ -74,6 +74,8 @@ public class MenuController {
         else if(event.getSource() == backToGameType){
             stage = (Stage) backToGameType.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("../view/gameType.fxml"));
+        } else{
+            stage = new Stage();
         }
 
         Scene scene = StyleCss.getInstance().getScene(root);
