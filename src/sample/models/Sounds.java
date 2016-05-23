@@ -61,7 +61,7 @@ public class Sounds {
             mediaPlayers.get(0).stop();
             mediaPlayers.get(0).play();
         }
-
+        System.out.println("Dzwiek!");
         AudioPlayer.player.stop(as);
         AudioPlayer.player.start(as);
     }
