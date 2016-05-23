@@ -18,7 +18,7 @@ public class Sounds {
     private static Sounds instance = null;
 
     public String path = "target/classes/sample/sounds/9mm_gunshot.mp3";
-    private List<MediaPlayer> mediaPlayers = null;
+    private List<Media> media = null;
 
     private AudioStream as;
 
@@ -40,8 +40,11 @@ public class Sounds {
     }
 
     public void setSounds(String name) {
+        media = new ArrayList<>();
+        media.add(new Media(new File(path).toURI().toString()));
+        //path = name;
         //System.out.println(path);
-        mediaPlayers = new ArrayList<>();
+        /*mediaPlayers = new ArrayList<>();
         Media media = new Media(new File(path).toURI().toString());
         mediaPlayers.add(new MediaPlayer(media));
 
@@ -53,17 +56,12 @@ public class Sounds {
         } catch(Exception e) {
             System.out.println("brak pliku: "+path);
         }
-
+*/
     }
 
     public void playMove() {
-        if(mediaPlayers!=null) {
-            mediaPlayers.get(0).stop();
-            mediaPlayers.get(0).play();
-        }
-        System.out.println("Dzwiek!");
-        AudioPlayer.player.stop(as);
-        AudioPlayer.player.start(as);
+        MediaPlayer mp = new MediaPlayer(media.get(0));
+        mp.play();
     }
 }
 
