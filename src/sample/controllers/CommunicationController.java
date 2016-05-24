@@ -74,6 +74,10 @@ public class CommunicationController {
         textFlow.setStyle("-fx-background-color: white;");
     }
 
+    /**
+     * Handler odpowiedzialny za wysłanie propozycji remisu.
+     * @param event
+     */
     public void sendDrawRequest(ActionEvent event){
         DrawRequest drawRequest = new DrawRequest();
         GameEngine.getInstance().getTcpConnectionService().sendObject(drawRequest);

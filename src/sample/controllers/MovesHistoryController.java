@@ -1,7 +1,7 @@
 package sample.controllers;
 
 /**
- * Created by krzysiek on 24.05.16.
+ * Kontroler do okna wyświetlającego historię ruchów
  */
 public class MovesHistoryController {
 }
