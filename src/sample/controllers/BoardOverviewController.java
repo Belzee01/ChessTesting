@@ -333,6 +333,18 @@ public class BoardOverviewController{
 
     }
 
-    public void showMovesHistory(){}
+    public void showMovesHistory(){
+        Stage stage = (Stage) GameEngine.getInstance().getCommunicationController().getResignButton().getScene().getWindow();
+        Parent root = new Parent(){};
+        try{
+            root = FXMLLoader.load(getClass().getResource("../view/MovesHistory.fxml"));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        Scene scene = StyleCss.getInstance().getScene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 
 }
