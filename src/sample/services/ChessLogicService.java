@@ -71,7 +71,7 @@ public class ChessLogicService {
         String possibleMoves[]=getPossibleMoves(oldBoard,x,y);
 
         String foo=get(oldBoard,x,y);
-        System.out.println(x+":"+y);
+        System.out.println(x+":"+y + foo);
 
         for(int i=0;i<8;i++){
             for(int j=0;j<8;j++){
@@ -307,7 +307,7 @@ public class ChessLogicService {
         return (String[]) result.toArray(new String[result.size()]);
     }
 
-    private String[] getPossibleMoves(String board, int x, int y) {
+    public String[] getPossibleMoves(String board, int x, int y) {
         String piece = get(board, x, y);
         if (isPawn(piece))
             return getPossibleMovesPawn(board, x, y);

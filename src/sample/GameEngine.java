@@ -29,8 +29,14 @@ public class GameEngine {
     @Getter @Setter
     ChessLogicService chessLogicService;
 
-    @Getter @Setter
+    @Getter
     CommunicationController communicationController;
+
+    public void setCommunicationController(CommunicationController cc){
+        System.out.println("Tworze communication controller");
+        communicationController=cc;
+    }
+
 
     public GameEngine(){}
 

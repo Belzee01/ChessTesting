@@ -261,39 +261,188 @@ public class ChessLogicServiceTest {
 
     @Test
     public void testGetPossibleMovesArray() throws Exception {
-        String newBoard1         = "        " + "p       " + "        " + "        " + "        "
+        /**
+         * There should be documentation for this method, because it's not clear how it works
+         */
+        String newBoard1         = "p       " + "        " + "        " + "        " + "        "
                 + "        " + "        " + "        ";
 
-        boolean[][] arrayBoard = {{false,false,false,false,false,false,false, false},
+        boolean[][] arrayBoard = {{false,false,false,true,false,false,true, true},
                 {false,false,false,false,false,false,false,false},
-                {true,false,false,false,false,false,false,false},
+                {false,false,false,false,false,false,false,false},
                 {false,false,false,false,false,false,false,false},
                 {false,false,false,false,false,false,false,false},
                 {false,false,false,false,false,false,false,false},
                 {false,false,false,false,false,false,false,false},
                 {false,false,false,false,false,false,false,false}};
 
+
+
         logicService.setBoard(new Board(newBoard1, false));
-        assertArrayEquals(logicService.getPossibleMovesArray(0, 7), arrayBoard);
+
+        for (String s: logicService.getPossibleMoves(newBoard1, 0, 7)){
+            System.out.print(s+", ");
+        }System.out.print("\n");
+
+        for(boolean[] b: logicService.getPossibleMovesArray(0, 6)){
+            for (boolean k: b){
+                System.out.print(k+", ");
+            }System.out.print("\n");
+        }
+
+        assertArrayEquals(logicService.getPossibleMovesArray(0, 6), arrayBoard);
     }
 
     @Test
-    public void testGetFiguresArray() throws Exception {
+    public void testGetFiguresArrayWithInitialInput() throws Exception {
+        String boardInitializer1 = "rnbqkbnr" + "pppppppp" + "        " + "        " + "        "
+                + "        " + "PPPPPPPP" + "RNBQKBNR";
 
+        char[][] figures = new char[8][8];
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                figures[i][j] = boardInitializer1.charAt(j + (7-i)*8);
+            }
+        }
+
+        assertArrayEquals(logicService.getFiguresArray(), figures);
     }
 
     @Test
-    public void testGetCheck() throws Exception {
+    public void testGetFiguresArrayWithInvalidInput(){
+        /**
+         * Method does not check validity of given String
+         */
+        String boardInitializer1 = "vvvvvvvv" + "pppppppp" + "        " + "        " + "        "
+                + "        " + "PPPPPPPP" + "zzzzzzzz";
 
+        char[][] figures = new char[8][8];
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                figures[i][j] = boardInitializer1.charAt(j + (7-i)*8);
+            }
+        }
+
+        assertArrayEquals(logicService.getFiguresArray(), figures);
     }
 
     @Test
-    public void testSetBoard() throws Exception {
+    public void testGetFiguresArrayWithInvalidFormatString(){
+        /**
+         * Method does not check validity of format of given String
+         */
+        String boardInitializer1 = "rnbqkbnr" + "pppppppp" + "        ";
 
+        char[][] figures = new char[8][8];
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                figures[i][j] = boardInitializer1.charAt(j + (7-i)*8);
+            }
+        }
+
+        assertArrayEquals(logicService.getFiguresArray(), figures);
     }
 
     @Test
-    public void testGetBoard() throws Exception {
+    public void testGetFiguresArrayWithNullValue(){
+        /**
+         * Method does not check if board is not null
+         */
+        String boardInitializer1 = null;
 
+        char[][] figures = new char[8][8];
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                figures[i][j] = boardInitializer1.charAt(j + (7-i)*8);
+            }
+        }
+        logicService.setBoard(new Board(boardInitializer1, false));
+        assertArrayEquals(logicService.getFiguresArray(), figures);
+    }
+
+    @Test
+    public void testGetCheckIfThereIsNoCheck() throws Exception {
+        String boardInitializer1 = "rnbqkbnr" + "pppppppp" + "        " + "        " + "        "
+                + "        " + "PPPPPPPP" + "RNBQKBNR";
+
+        assertEquals(logicService.getCheck(), -1);
+    }
+
+    @Test
+    public void testGetCheckIfThereIsWhiteChecked(){
+        String boardInitializer1 = "rnbqkbnr" + "pppppPpp" + "        " + "        " + "        "
+                + "        " + "PPPPP PP" + "RNBQKBNR";
+
+        logicService.setBoard(new Board(boardInitializer1, false));
+        assertEquals(logicService.getCheck(), 0);
+    }
+
+    @Test
+    public void testGetCheckIfThereIsBlackChecked(){
+        String boardInitializer1 = "rnbqkbnr" + "ppppp pp" + "        " + "        " + "        "
+                + "        " + "PPPPPpPP" + "RNBQKBNR";
+
+        logicService.setBoard(new Board(boardInitializer1, false));
+        assertEquals(logicService.getCheck(), 1);
+    }
+
+    @Test
+    public void testGetCheckWithInvalidInput(){
+        /**
+         * Method should check if there is game over
+         */
+        String boardInitializer1 = "rnbqkbnr" + "ppppp pp" + "        " + "        " + "        "
+                + "        " + "PPPPPpPP" + "RNBQ BNR";
+
+        logicService.setBoard(new Board(boardInitializer1, false));
+        assertEquals(logicService.getCheck(), -1);
+    }
+
+    @Test
+    public void testGetPossibleMovesXY(){
+        String boardInitializer = "rnbqkbnr" + "pppppppp" + "        " + "        " + "        "
+                + "        " + "PPPPPPPP" + "RNBQKBNR";
+
+        String[] possibleMove = {"rnbqkbnr pppppppp                               PPPPPPPPRNBQKBNR",
+                                    "rnbqkbnr ppppppp        p                       PPPPPPPPRNBQKBNR"};
+
+        assertArrayEquals(possibleMove, logicService.getPossibleMoves(boardInitializer, 0, 6));
+    }
+
+    @Test
+    public void testGetPossibleMovesXYWhenThereIsNoAvailableMove(){
+        String boardInitializer = "rnbqkbnr" + "pppppppp" + "        " + "        " + "        "
+                + "        " + "PPPPPPPP" + "RNBQKBNR";
+
+        String[] possibleMove = {};
+
+        assertArrayEquals(possibleMove, logicService.getPossibleMoves(boardInitializer, 0, 7));
+    }
+
+    @Test
+    public void testGetPossibleMovesXYWithInvalidInput(){
+        /**
+         * Method does not check if given String is correct
+         */
+        String boardInitializer = "rnbqkbnr" + "pppppppp" + "        " + "        "
+                + "        " + "PPPPPPPP" + "RNBQKBNR";
+
+        String[] possibleMove = {"rnbqkbnr pppppppp                               PPPPPPPPRNBQKBNR",
+                "rnbqkbnr ppppppp        p                       PPPPPPPPRNBQKBNR"};
+
+        assertArrayEquals(possibleMove, logicService.getPossibleMoves(boardInitializer, 0, 6));
+    }
+
+    @Test
+    public void testGetPossibleMovesXYWithNullValue(){
+        /**
+         * Method does not check if given String is not null
+         */
+        String boardInitializer = null;
+
+        String[] possibleMove = {"rnbqkbnr pppppppp                               PPPPPPPPRNBQKBNR",
+                "rnbqkbnr ppppppp        p                       PPPPPPPPRNBQKBNR"};
+
+        assertArrayEquals(possibleMove, logicService.getPossibleMoves(boardInitializer, 0, 6));
     }
 }

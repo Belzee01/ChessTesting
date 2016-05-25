@@ -82,6 +82,7 @@ public class GameCreatingController implements Initializable{
      */
     public void createGame(ActionEvent event){
         if(validator.checkPort(listeningPortNumber.getText())) {
+            wrongPort.setText("Oczekiwanie na przeciwnika....");
         }
         else{
             wrongPort.setText("Niewłaściwy nr portu");
@@ -101,6 +102,8 @@ public class GameCreatingController implements Initializable{
         GameEngine.getInstance().getTcpConnectionService().setOnConnectionEstablished(data -> {
             Platform.runLater(() ->{
                 System.out.println("Established as server");
+                Stage oldStage = (Stage) listeningPortNumber.getScene().getWindow();
+                oldStage.close();
                 showBoardOverview();
                 Scene scene= StyleCss.getInstance().getScene(rootLayout);
                 primaryStage.setScene(scene);
@@ -121,6 +124,8 @@ public class GameCreatingController implements Initializable{
         if(!(validator.checkIPAddress(hostIP.getText()) && validator.checkPort(hostPortNumber.getText()))){
             wrongData.setText("Niewłaściwy adres IP lu nr portu!!!");
             return;
+        } else{
+            wrongData.setText("Oczekiwanie na przeciwnika....");
         }
 
         try{
@@ -135,6 +140,8 @@ public class GameCreatingController implements Initializable{
         GameEngine.getInstance().getTcpConnectionService().setOnConnectionEstablished(data -> {
             Platform.runLater(() ->{
                 System.out.println("Established as client");
+                Stage oldStage = (Stage) hostPortNumber.getScene().getWindow();
+                oldStage.close();
                 showBoardOverview();
                 Scene scene=StyleCss.getInstance().getScene(rootLayout);
                 primaryStage.setScene(scene);
