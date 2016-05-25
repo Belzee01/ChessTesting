@@ -10,11 +10,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.GameEngine;
 import sample.models.*;
+import sample.models.Board;
+import sample.models.CheckMessage;
+import sample.models.Images;
+import sample.models.Message;
 import sample.services.ChessLogicService;
 
+import javax.swing.text.Style;
 import java.io.IOException;
 
 
@@ -26,7 +32,6 @@ public class BoardOverviewController {
     private GridPane gridPane;
     private GameEngine gameEngine = GameEngine.getInstance();
     private Images images = new Images();
-
 
     private String evenColor;
     private String oddColor;
@@ -41,7 +46,11 @@ public class BoardOverviewController {
                     refreshBoard();
                 }
                 if(data instanceof Message){
-                    GameEngine.getInstance().getChatWindowController().receive((Message)data);
+                    GameEngine.getInstance().getCommunicationController().receive((Message)data);
+                }
+                if(data instanceof CheckMessage){
+                    CheckMessage msg=(CheckMessage) data;
+                    onCheckedAppear(msg.getCheckedColor());
                 }
                 if(data instanceof DrawRequest){
                     showDrawRequest();
@@ -50,7 +59,14 @@ public class BoardOverviewController {
                     DrawAnswer answer = (DrawAnswer)data;
                     if(answer.isAccepted())
                         showDrawAnswer(true);
+                    else
+                        showDrawAnswer(false);
                 }
+                if(data instanceof ResignationMessage){
+                    showResignationMessage();
+                }
+
+
             });
         });
 
@@ -58,9 +74,29 @@ public class BoardOverviewController {
         loader.setLocation(BoardOverviewController.class.getResource("../view/ChatWindow.fxml"));
 
     }
-
+    public void onCheckedAppear(int checkColor){
+        GameEngine.getInstance().setCheckState(checkColor);
+        int myColor=0;
+        if(GameEngine.getInstance().isServerRole()==false){
+            myColor=1;
+        }
+        if(myColor==checkColor){
+            onChecked();
+        }
+        else{
+            onEnemyChecked();
+        }
+    }
+    public void onChecked(){
+        System.out.println("I'm checked");
+    }
+    public void onEnemyChecked(){
+        System.out.println("Enemy checked");
+    }
     /**
      * Inicjalizacja koloru pól szachownicy
+     * @param evenColor kolor parzystych pól na szachownicy
+     * @param oddColor kolor nieparzystych pól na szachownicy
      */
     public void initBoard() {
         final String CSS = "-fx-background-color: ";
@@ -141,6 +177,9 @@ public class BoardOverviewController {
             gameEngine.setMoveY(GridPane.getRowIndex(IV));
             boolean[][] possibleMoves = gameEngine.getChessLogicService().getPossibleMovesArray(GridPane.getColumnIndex(IV), GridPane.getRowIndex(IV));
 
+
+            possibleMoves[gameEngine.getMoveX()][gameEngine.getMoveY()]=false;
+
             for (int i = 0; i < 8; ++i) {
                 for (int j = 0; j < 8; ++j) {
                     if (possibleMoves[i][j]) {
@@ -160,7 +199,6 @@ public class BoardOverviewController {
      * Handler odpowiadający za dokonywanie ruchu po kliknięciu w wybrany z możliwych ruchów dla figury wywołującej event w miejsce możliwego ruchu iv
      * @param iv obiekt klasy ImageView miejsce w które zostaje przesunięta figura dla której metoda zostaje wywołana
      */
-
     private void move(ImageView iv) {
         if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
             gameEngine.move(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
@@ -168,37 +206,20 @@ public class BoardOverviewController {
         }
     }
 
-    /**
-     * Handler odpowiadający za otwarcie okna do czatu.
-     */
-    public void openChatWindow(ActionEvent event){
-        Stage stage = new Stage();
-        BorderPane root = new BorderPane();
-
-        try{
-            root = FXMLLoader.load(getClass().getResource("../view/ChatWindow.fxml"));
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        root.setStyle("-fx-background-color: #C4C4C4;");
-
-        Scene scene = StyleCss.getInstance().getScene(root, 300, 300);
-        stage.setTitle("Czat");
-        stage.setScene(scene);
-        stage.show();
-
-    }
 
     public void showDrawRequest(){
+        Stage parentStage = (Stage)gridPane.getScene().getWindow();
         Stage stage = new Stage();
         AnchorPane root = new AnchorPane();
+        stage.initOwner(parentStage);
+        stage.initModality(Modality.WINDOW_MODAL);
 
         try{
             root = FXMLLoader.load(getClass().getResource("../view/DrawRequest.fxml"));
         }catch (IOException e) {
             e.printStackTrace();
         }
+
 
         Scene scene = StyleCss.getInstance().getScene(root, 300, 300);
         stage.setTitle("Prośba o remis");
@@ -207,20 +228,46 @@ public class BoardOverviewController {
     }
 
     public void showDrawAnswer(boolean accepted){
+        Stage parentStage = (Stage)gridPane.getScene().getWindow();
         Stage stage = new Stage();
         AnchorPane root = new AnchorPane();
+        stage.initOwner(parentStage);
+        stage.initModality(Modality.WINDOW_MODAL);
 
         try{
-            root = FXMLLoader.load(getClass().getResource("../view/DrawAnswer.fxml"));
-        }catch (IOException e) {
+            if(accepted)
+                root = FXMLLoader.load(getClass().getResource("../view/DrawPositiveAnswer.fxml"));
+            else
+                root = FXMLLoader.load(getClass().getResource("../view/DrawNegativeAnswer.fxml"));
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         Scene scene = StyleCss.getInstance().getScene(root, 300, 300);
         stage.setTitle("Odpowiedź");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
+
     }
 
+    public void showResignationMessage(){
+        Stage parentStage = (Stage)gridPane.getScene().getWindow();
+        Stage stage = new Stage();
+        AnchorPane anchorPane = new AnchorPane();
+        stage.initOwner(parentStage);
+        stage.initModality(Modality.WINDOW_MODAL);
 
+        try{
+            anchorPane = FXMLLoader.load(getClass().getResource("../view/Resignation.fxml"));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        Scene scene = StyleCss.getInstance().getScene(anchorPane, 300, 300);
+        stage.setTitle("Rezygnacja");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
 }

@@ -2,26 +2,22 @@ package sample.controllers;
 
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Stage;
 import sample.GameEngine;
 import sample.models.DrawAnswer;
 import sample.models.DrawRequest;
 import sample.models.Message;
-import sample.models.ResignMessage;
+import sample.models.ResignationMessage;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class ChatWindowController {
-    public ChatWindowController(){
-        GameEngine.getInstance().setChatWindowController(this);
+public class CommunicationController {
+    public CommunicationController(){
+        GameEngine.getInstance().setCommunicationController(this);
     }
 
     @FXML
@@ -35,6 +31,21 @@ public class ChatWindowController {
 
     @FXML
     private Button drawRequestButton;
+
+    @FXML
+    private Button makeDrawButton;
+
+    @FXML
+    private Button cancelDrawButton;
+
+    @FXML
+    private Button acceptDrawButton;
+
+    @FXML
+    private Button opponentResignedButton;
+
+    @FXML
+    private Button ErrorConfirmButton;
 
 
 
@@ -77,19 +88,40 @@ public class ChatWindowController {
     }
 
     public void resign(ActionEvent event){
-        ResignMessage message = new ResignMessage();
+        ResignationMessage message = new ResignationMessage();
         GameEngine.getInstance().getTcpConnectionService().sendObject(message);
     }
 
     public void acceptDraw(ActionEvent event){
         DrawAnswer answer = new DrawAnswer(true);
         GameEngine.getInstance().getTcpConnectionService().sendObject(answer);
+        Stage stage = (Stage) acceptDrawButton.getScene().getWindow();
+        stage.close();
     }
     public void declineDraw(ActionEvent event){
         DrawAnswer answer = new DrawAnswer(false);
         GameEngine.getInstance().getTcpConnectionService().sendObject(answer);
+        Stage stage = (Stage) acceptDrawButton.getScene().getWindow();
+        stage.close();
+    }
+    public void makeDraw(ActionEvent event){
+        /* KONIEC GRY - REMIS */
+        Stage stage = (Stage) makeDrawButton.getScene().getWindow();
+        stage.close();
+    }
+    public void cancelDraw(ActionEvent event){
+        Stage stage = (Stage) cancelDrawButton.getScene().getWindow();
+        stage.close();
+    }
+    public void opponentResignation(ActionEvent event){
+        /* KONIEC GRY - PRZECIWNIK ZREZYGNOWAŁ */
+        Stage stage = (Stage) opponentResignedButton.getScene().getWindow();
+        stage.close();
     }
 
-
+    public void connectionErrorConfirm(ActionEvent event){
+        Stage stage = (Stage) ErrorConfirmButton.getScene().getWindow();
+        stage.close();
+    }
 
 }

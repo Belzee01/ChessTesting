@@ -20,6 +20,7 @@ public class Main extends Application {
         style.setStyle("dark");
         Scene scene = StyleCss.getInstance().getScene(root, 500, 500);
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

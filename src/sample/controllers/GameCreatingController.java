@@ -52,16 +52,7 @@ public class GameCreatingController implements Initializable{
     private Label myIP;
 
     @FXML
-    private Button createGameButton;
-
-    @FXML
-    private Button joinGameButton;
-
-    @FXML
     private Button joiningBackButton;
-
-    @FXML
-    private Button creatingBackButton;
 
     @FXML
     private Label wrongData;
@@ -77,16 +68,9 @@ public class GameCreatingController implements Initializable{
     }
 
     public void backButtonAction(ActionEvent event) throws IOException{
-        Stage stage = new Stage();
-        Parent root = new Parent() {};
-        if(event.getSource() == joiningBackButton){
-            stage = (Stage) joiningBackButton.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("../view/gameType.fxml"));
-        }
-        else if(event.getSource() == creatingBackButton){
-            stage = (Stage) creatingBackButton.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("../view/gameType.fxml"));
-        }
+        Stage stage = (Stage) joiningBackButton.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("../view/gameType.fxml"));
+
         Scene scene = StyleCss.getInstance().getScene(root);
         stage.setScene(scene);
         stage.show();
@@ -105,7 +89,7 @@ public class GameCreatingController implements Initializable{
         }
 
         try{
-            primaryStage = (Stage) createGameButton.getScene().getWindow();
+            primaryStage = new Stage();
             rootLayout = FXMLLoader.load(getClass().getResource("../view/RootLayout.fxml"));
         }catch (IOException e) {
             e.printStackTrace();
@@ -140,7 +124,7 @@ public class GameCreatingController implements Initializable{
         }
 
         try{
-            primaryStage = (Stage) createGameButton.getScene().getWindow();
+            primaryStage = new Stage();
             rootLayout = FXMLLoader.load(getClass().getResource("../view/RootLayout.fxml"));
         }catch (IOException e) {
             e.printStackTrace();
@@ -181,7 +165,7 @@ public class GameCreatingController implements Initializable{
             BoardOverviewController controller = loader.getController();
             controller.initBoard();
 
-            ChatWindowController chatController = chatLoader.getController();
+            CommunicationController chatController = chatLoader.getController();
             chatController.initChatWindow();
 
         } catch (IOException e) {
@@ -189,7 +173,4 @@ public class GameCreatingController implements Initializable{
         }
     }
 
-    public Stage getPrimaryStage() {
-        return primaryStage;
-    }
 }
