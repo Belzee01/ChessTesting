@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -35,6 +36,9 @@ public class CommunicationController {
 
     @FXML
     private Button drawRequestButton;
+
+    @FXML
+    private Label TimeLabel;
 
 
     /**
@@ -70,6 +74,10 @@ public class CommunicationController {
         textFlow.setStyle("-fx-background-color: white;");
     }
 
+    /**
+     * Handler odpowiedzialny za wysłanie propozycji remisu.
+     * @param event
+     */
     public void sendDrawRequest(ActionEvent event){
         DrawRequest drawRequest = new DrawRequest();
         GameEngine.getInstance().getTcpConnectionService().sendObject(drawRequest);
