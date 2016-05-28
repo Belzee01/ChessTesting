@@ -1,6 +1,7 @@
 package sample.controllers;
 
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,12 +18,22 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import sample.GameEngine;
 import sample.models.*;
+import sample.services.CounterService;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.util.Timer;
 
 public class CommunicationController {
     public CommunicationController(){
         GameEngine.getInstance().setCommunicationController(this);
+        GameEngine.getInstance().setCounterService(new CounterService());
+        GameEngine.getInstance().getCounterService().setOnTick(
+                data -> {
+                    Platform.runLater(() ->{
+                        updateTimeLabel(data);
+                    });
+        });
     }
 
     @FXML
@@ -40,7 +51,25 @@ public class CommunicationController {
     @FXML
     private Label TimeLabel;
 
+    public void updateTimeLabel(Duration dur){
+        int minutes=(int)dur.getSeconds()/60;
+        int seconds=(int)dur.getSeconds()%60;
 
+
+        String secondsString="";
+        if (seconds<10){
+            secondsString="0";
+        }
+        secondsString+=new Integer(seconds).toString();
+
+        String minutesString="";
+        if (minutes<10){
+            minutesString="0";
+        }
+        minutesString+=new Integer(minutes).toString();
+
+        TimeLabel.setText(minutesString+" : " +secondsString);
+    }
     /**
      * Handler odpowiedzialny za przesyłąnie wiadomości i wyświetlanie jej na ekrany obu graczy
      */

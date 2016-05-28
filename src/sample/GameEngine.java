@@ -6,6 +6,7 @@ import sample.controllers.CommunicationController;
 import sample.models.CheckMessage;
 import sample.models.CheckMatMessage;
 import sample.services.ChessLogicService;
+import sample.services.CounterService;
 import sample.services.TCPConnectionService;
 
 /**
@@ -14,6 +15,9 @@ import sample.services.TCPConnectionService;
  */
 public class GameEngine {
     private static GameEngine gameEngine = null;
+
+    @Getter @Setter
+    CounterService counterService;
 
     @Getter @Setter
     int checkState;
@@ -72,5 +76,6 @@ public class GameEngine {
         // synchronize with remote
         tcpConnectionService.sendObject(chessLogicService.getBoard());
 
+        GameEngine.getInstance().getCounterService().stopTiming();
     }
 }

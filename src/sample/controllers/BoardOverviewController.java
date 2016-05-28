@@ -10,11 +10,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.GameEngine;
@@ -50,6 +52,7 @@ public class BoardOverviewController{
         GameEngine.getInstance().getTcpConnectionService().setOnReceiveNewData(data -> {
             Platform.runLater(() ->{
                 if (data instanceof Board) {
+                    GameEngine.getInstance().getCounterService().startTiming();
                     GameEngine.getInstance().getChessLogicService().setBoard((Board) data);
                     Sounds.getInstance().opponentMove();
                     refreshBoard();

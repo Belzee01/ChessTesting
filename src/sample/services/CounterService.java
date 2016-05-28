@@ -26,19 +26,16 @@ public class CounterService extends TimerTask{
     @Setter
     public Consumer<Duration> onTimeOut;
 
-    public void startTiming(){
-        if(timerRun) {
-           stopTiming();
-        }
-
+    public CounterService(){
+        timerRun=false;
         timer1.schedule(this, 0, 1000);
+    }
+
+    public void startTiming(){
         timerRun=true;
     }
     public void stopTiming(){
-        if(timerRun) {
-            timer1.cancel();
-            timerRun=false;
-        }
+        timerRun=false;
     }
 
     public void enableTimeOutMode(Duration timeOut){
@@ -53,13 +50,15 @@ public class CounterService extends TimerTask{
     }
 
     public void reset(){
-        stopTiming();
+        timerRun=false;
         duration=Duration.ofSeconds(0);
-        startTiming();
+        timerRun=true;
     }
 
     public void run(){
-        duration=duration.plusSeconds(1);
+        if(timerRun) {
+            duration = duration.plusSeconds(1);
+        }
         if(onTick!=null){
             onTick.accept(duration);
         }
