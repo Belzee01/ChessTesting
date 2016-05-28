@@ -90,6 +90,9 @@ public class ChessLogicService {
         return (String[]) result.toArray(new String[result.size()]);
     }
 
+    /*
+    Zwraca tablicę z zaznaczonymi polami na które figula z pola o współrzędnych x,y może się poruszyć
+     */
     public boolean[][] getPossibleMovesArray(int x,int y){
         boolean  maskArray[][] =new boolean[8][8];
         String oldBoard=board.getBoard();
@@ -111,6 +114,20 @@ public class ChessLogicService {
         return maskArray;
     }
 
+    /*
+     Przeprowadza konwersję z zapisu szachownicy w postaci Stringa na
+     tablicę charów wdł reguły :
+
+     ABCDEFGHI
+
+     T[0][0]='A',T[1][0]='B', T[2][0]='C' ...
+     T[0][1]='D',T[1][1]='E', T[2][1]='F' ...
+     T[0][2]='G',T[1][2]='H', T[2][2]='I' ...
+     ...
+     ...
+     ...
+
+      */
     public char[][] getFiguresArray(){
         char [][] figuresArray=new char[8][8];
 
@@ -332,6 +349,10 @@ public class ChessLogicService {
         return (String[]) result.toArray(new String[result.size()]);
     }
 
+    /*
+        Wyszukuje możliwe do wykonania ruchy z pola o zadanych współrzędnych
+        Zwraca listę stringów z których każdy reprezentuje stan szachownicy po wykonaniu jednego z dostępnych ruchów
+     */
     private String[] getPossibleMoves(String board, int x, int y) {
         String piece = get(board, x, y);
         if (isPawn(piece))
