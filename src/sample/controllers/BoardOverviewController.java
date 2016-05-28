@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -73,8 +74,13 @@ public class BoardOverviewController{
                 if(data instanceof ResignationMessage){
                     showResignationMessage();
                 }
-
-
+                if(data instanceof CheckMatMessage){
+                    onCheckMated();
+                    GameEngine.getInstance().getTcpConnectionService().sendObject(new CheckMatConfirmationMessage());
+                }
+                if(data instanceof CheckMatConfirmationMessage){
+                    onEnemyCheckMated();
+                }
             });
         });
 
@@ -95,9 +101,47 @@ public class BoardOverviewController{
             onEnemyChecked();
         }
     }
+    public void onEnemyCheckMated(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("KONIEC GRY - WYGRAŁEŚ");
+        alert.setHeaderText(null);
+        alert.setTitle(null);
+        alert.setGraphic(null);
+
+        ButtonType back = new ButtonType("Wróć do menu");
+        ButtonType show = new ButtonType("Pokaż historię ruchów");
+
+        alert.getButtonTypes().setAll(back,show);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if(result.get() == back){
+            backToMenu();
+        } else if(result.get() == show){
+            showMovesHistory();
+        }
+
+    }
 
     public void onCheckMated(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("KONIEC GRY - PRZEGRAŁEŚ");
+        alert.setHeaderText(null);
+        alert.setTitle(null);
+        alert.setGraphic(null);
 
+        ButtonType back = new ButtonType("Wróć do menu");
+        ButtonType show = new ButtonType("Pokaż historię ruchów");
+
+        alert.getButtonTypes().setAll(back,show);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if(result.get() == back){
+            backToMenu();
+        } else if(result.get() == show){
+            showMovesHistory();
+        }
     }
 
     public void onChecked(){
@@ -219,6 +263,7 @@ public class BoardOverviewController{
     private void move(ImageView iv) {
         if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
             gameEngine.move(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
+
             refreshBoard();
         }
     }
@@ -307,6 +352,7 @@ public class BoardOverviewController{
         GameEngine.getInstance().getTcpConnectionService().sendObject(answer);
     }
 
+
     public void makeDraw(){
         /* KONIEC GRY - REMIS */
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -327,7 +373,6 @@ public class BoardOverviewController{
         } else if(result.get() == show){
             showMovesHistory();
         }
-
     }
 
     public void backToMenu(){

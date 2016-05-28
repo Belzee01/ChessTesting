@@ -43,7 +43,6 @@ public class CommunicationController {
 
     /**
      * Handler odpowiedzialny za przesyłąnie wiadomości i wyświetlanie jej na ekrany obu graczy
-     * (przesyłanie nie jest jeszcze zaimplementowane)
      */
     public void sendAction(ActionEvent event){
         Text nick = new Text(GameEngine.getInstance().getNick());
@@ -83,14 +82,29 @@ public class CommunicationController {
         GameEngine.getInstance().getTcpConnectionService().sendObject(drawRequest);
     }
 
+
     public void resign(ActionEvent event){
+        GameEngine.getInstance().getTcpConnectionService().sendObject(new ResignationMessage());
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("KONIEC GRY\nPrzegrałeś.");
         alert.setHeaderText(null);
         alert.setTitle(null);
         alert.setGraphic(null);
-
         alert.showAndWait();
+
+        Stage stage = (Stage) this.getResignButton().getScene().getWindow();
+        AnchorPane anchorPane = new AnchorPane();
+        try{
+            anchorPane = FXMLLoader.load(getClass().getResource("../view/newGame.fxml"));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        Scene scene = StyleCss.getInstance().getScene(anchorPane);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
 
     }
 

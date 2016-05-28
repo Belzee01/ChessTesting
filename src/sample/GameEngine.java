@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import sample.controllers.CommunicationController;
 import sample.models.CheckMessage;
+import sample.models.CheckMatMessage;
 import sample.services.ChessLogicService;
 import sample.services.TCPConnectionService;
 
@@ -54,17 +55,22 @@ public class GameEngine {
 
     public void move(int x, int y) {
         chessLogicService.getBoard().setBoard(chessLogicService.move(chessLogicService.getBoard().getBoard(), moveX, moveY, x, y));
+        checkState = chessLogicService.getCheck();
+
+        if(checkState!=-1){
+            if(chessLogicService.getMat()){
+                tcpConnectionService.sendObject(new CheckMatMessage());
+            }
+            else{
+                tcpConnectionService.sendObject(new CheckMessage(checkState));
+            }
+        }
 
         // change player
         chessLogicService.getBoard().setServerTurn(!serverRole);
 
         // synchronize with remote
         tcpConnectionService.sendObject(chessLogicService.getBoard());
-
-        checkState = chessLogicService.getCheck();
-        if (checkState != -1) {
-            tcpConnectionService.sendObject(new CheckMessage(checkState));
-        }
 
     }
 }

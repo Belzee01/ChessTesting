@@ -3,6 +3,7 @@ package sample.services;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import sample.GameEngine;
 import sample.models.Board;
 
 import java.util.*;
@@ -63,7 +64,7 @@ public class ChessLogicService {
             return x1 + (7 - y1) * 8;
     }
 
-    private String get(String board, int x1, int y1) {
+    public String get(String board, int x1, int y1) {
         if (x1 < 0 || x1 > 7 || y1 < 0 || y1 > 7)
             return "X";
 
@@ -81,10 +82,10 @@ public class ChessLogicService {
         for (int x = 0; x < 8; x++){
             for (int y = 0; y < 8; y++) {
                 String piece = get(board, x, y);
-
-                String[] boards = getPossibleMoves(board, x, y);
-                result.addAll(Arrays.asList(boards));
-
+                if(isWhite(piece)==white) {
+                    String[] boards = getPossibleMoves(board, x, y);
+                    result.addAll(Arrays.asList(boards));
+                }
             }
         }
         return (String[]) result.toArray(new String[result.size()]);
@@ -168,7 +169,7 @@ public class ChessLogicService {
      * @return
      */
     public int getCheck(){
-        String [] availableMoves=getPossibleMoves(board.getBoard(),board.getServerTurn());
+        String [] availableMoves=getPossibleMoves(board.getBoard(),!GameEngine.getInstance().isServerRole());
         for(int i=0;i<availableMoves.length;i++){
             if(availableMoves[i].indexOf("K")==-1 ){
                 return 1;
@@ -176,10 +177,42 @@ public class ChessLogicService {
             else if(availableMoves[i].indexOf("k")==-1){
                 return 0;
             }
-
         }
         return -1;
     }
+
+    public boolean getMat(){
+        System.out.println("MAT DETECTION");
+
+        String [] availableMoves=getPossibleMoves(board.getBoard(), GameEngine.getInstance().isServerRole());
+
+        System.out.println(availableMoves.length);
+        for(int i=0;i<availableMoves.length;i++){
+            String [] nextIteration=getPossibleMoves(availableMoves[i],!GameEngine.getInstance().isServerRole());
+            boolean ableToCheck=false;
+            for(int j=0;j<nextIteration.length;j++){
+                if(nextIteration[j].indexOf("K")==-1 || nextIteration[j].indexOf("k")==-1){
+                    System.out.println("CHECK EXIST");
+                    ableToCheck=true;
+                    break;
+                }
+            }
+            if(ableToCheck==false){
+                for(int k=0;k<8;k++){
+                    for(int j=0;j<8;j++){
+                        System.out.print(this.get(availableMoves[i],j,k));
+                    }
+                    System.out.println();
+                }
+
+                return false;
+            }
+        }
+        System.out.println("CH M DET");
+        return true;
+    }
+
+
 
     ///////////////// Walidator ruchow
     private String[] getPossibleMovesPawn(String board, int x, int y) {
@@ -348,6 +381,4 @@ public class ChessLogicService {
             return getPossibleMovesKing(board, x, y);
         return new String[0];
     }
-
-
 }
