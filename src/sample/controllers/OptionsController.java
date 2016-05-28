@@ -42,6 +42,10 @@ public class OptionsController implements Initializable{
         soundsBox.setItems(soundsList);
     }
 
+    /**
+     * Handler ustawiający wybrane opcje, takie jak dźwięki i skórki.
+     * @param event
+     */
     public void applyOptions(ActionEvent event){
         String styleName = stylesBox.getValue();
         //System.out.println(style);
