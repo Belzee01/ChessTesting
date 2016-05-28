@@ -4,7 +4,11 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -22,12 +26,15 @@ import sample.services.ChessLogicService;
 
 import javax.swing.text.Style;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 
 /**
  * Kontroler wyglądu szachownicy
  */
-public class BoardOverviewController {
+public class BoardOverviewController{
     @FXML
     private GridPane gridPane;
     private GameEngine gameEngine = GameEngine.getInstance();
@@ -88,8 +95,19 @@ public class BoardOverviewController {
             onEnemyChecked();
         }
     }
+
+    public void onCheckMated(){
+
+    }
+
     public void onChecked(){
         System.out.println("I'm checked");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION,"SZACH");
+        alert.setHeaderText(null);
+        alert.setTitle(null);
+        alert.setGraphic(null);
+        alert.setWidth(300);
+        alert.show();
     }
     public void onEnemyChecked(){
         System.out.println("Enemy checked");
@@ -207,66 +225,115 @@ public class BoardOverviewController {
 
 
     public void showDrawRequest(){
-        Stage parentStage = (Stage)gridPane.getScene().getWindow();
-        Stage stage = new Stage();
-        AnchorPane root = new AnchorPane();
-        stage.initOwner(parentStage);
-        stage.initModality(Modality.WINDOW_MODAL);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("Przeciwnik zaproponował remis.\nZgadzasz się?");
+        alert.setHeaderText(null);
+        alert.setTitle(null);
+        alert.setGraphic(null);
 
-        try{
-            root = FXMLLoader.load(getClass().getResource("../view/DrawRequest.fxml"));
-        }catch (IOException e) {
-            e.printStackTrace();
+        ButtonType YES = new ButtonType("Tak");
+        ButtonType NO = new ButtonType("Nie");
+
+        alert.getButtonTypes().setAll(YES,NO);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if(result.get() == YES){
+            acceptDraw();
+        } else if(result.get() == NO){
+            declineDraw();
         }
-
-
-        Scene scene = StyleCss.getInstance().getScene(root, 300, 300);
-        stage.setTitle("Prośba o remis");
-        stage.setScene(scene);
-        stage.show();
     }
 
     public void showDrawAnswer(boolean accepted){
-        Stage parentStage = (Stage)gridPane.getScene().getWindow();
-        Stage stage = new Stage();
-        AnchorPane root = new AnchorPane();
-        stage.initOwner(parentStage);
-        stage.initModality(Modality.WINDOW_MODAL);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        if(accepted==true)
+            alert.setContentText("Przeciwnik zaakceptował remis.");
+        else
+            alert.setContentText("Przeciwnik odrzucił remis.");
+        alert.setHeaderText(null);
+        alert.setTitle(null);
+        alert.setGraphic(null);
 
-        try{
-            if(accepted)
-                root = FXMLLoader.load(getClass().getResource("../view/DrawPositiveAnswer.fxml"));
-            else
-                root = FXMLLoader.load(getClass().getResource("../view/DrawNegativeAnswer.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        alert.showAndWait();
 
-        Scene scene = StyleCss.getInstance().getScene(root, 300, 300);
-        stage.setTitle("Odpowiedź");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-
+        if(accepted==true)
+            makeDraw();
     }
 
     public void showResignationMessage(){
-        Stage parentStage = (Stage)gridPane.getScene().getWindow();
-        Stage stage = new Stage();
-        AnchorPane anchorPane = new AnchorPane();
-        stage.initOwner(parentStage);
-        stage.initModality(Modality.WINDOW_MODAL);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("PRZECIWNIK ZREZYGNOWAŁ - WYGRAŁEŚ");
+        alert.setHeaderText(null);
+        alert.setTitle(null);
+        alert.setGraphic(null);
 
+        ButtonType back = new ButtonType("Wróć do menu");
+        ButtonType show = new ButtonType("Pokaż historię ruchów");
+
+        alert.getButtonTypes().setAll(back,show);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if(result.get() == back){
+            backToMenu();
+        } else if(result.get() == show){
+            showMovesHistory();
+        }
+
+    }
+
+
+    public void acceptDraw(){
+        DrawAnswer answer = new DrawAnswer(true);
+        GameEngine.getInstance().getTcpConnectionService().sendObject(answer);
+        makeDraw();
+    }
+
+    public void declineDraw(){
+        DrawAnswer answer = new DrawAnswer(false);
+        GameEngine.getInstance().getTcpConnectionService().sendObject(answer);
+    }
+
+    public void makeDraw(){
+        /* KONIEC GRY - REMIS */
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("KONIEC GRY - REMIS");
+        alert.setHeaderText(null);
+        alert.setTitle(null);
+        alert.setGraphic(null);
+
+        ButtonType back = new ButtonType("Wróć do menu");
+        ButtonType show = new ButtonType("Pokaż historię ruchów");
+
+        alert.getButtonTypes().setAll(back,show);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if(result.get() == back){
+            backToMenu();
+        } else if(result.get() == show){
+            showMovesHistory();
+        }
+
+    }
+
+    public void backToMenu(){
+        Stage stage = (Stage) GameEngine.getInstance().getCommunicationController().getResignButton().getScene().getWindow();
+        AnchorPane anchorPane = new AnchorPane();
         try{
-            anchorPane = FXMLLoader.load(getClass().getResource("../view/Resignation.fxml"));
+            anchorPane = FXMLLoader.load(getClass().getResource("../view/newGame.fxml"));
         } catch (IOException e){
             e.printStackTrace();
         }
 
-        Scene scene = StyleCss.getInstance().getScene(anchorPane, 300, 300);
-        stage.setTitle("Rezygnacja");
+        Scene scene = StyleCss.getInstance().getScene(anchorPane);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+
     }
+
+    public void showMovesHistory(){}
+
 }
