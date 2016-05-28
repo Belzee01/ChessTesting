@@ -2,7 +2,7 @@ package sample.services;
 
 import sample.models.Board;
 
-import java.util.*
+import java.util.*;
 
 /**
  * Created by Ignac on 2016-05-07.

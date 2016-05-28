@@ -10,7 +10,7 @@ public class StyleCss {
 
     private static StyleCss style = null;
     private String path = null;
-    private StyleCss() {};
+    private StyleCss() {}
 
     /**
      * Klasyczny singleton
@@ -23,12 +23,17 @@ public class StyleCss {
         return style;
     }
 
-    public void setStyle(String path) {
-        //Klasyczna skórka
-        if(path == null)
-            this.path = StyleCss.class.getResource("../view/styles/dark.css").toString();
-        else
-            this.path = StyleCss.class.getResource("../view/styles/"+path+".css").toString();
+    /**
+     * Ustawia styl.
+     * @param styleName - nazwa pliku css.
+     */
+    public void setStyle(String styleName) {
+        if (styleName != null)
+            if (styleName.equals("classic")) {
+                this.path = null;
+                return;
+            }
+            this.path = StyleCss.class.getResource("../view/styles/"+styleName+".css").toString();
     }
 
     /**
@@ -38,7 +43,8 @@ public class StyleCss {
      */
     public Scene getScene(Parent root) {
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(path);
+        if (this.path != null)
+            scene.getStylesheets().add(path);
         return scene;
     }
     /**
@@ -50,7 +56,8 @@ public class StyleCss {
      */
     public Scene getScene(Parent root, int width, int height) {
         Scene scene = new Scene(root, width, height);
-        scene.getStylesheets().add(path);
+        if (this.path != null)
+            scene.getStylesheets().add(path);
         return scene;
     }
 }

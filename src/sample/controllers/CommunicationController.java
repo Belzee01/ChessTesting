@@ -50,7 +50,7 @@ public class CommunicationController {
         nick.setFill(Color.GREEN);
         Text text = new Text(": " + textArea.getText() + "\n");
         textFlow.getChildren().addAll(nick, text);
-        textFlow.setStyle("-fx-background-color: white;");
+        //textFlow.setStyle("-fx-background-color: white;");
 
 
         Message msg=new Message();
@@ -71,7 +71,7 @@ public class CommunicationController {
     }
 
     public void initChatWindow(){
-        textFlow.setStyle("-fx-background-color: white;");
+        //textFlow.setStyle("-fx-background-color: white;");
     }
 
     /**
