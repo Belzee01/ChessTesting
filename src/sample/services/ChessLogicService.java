@@ -23,6 +23,31 @@ public class ChessLogicService {
         return board.getBoard().indexOf("k") == -1 || board.getBoard().indexOf("K") == -1;
     }
 
+    /*
+    return 1 if black won, 0 if white, -1 if none
+     */
+    public int getWinner(){
+        if (board.getBoard().indexOf("k")==-1){
+            return 0;
+        }
+        else if(board.getBoard().indexOf("K")==-1){
+            return 1;
+        }
+        return -1;
+    }
+
+
+
+    public String getNewBoard(Board board, String move) {
+        String row = "abcdefgh";
+        String column = "12345678";
+        int x1 = row.indexOf(move.charAt(0));
+        int y1 = column.indexOf(move.charAt(1));
+        int x2 = row.indexOf(move.charAt(2));
+        int y2 = column.indexOf(move.charAt(3));
+        return move(board.getBoard(), x1, y1, x2, y2);
+    }
+
     public String move(String board, int x1, int y1, int x2, int y2) {
         String piece = get(board, x1, y1);
         board = set(board, x1, y1, " ");
@@ -46,12 +71,12 @@ public class ChessLogicService {
         return "" + board.charAt(pos);
     }
 
-    private String set(String board, int x1, int y1, String piece) {
+    String set(String board, int x1, int y1, String piece) {
         int pos = pos(x1, y1);
         return board.substring(0, pos) + piece + board.substring(pos + 1);
     }
 
-    public String[] getPossibleMoves(String board, boolean white) {
+    private String[] getPossibleMoves(String board, boolean white) {
         List result = new ArrayList();
         for (int x = 0; x < 8; x++){
             for (int y = 0; y < 8; y++) {
@@ -65,13 +90,16 @@ public class ChessLogicService {
         return (String[]) result.toArray(new String[result.size()]);
     }
 
+    /*
+    Zwraca tablicę z zaznaczonymi polami na które figula z pola o współrzędnych x,y może się poruszyć
+     */
     public boolean[][] getPossibleMovesArray(int x,int y){
         boolean  maskArray[][] =new boolean[8][8];
         String oldBoard=board.getBoard();
         String possibleMoves[]=getPossibleMoves(oldBoard,x,y);
 
         String foo=get(oldBoard,x,y);
-        System.out.println(x+":"+y + foo);
+        System.out.println(x+":"+y);
 
         for(int i=0;i<8;i++){
             for(int j=0;j<8;j++){
@@ -86,6 +114,20 @@ public class ChessLogicService {
         return maskArray;
     }
 
+    /*
+     Przeprowadza konwersję z zapisu szachownicy w postaci Stringa na
+     tablicę charów wdł reguły :
+
+     ABCDEFGHI
+
+     T[0][0]='A',T[1][0]='B', T[2][0]='C' ...
+     T[0][1]='D',T[1][1]='E', T[2][1]='F' ...
+     T[0][2]='G',T[1][2]='H', T[2][2]='I' ...
+     ...
+     ...
+     ...
+
+      */
     public char[][] getFiguresArray(){
         char [][] figuresArray=new char[8][8];
 
@@ -307,7 +349,11 @@ public class ChessLogicService {
         return (String[]) result.toArray(new String[result.size()]);
     }
 
-    public String[] getPossibleMoves(String board, int x, int y) {
+    /*
+        Wyszukuje możliwe do wykonania ruchy z pola o zadanych współrzędnych
+        Zwraca listę stringów z których każdy reprezentuje stan szachownicy po wykonaniu jednego z dostępnych ruchów
+     */
+    private String[] getPossibleMoves(String board, int x, int y) {
         String piece = get(board, x, y);
         if (isPawn(piece))
             return getPossibleMovesPawn(board, x, y);

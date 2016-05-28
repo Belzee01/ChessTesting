@@ -4,6 +4,10 @@ import sample.models.Board;
 
 import java.util.*;
 
+/**
+ * Created by Ignac on 2016-05-07.
+ */
+
 public class HistoryService {
     ArrayList <Board> boards = new ArrayList();
 

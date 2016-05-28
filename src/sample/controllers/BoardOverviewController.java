@@ -50,6 +50,7 @@ public class BoardOverviewController{
             Platform.runLater(() ->{
                 if (data instanceof Board) {
                     GameEngine.getInstance().getChessLogicService().setBoard((Board) data);
+                    Sounds.getInstance().opponentMove();
                     refreshBoard();
                 }
                 if(data instanceof Message){
@@ -213,7 +214,7 @@ public class BoardOverviewController{
 
     /**
      * Handler odpowiadający za dokonywanie ruchu po kliknięciu w wybrany z możliwych ruchów dla figury wywołującej event w miejsce możliwego ruchu iv
-     * @param iv obiekt klasy ImageView miejsce w które zostaje przesunięta figura dla której metoda zostaje wywołana
+     * @param iv - obiekt klasy ImageView; miejsce w które zostaje przesunięta figura dla której metoda zostaje wywołana
      */
     private void move(ImageView iv) {
         if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
@@ -222,7 +223,9 @@ public class BoardOverviewController{
         }
     }
 
-
+    /**
+     * Metoda wyświetlająca komunikat z informacją, że przeciwnik zaproponował remis.
+     */
     public void showDrawRequest(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("Przeciwnik zaproponował remis.\nZgadzasz się?");
@@ -244,6 +247,10 @@ public class BoardOverviewController{
         }
     }
 
+    /**
+     * Metoda wyświetlająca komunikat z odpowiedzią na opozycję remisu
+     * @param accepted - true-remis zaakceptowany, false-propozycja remisu odrzucona
+     */
     public void showDrawAnswer(boolean accepted){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         if(accepted==true)
@@ -260,9 +267,12 @@ public class BoardOverviewController{
             makeDraw();
     }
 
+    /**
+     * Metoda wyświetlająca informację, że przeciwnik zrezygnował z gry i kończąca grę.
+     */
     public void showResignationMessage(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("PRZECIWNIK ZREZYGNOWAŁ - WYGRAŁEŚ");
+        alert.setContentText("PRZECIWNIK ZREZYGNOWAŁ - WYGRANA");
         alert.setHeaderText(null);
         alert.setTitle(null);
         alert.setGraphic(null);
@@ -283,6 +293,9 @@ public class BoardOverviewController{
     }
 
 
+    /**
+     * Metoda wysyłająca przeciwnikowi informację o zaakceptowaniu propozycji remisu.
+     */
     public void acceptDraw(){
         DrawAnswer answer = new DrawAnswer(true);
         GameEngine.getInstance().getTcpConnectionService().sendObject(answer);
@@ -333,6 +346,21 @@ public class BoardOverviewController{
 
     }
 
-    public void showMovesHistory(){}
+    /**
+     * Metoda wyświetlająca okno z historią ruchów
+     */
+    public void showMovesHistory(){
+        Stage stage = (Stage) GameEngine.getInstance().getCommunicationController().getResignButton().getScene().getWindow();
+        Parent root = new Parent(){};
+        try{
+            root = FXMLLoader.load(getClass().getResource("../view/MovesHistory.fxml"));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        Scene scene = StyleCss.getInstance().getScene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 
 }
