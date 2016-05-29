@@ -26,10 +26,12 @@ import sample.models.CheckMessage;
 import sample.models.Images;
 import sample.models.Message;
 import sample.services.ChessLogicService;
+import sample.services.CounterService;
 
 import javax.swing.text.Style;
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -47,10 +49,36 @@ public class BoardOverviewController{
     private String oddColor;
 
     public BoardOverviewController() {
+        GameEngine.getInstance().setCounterService(new CounterService());
         GameEngine.getInstance().setChessLogicService(new ChessLogicService(new Board()));
+
+
+        if(GameEngine.getInstance().isServerRole()){
+                if(GameEngine.getInstance().getTimeGameMode()==-1){
+                    GameEngine.getInstance().getCounterService().disableTimeOutMode();
+                }
+                else{
+                    GameEngine.getInstance().getCounterService().enableTimeOutMode(Duration.ofMinutes(
+                            GameEngine.getInstance().getTimeGameMode()
+                    ));
+                }
+                GameEngine.getInstance().getCounterService().stopTiming();
+        }
 
         GameEngine.getInstance().getTcpConnectionService().setOnReceiveNewData(data -> {
             Platform.runLater(() ->{
+                if(data instanceof TimeGameModeMessage){
+                    TimeGameModeMessage mode=(TimeGameModeMessage) data;
+                    if(mode.getTimeGameMode()==-1){
+                        GameEngine.getInstance().getCounterService().disableTimeOutMode();
+                    }
+                    else{
+                        GameEngine.getInstance().getCounterService().enableTimeOutMode(Duration.ofMinutes(mode.getTimeGameMode()));
+                    }
+                    GameEngine.getInstance().getCounterService().stopTiming();
+                    GameEngine.getInstance().setTimeGameMode(mode.getTimeGameMode());
+                }
+
                 if (data instanceof Board) {
                     GameEngine.getInstance().getCounterService().startTiming();
                     GameEngine.getInstance().getChessLogicService().setBoard((Board) data);
@@ -84,6 +112,21 @@ public class BoardOverviewController{
                 if(data instanceof CheckMatConfirmationMessage){
                     onEnemyCheckMated();
                 }
+                if(data instanceof TimeOutMessage){
+                    onEnemyTimeOut();
+                }
+            });
+        });
+
+        if(GameEngine.getInstance().isServerRole()){
+            GameEngine.getInstance().getTcpConnectionService().sendObject(new TimeGameModeMessage(
+                    GameEngine.getInstance().getTimeGameMode()
+            ));
+        }
+
+        GameEngine.getInstance().getCounterService().setOnTimeOut(data->{
+            Platform.runLater(()->{
+                onTimeOut(data);
             });
         });
 
@@ -91,6 +134,52 @@ public class BoardOverviewController{
         loader.setLocation(BoardOverviewController.class.getResource("../view/ChatWindow.fxml"));
 
     }
+
+    public void onEnemyTimeOut(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("KONIEC GRY - PRZECIWNIKOWI SKOŃCZYŁ SIĘ CZAS");
+        alert.setHeaderText(null);
+        alert.setTitle(null);
+        alert.setGraphic(null);
+
+        ButtonType back = new ButtonType("Wróć do menu");
+        ButtonType show = new ButtonType("Pokaż historię ruchów");
+
+        alert.getButtonTypes().setAll(back,show);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if(result.get() == back){
+            backToMenu();
+        } else if(result.get() == show){
+            showMovesHistory();
+        }
+    }
+
+    public void onTimeOut(Duration d){
+        GameEngine.getInstance().getCounterService().stopTiming();
+        GameEngine.getInstance().getTcpConnectionService().sendObject(new TimeOutMessage());
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("KONIEC GRY - SKOŃCZYŁ CI SIĘ CZAS");
+        alert.setHeaderText(null);
+        alert.setTitle(null);
+        alert.setGraphic(null);
+
+        ButtonType back = new ButtonType("Wróć do menu");
+        ButtonType show = new ButtonType("Pokaż historię ruchów");
+
+        alert.getButtonTypes().setAll(back,show);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if(result.get() == back){
+            backToMenu();
+        } else if(result.get() == show){
+            showMovesHistory();
+        }
+    }
+
     public void onCheckedAppear(int checkColor){
         GameEngine.getInstance().setCheckState(checkColor);
         int myColor=0;

@@ -124,6 +124,29 @@ public class GameCreatingController implements Initializable{
             });
         });
 
+        int mode=-1;
+
+        switch (networkGameTimeBox.getValue()){
+            case "10":
+                mode=1;
+                break;
+            case "15":
+                mode=10;
+                break;
+            case "20":
+                mode=10;
+                break;
+            case "30":
+                mode=10;
+                break;
+            case "40":
+                mode=10;
+                break;
+            default:
+                mode=-1;
+        }
+        GameEngine.getInstance().setTimeGameMode(mode);
+
         GameEngine.getInstance().setNick(serverNick.getText());
         GameEngine.getInstance().getTcpConnectionService().startConnection();
         GameEngine.getInstance().setServerRole(true);

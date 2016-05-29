@@ -58,16 +58,17 @@ public class CounterService extends TimerTask{
     public void run(){
         if(timerRun) {
             duration = duration.plusSeconds(1);
-        }
-        if(onTick!=null){
-            onTick.accept(duration);
+
+            if (timeOutEnable && !duration.minus(targetDuration).isNegative()) {
+                if (onTimeOut != null) {
+                    onTimeOut.accept(duration);
+                }
+                stopTiming();
+            }
         }
 
-        if(timeOutEnable && !duration.minus(targetDuration).isNegative() ){
-            if(onTimeOut!=null) {
-                onTimeOut.accept(duration);
-            }
-            stopTiming();
+        if (onTick != null) {
+            onTick.accept(duration);
         }
     }
 }

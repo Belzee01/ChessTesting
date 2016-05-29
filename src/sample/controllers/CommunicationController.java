@@ -27,7 +27,6 @@ import java.util.Timer;
 public class CommunicationController {
     public CommunicationController(){
         GameEngine.getInstance().setCommunicationController(this);
-        GameEngine.getInstance().setCounterService(new CounterService());
         GameEngine.getInstance().getCounterService().setOnTick(
                 data -> {
                     Platform.runLater(() ->{
@@ -52,6 +51,10 @@ public class CommunicationController {
     private Label TimeLabel;
 
     public void updateTimeLabel(Duration dur){
+        if(GameEngine.getInstance().getTimeGameMode()!=-1){
+            dur=Duration.ofMinutes(GameEngine.getInstance().getTimeGameMode()).minus(dur);
+        }
+
         int minutes=(int)dur.getSeconds()/60;
         int seconds=(int)dur.getSeconds()%60;
 
@@ -134,8 +137,5 @@ public class CommunicationController {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
-
     }
-
-
 }

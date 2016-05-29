@@ -20,6 +20,9 @@ public class GameEngine {
     CounterService counterService;
 
     @Getter @Setter
+    int timeGameMode;
+
+    @Getter @Setter
     int checkState;
 
     @Getter @Setter
