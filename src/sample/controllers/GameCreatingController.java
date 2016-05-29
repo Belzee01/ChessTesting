@@ -67,7 +67,7 @@ public class GameCreatingController implements Initializable{
     @FXML
     private ComboBox<String> networkGameTimeBox;
 
-    ObservableList<String> timeList = FXCollections.observableArrayList("Bez limitu", "10", "15", "20", "30", "40");
+    ObservableList<String> timeList = FXCollections.observableArrayList("Bez limitu", "2","10", "15", "20", "30", "40");
 
 
     @Override
@@ -131,8 +131,11 @@ public class GameCreatingController implements Initializable{
         int mode=-1;
 
         switch (networkGameTimeBox.getValue()){
+            case "2":
+                mode=2;
+                break;
             case "10":
-                mode=1;
+                mode=10;
                 break;
             case "15":
                 mode=10;
