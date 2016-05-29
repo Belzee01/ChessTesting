@@ -10,11 +10,11 @@
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="300.0">
          <center>
-            <ScrollPane prefHeight="191.0" prefViewportHeight="146.0" prefViewportWidth="268.0" prefWidth="268.0">
+            <ScrollPane prefHeight="251.0" prefViewportHeight="146.0" prefViewportWidth="268.0" prefWidth="226.0">
                <content>
-                  <HBox prefHeight="242.0" prefWidth="252.0" BorderPane.alignment="CENTER">
+                  <HBox prefHeight="242.0" prefWidth="245.0" BorderPane.alignment="CENTER">
                      <children>
-                        <TextFlow fx:id="textFlow" prefHeight="211.0" prefWidth="252.0" HBox.hgrow="ALWAYS" />
+                        <TextFlow fx:id="textFlow" prefHeight="242.0" prefWidth="230.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </content>
@@ -38,7 +38,7 @@
                   <Button fx:id="drawRequestButton" layoutX="32.0" layoutY="71.0" mnemonicParsing="false" onAction="#sendDrawRequest" text="Zaproponuj remis" />
                   <Button fx:id="resignButton" layoutX="184.0" layoutY="71.0" mnemonicParsing="false" onAction="#resign" text="Zrezygnuj" />
                   <Separator orientation="VERTICAL" prefHeight="122.0" prefWidth="32.0" />
-                  <Label layoutX="150.0" layoutY="14.0" prefHeight="38.0" prefWidth="122.0" text="00:00:00" />
+                  <Label fx:id="TimeLabel" layoutX="150.0" layoutY="14.0" prefHeight="38.0" prefWidth="122.0" text="00:00:00" />
                   <Label layoutX="38.0" layoutY="14.0" prefHeight="38.0" prefWidth="109.0" text="Pozostały czas:" />
                </children>
             </AnchorPane>
