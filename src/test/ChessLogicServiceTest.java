@@ -261,13 +261,10 @@ public class ChessLogicServiceTest {
 
     @Test
     public void testGetPossibleMovesArray() throws Exception {
-        /**
-         * There should be documentation for this method, because it's not clear how it works
-         */
-        String newBoard1         = "p       " + "        " + "        " + "        " + "        "
+        String newBoard1         = "        " + "        " + "p       " + "        " + "        "
                 + "        " + "        " + "        ";
 
-        boolean[][] arrayBoard = {{false,false,false,true,false,false,true, true},
+        boolean[][] arrayBoard = {{false,false,false,false,true,true,false, false},
                 {false,false,false,false,false,false,false,false},
                 {false,false,false,false,false,false,false,false},
                 {false,false,false,false,false,false,false,false},
@@ -280,17 +277,17 @@ public class ChessLogicServiceTest {
 
         logicService.setBoard(new Board(newBoard1, false));
 
-        for (String s: logicService.getPossibleMoves(newBoard1, 0, 7)){
+        for (String s: logicService.getPossibleMoves(newBoard1, 0, 5)){
             System.out.print(s+", ");
         }System.out.print("\n");
 
-        for(boolean[] b: logicService.getPossibleMovesArray(0, 6)){
+        for(boolean[] b: logicService.getPossibleMovesArray(0, 5)){
             for (boolean k: b){
                 System.out.print(k+", ");
             }System.out.print("\n");
         }
 
-        assertArrayEquals(logicService.getPossibleMovesArray(0, 6), arrayBoard);
+        assertArrayEquals(logicService.getPossibleMovesArray(0, 5), arrayBoard);
     }
 
     @Test

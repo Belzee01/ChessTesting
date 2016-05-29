@@ -12,7 +12,7 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.GameCreatingController">
   <tabs>
-    <Tab text="Stwórz grę">
+    <Tab text="Stwórz grę" id="Setup">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -32,7 +32,7 @@
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab text="Dołącz do gry">
+      <Tab text="Dołącz do gry" id="Join">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>

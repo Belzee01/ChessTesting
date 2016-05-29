@@ -71,12 +71,12 @@ public class ChessLogicService {
         return "" + board.charAt(pos);
     }
 
-    String set(String board, int x1, int y1, String piece) {
+    private String set(String board, int x1, int y1, String piece) {
         int pos = pos(x1, y1);
         return board.substring(0, pos) + piece + board.substring(pos + 1);
     }
 
-    private String[] getPossibleMoves(String board, boolean white) {
+    public String[] getPossibleMoves(String board, boolean white) {
         List result = new ArrayList();
         for (int x = 0; x < 8; x++){
             for (int y = 0; y < 8; y++) {
@@ -199,7 +199,7 @@ public class ChessLogicService {
     }
 
     ///////////////// Walidator ruchow
-    private String[] getPossibleMovesPawn(String board, int x, int y) {
+    public String[] getPossibleMovesPawn(String board, int x, int y) {
         List result = new ArrayList();
         if (isWhite(get(board, x, y))) {
             if (isEmpty(get(board, x, y + 1))) {
@@ -229,7 +229,7 @@ public class ChessLogicService {
         return (String[]) result.toArray(new String[result.size()]);
     }
 
-    private String[] getPossibleMovesRook(String board, int x, int y) {
+    public String[] getPossibleMovesRook(String board, int x, int y) {
         List result = new ArrayList();
         String piece = get(board, x, y);
         for (int i = 1; i <= 7; i++) {
@@ -353,7 +353,7 @@ public class ChessLogicService {
         Wyszukuje możliwe do wykonania ruchy z pola o zadanych współrzędnych
         Zwraca listę stringów z których każdy reprezentuje stan szachownicy po wykonaniu jednego z dostępnych ruchów
      */
-    private String[] getPossibleMoves(String board, int x, int y) {
+    public String[] getPossibleMoves(String board, int x, int y) {
         String piece = get(board, x, y);
         if (isPawn(piece))
             return getPossibleMovesPawn(board, x, y);
