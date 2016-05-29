@@ -92,12 +92,16 @@ public class GameCreatingController implements Initializable{
      * Handler odpowiedzialny za tworzenie gry na podstawie wprowadzonych parametrów
      */
     public void createGame(ActionEvent event){
-        if(validator.checkPort(listeningPortNumber.getText())) {
-            wrongPort.setText("Oczekiwanie na przeciwnika....");
-        }
-        else{
-            wrongPort.setText("Niewłaściwy nr portu");
+        if(!(validator.checkPort(listeningPortNumber.getText()))) {
+            wrongPort.setText("Niewłaściwy nr portu!!!");
             return;
+        } else if(!(validator.checkNick(serverNick.getText()))) {
+            wrongPort.setText("Podaj nick!!!");
+            return;
+        } else if(!(validator.ifTimeChoosen(networkGameTimeBox.getValue()))){
+            wrongPort.setText("Wybierz długość rozgrywki!!!");
+        } else{
+            wrongPort.setText("Oczekiwanie na przeciwnika....");
         }
 
         String time = networkGameTimeBox.getValue();
@@ -156,9 +160,15 @@ public class GameCreatingController implements Initializable{
     /**
      * Handler odpowiedzialny za dołączanie do rozgrywki założonej przez drugiego gracza
      */
-    public void joinGame(ActionEvent event){
-        if(!(validator.checkIPAddress(hostIP.getText()) && validator.checkPort(hostPortNumber.getText()))){
-            wrongData.setText("Niewłaściwy adres IP lu nr portu!!!");
+    public void joinGame(ActionEvent event) {
+        if (!(validator.checkIPAddress(hostIP.getText()))) {
+            wrongData.setText("Niewłaściwy adres IP!!!");
+            return;
+        } else if (!(validator.checkPort(hostPortNumber.getText()))) {
+            wrongData.setText("Niewłaściwy nr portu!!!");
+            return;
+        } else if (!(validator.checkNick(clientNick.getText()))){
+            wrongData.setText("Podaj nick!!!");
             return;
         } else{
             wrongData.setText("Oczekiwanie na przeciwnika....");
