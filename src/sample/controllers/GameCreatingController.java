@@ -2,6 +2,8 @@ package sample.controllers;
 
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -60,11 +63,19 @@ public class GameCreatingController implements Initializable{
     @FXML
     private Label wrongPort;
 
+
+    @FXML
+    private ComboBox<String> networkGameTimeBox;
+
+    ObservableList<String> timeList = FXCollections.observableArrayList("Bez limitu", "10", "15", "20", "30", "40");
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         validator = new NetValidator();
         service = new GameCreatingService();
         myIP.setText(service.getCurrentHostIpAddress());
+        networkGameTimeBox.setItems(timeList);
     }
 
     public void backButtonAction(ActionEvent event) throws IOException{
@@ -89,6 +100,9 @@ public class GameCreatingController implements Initializable{
             return;
         }
 
+        String time = networkGameTimeBox.getValue();
+        System.out.println(time);
+
         try{
             primaryStage = new Stage();
             rootLayout = FXMLLoader.load(getClass().getResource("../view/RootLayout.fxml"));
@@ -96,8 +110,7 @@ public class GameCreatingController implements Initializable{
             e.printStackTrace();
         }
 
-        GameEngine.getInstance().setTcpConnectionService(
-                new TCPServerConnectionService(Integer.valueOf(listeningPortNumber.getText())));
+        GameEngine.getInstance().setTcpConnectionService(new TCPServerConnectionService(Integer.valueOf(listeningPortNumber.getText())));
 
         GameEngine.getInstance().getTcpConnectionService().setOnConnectionEstablished(data -> {
             Platform.runLater(() ->{

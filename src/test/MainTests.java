@@ -128,12 +128,13 @@ public class MainTests extends ApplicationTest{
         TextField textField1 = find("#clientNick");
         textField1.setText("b");
         TextField textField2 = find("#hostIP");
-        textField2.setText("192.168.0.4");
+        textField2.setText("127.0.0.1");
 
         Button button2 = find("#joinGameButton");
         assertNotEquals(button2, null);
         clickOn(button2);
 
+        Thread.sleep(3000);
         TextArea textArea = find("#textArea");
 
         assertNotEquals(textArea, null);

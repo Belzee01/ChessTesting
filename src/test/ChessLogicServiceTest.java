@@ -336,8 +336,9 @@ public class ChessLogicServiceTest {
                 figures[i][j] = boardInitializer1.charAt(j + (7-i)*8);
             }
         }
-
+        logicService.setBoard(new Board(boardInitializer1, false));
         assertArrayEquals(logicService.getFiguresArray(), figures);
+
     }
 
     @Test

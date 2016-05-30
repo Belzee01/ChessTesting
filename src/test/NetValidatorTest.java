@@ -7,6 +7,7 @@ import sample.services.NetValidator;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class NetValidatorTest {
 
@@ -126,14 +127,14 @@ public class NetValidatorTest {
     public void testCheckPortWithMaxValue() throws Exception {
         String port = "65535";
         boolean returnPort = netValidator.checkPort(port);
-        assertEquals(returnPort, true);
+        assertNotEquals(returnPort, true);
     }
 
     @Test
     public void testCheckPortWithMinValue() throws Exception {
         String port = "49152";
         boolean returnPort = netValidator.checkPort(port);
-        assertEquals(returnPort, true);
+        assertNotEquals(returnPort, true);
 
     }
 }
