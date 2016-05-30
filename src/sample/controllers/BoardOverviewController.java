@@ -1,16 +1,23 @@
 package sample.controllers;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.GameEngine;
 import sample.models.*;
@@ -21,10 +28,13 @@ import sample.models.Message;
 import sample.services.ChessLogicService;
 import sample.services.CounterService;
 
+import javax.swing.text.Style;
 import java.io.IOException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 
 /**
@@ -74,7 +84,7 @@ public class BoardOverviewController{
                     GameEngine.getInstance().getHistoryService().addBoard((Board) data);
                     GameEngine.getInstance().getCounterService().startTiming();
                     GameEngine.getInstance().getChessLogicService().setBoard((Board) data);
-                    Sounds.getInstance().opponentMove();
+                    Sounds.getInstance().getSound(2);
                     refreshBoard();
                 }
                 if(data instanceof Message){
@@ -85,9 +95,11 @@ public class BoardOverviewController{
                     onCheckedAppear(msg.getCheckedColor());
                 }
                 if(data instanceof DrawRequest){
+                    Sounds.getInstance().getSound(0);
                     showDrawRequest();
                 }
                 if(data instanceof DrawAnswer){
+                    Sounds.getInstance().getSound(0);
                     DrawAnswer answer = (DrawAnswer)data;
                     if(answer.isAccepted())
                         showDrawAnswer(true);
@@ -95,6 +107,7 @@ public class BoardOverviewController{
                         showDrawAnswer(false);
                 }
                 if(data instanceof ResignationMessage){
+                    Sounds.getInstance().getSound(0);
                     showResignationMessage();
                 }
                 if(data instanceof CheckMatMessage){
@@ -266,6 +279,7 @@ public class BoardOverviewController{
      * @param IV obiekt klasy ImageView dla którego sprawdzane są możliwe ruchy
      */
     private void showMoves(ImageView IV) {
+        Sounds.getInstance().getSound(1);
         if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
             refreshBoard();
 
@@ -312,11 +326,10 @@ public class BoardOverviewController{
      * @param iv - obiekt klasy ImageView; miejsce w które zostaje przesunięta figura dla której metoda zostaje wywołana
      */
     private void move(ImageView iv) {
+        Sounds.getInstance().getSound(2);
         if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
-
-                gameEngine.move(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
-                refreshBoard();
-
+            gameEngine.move(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
+            refreshBoard();
         }
     }
 
