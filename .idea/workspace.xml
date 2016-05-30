@@ -6,6 +6,8 @@
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/sample/view/LocalBoardOverview.fxml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/GameEngine.java" afterPath="$PROJECT_DIR$/src/sample/GameEngine.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/controllers/BoardOverviewController.java" afterPath="$PROJECT_DIR$/src/sample/controllers/BoardOverviewController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/controllers/CommunicationController.java" afterPath="$PROJECT_DIR$/src/sample/controllers/CommunicationController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/controllers/LocalGameController.java" afterPath="$PROJECT_DIR$/src/sample/controllers/LocalGameController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/controllers/MovesHistoryController.java" afterPath="$PROJECT_DIR$/src/sample/controllers/MovesHistoryController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/services/HistoryService.java" afterPath="$PROJECT_DIR$/src/sample/services/HistoryService.java" />
@@ -86,6 +88,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="CommunicationController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sample/controllers/CommunicationController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="71" column="24" selection-start-line="71" selection-start-column="24" selection-end-line="71" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="GameCreatingController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/controllers/GameCreatingController.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -120,7 +132,7 @@
         <entry file="file://$PROJECT_DIR$/src/sample/controllers/LocalBoardController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="285" column="31" selection-start-line="285" selection-start-column="31" selection-end-line="285" selection-end-column="31" />
+              <caret line="307" column="51" selection-start-line="307" selection-start-column="51" selection-end-line="307" selection-end-column="51" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -148,33 +160,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LocalBoardOverview.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/view/LocalBoardOverview.fxml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="JavaFX-Scene-Builder">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BoardOverviewController.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="BoardOverviewController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sample/controllers/BoardOverviewController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="391" column="0" selection-start-line="391" selection-start-column="0" selection-end-line="404" selection-end-column="5" />
+            <state vertical-scroll-proportion="1.1402439">
+              <caret line="417" column="50" selection-start-line="417" selection-start-column="50" selection-end-line="417" selection-end-column="50" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameEngine.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GameEngine.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/GameEngine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.38747555">
+            <state vertical-scroll-proportion="0.0">
               <caret line="96" column="32" selection-start-line="96" selection-start-column="32" selection-end-line="96" selection-end-column="32" />
               <folding>
                 <marker date="1464610959306" expanded="false" signature="24:161" placeholder="..." />
@@ -265,16 +264,16 @@
         <option value="$PROJECT_DIR$/src/sample/controllers/DrawController.java" />
         <option value="$PROJECT_DIR$/src/sample/controllers/MenuController.java" />
         <option value="$PROJECT_DIR$/src/sample/view/MovesHistory.fxml" />
-        <option value="$PROJECT_DIR$/src/sample/controllers/BoardOverviewController.java" />
-        <option value="$PROJECT_DIR$/src/sample/controllers/CommunicationController.java" />
         <option value="$PROJECT_DIR$/src/sample/controllers/OptionsController.java" />
         <option value="$PROJECT_DIR$/src/sample/controllers/GameCreatingController.java" />
         <option value="$PROJECT_DIR$/src/sample/services/HistoryService.java" />
         <option value="$PROJECT_DIR$/src/sample/controllers/MovesHistoryController.java" />
         <option value="$PROJECT_DIR$/src/sample/controllers/LocalGameController.java" />
         <option value="$PROJECT_DIR$/src/sample/services/NetValidator.java" />
-        <option value="$PROJECT_DIR$/src/sample/controllers/LocalBoardController.java" />
         <option value="$PROJECT_DIR$/src/sample/GameEngine.java" />
+        <option value="$PROJECT_DIR$/src/sample/controllers/LocalBoardController.java" />
+        <option value="$PROJECT_DIR$/src/sample/controllers/CommunicationController.java" />
+        <option value="$PROJECT_DIR$/src/sample/controllers/BoardOverviewController.java" />
       </list>
     </option>
   </component>
@@ -922,7 +921,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1368" height="743" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3279743" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -931,8 +930,8 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3279743" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287879" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3279743" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1318328" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27009645" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4807074" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.42604503" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25227273" sideWeight="0.6703755" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1607717" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -954,7 +953,7 @@
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1259,14 +1258,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/controllers/CommunicationController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="108" column="60" selection-start-line="108" selection-start-column="60" selection-end-line="108" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/services/GameCreatingService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1344,14 +1335,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/controllers/BoardOverviewController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="391" column="0" selection-start-line="391" selection-start-column="0" selection-end-line="404" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/controllers/GameCreatingController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1368,6 +1351,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/GameEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="96" column="32" selection-start-line="96" selection-start-column="32" selection-end-line="96" selection-end-column="32" />
+          <folding>
+            <marker date="1464610959306" expanded="false" signature="24:161" placeholder="..." />
+            <marker date="1464610959306" expanded="true" signature="2202:2208" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/controllers/LocalGameController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1379,21 +1373,26 @@
     <entry file="file://$PROJECT_DIR$/src/sample/controllers/LocalBoardController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="285" column="31" selection-start-line="285" selection-start-column="31" selection-end-line="285" selection-end-column="31" />
+          <caret line="307" column="51" selection-start-line="307" selection-start-column="51" selection-end-line="307" selection-end-column="51" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/GameEngine.java">
+    <entry file="file://$PROJECT_DIR$/src/sample/controllers/CommunicationController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38747555">
-          <caret line="96" column="32" selection-start-line="96" selection-start-column="32" selection-end-line="96" selection-end-column="32" />
-          <folding>
-            <marker date="1464610959306" expanded="false" signature="24:161" placeholder="..." />
-            <marker date="1464610959306" expanded="true" signature="2202:2208" placeholder="{...}" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="71" column="24" selection-start-line="71" selection-start-column="24" selection-end-line="71" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/controllers/BoardOverviewController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.1402439">
+          <caret line="417" column="50" selection-start-line="417" selection-start-column="50" selection-end-line="417" selection-end-column="50" />
+          <folding />
         </state>
       </provider>
     </entry>
