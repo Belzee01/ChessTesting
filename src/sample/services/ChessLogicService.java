@@ -1,8 +1,11 @@
 package sample.services;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.omg.CORBA.DynAnyPackage.Invalid;
 import sample.GameEngine;
 import sample.models.Board;
 
@@ -37,19 +40,15 @@ public class ChessLogicService {
         return -1;
     }
 
-
-
-    public String getNewBoard(Board board, String move) {
-        String row = "abcdefgh";
-        String column = "12345678";
-        int x1 = row.indexOf(move.charAt(0));
-        int y1 = column.indexOf(move.charAt(1));
-        int x2 = row.indexOf(move.charAt(2));
-        int y2 = column.indexOf(move.charAt(3));
-        return move(board.getBoard(), x1, y1, x2, y2);
-    }
-
     public String move(String board, int x1, int y1, int x2, int y2) {
+        if(!BoardValidator.isBoardStringValid(board) ||
+                x1<0 || x1>=8 ||
+                x2<0 || x2>=8 ||
+                y1<0 || y1>=8 ||
+                y2<0 || y2>=8
+                ){
+                throw new IllegalArgumentException();
+        }
         String piece = get(board, x1, y1);
         board = set(board, x1, y1, " ");
         board = set(board, x2, y2, piece);
@@ -72,12 +71,15 @@ public class ChessLogicService {
         return "" + board.charAt(pos);
     }
 
-    String set(String board, int x1, int y1, String piece) {
+    private String set(String board, int x1, int y1, String piece) {
         int pos = pos(x1, y1);
         return board.substring(0, pos) + piece + board.substring(pos + 1);
     }
 
-    private String[] getPossibleMoves(String board, boolean white) {
+    public String[] getPossibleMoves(String board, boolean white) {
+        if(!BoardValidator.isBoardStringValid(board)){
+            throw new IllegalArgumentException();
+        }
         List result = new ArrayList();
         for (int x = 0; x < 8; x++){
             for (int y = 0; y < 8; y++) {
@@ -94,7 +96,12 @@ public class ChessLogicService {
     /*
     Zwraca tablicę z zaznaczonymi polami na które figula z pola o współrzędnych x,y może się poruszyć
      */
-    public boolean[][] getPossibleMovesArray(int x,int y){
+    public boolean[][] getPossibleMovesMask(int x, int y){
+        if (x < 0 || x > 7 || y < 0 || y> 7){
+            throw new IllegalArgumentException();
+        }
+
+
         boolean  maskArray[][] =new boolean[8][8];
         String oldBoard=board.getBoard();
         String possibleMoves[]=getPossibleMoves(oldBoard,x,y);
@@ -115,6 +122,26 @@ public class ChessLogicService {
         return maskArray;
     }
 
+
+    /*
+    Zwraca tablicę z zaznaczonymi polami na które figula z pola o współrzędnych x,y może się poruszyć
+     */
+    public boolean[][] getPossibleMovesMask(ArrayList<String> possibleMoves){
+        boolean  maskArray[][] =new boolean[8][8];
+        String oldBoard=board.getBoard();
+
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                maskArray[i][j]=false;
+                for(int k=0;k<possibleMoves.size();k++){
+                    if(!get(oldBoard,i,j).equals(get(possibleMoves.get(k),i,j))) {
+                        maskArray[i][j]=true;
+                    }
+                }
+            }
+        }
+        return maskArray;
+    }
     /*
      Przeprowadza konwersję z zapisu szachownicy w postaci Stringa na
      tablicę charów wdł reguły :
@@ -186,7 +213,9 @@ public class ChessLogicService {
      * @return
      */
     public int getCheck(){
-        String [] availableMoves=getPossibleMoves(board.getBoard(),!GameEngine.getInstance().isServerRole());
+        String [] availableMoves=getPossibleMoves(board.getBoard(),true);
+        String [] secondAvailableMoves=getPossibleMoves(board.getBoard(),false);
+
         for(int i=0;i<availableMoves.length;i++){
             if(availableMoves[i].indexOf("K")==-1 ){
                 return 1;
@@ -195,6 +224,16 @@ public class ChessLogicService {
                 return 0;
             }
         }
+
+        for(int i=0;i<secondAvailableMoves.length;i++){
+            if(secondAvailableMoves[i].indexOf("K")==-1 ){
+                return 1;
+            }
+            else if(secondAvailableMoves[i].indexOf("k")==-1){
+                return 0;
+            }
+        }
+
         return -1;
     }
 
@@ -386,7 +425,10 @@ public class ChessLogicService {
         Wyszukuje możliwe do wykonania ruchy z pola o zadanych współrzędnych
         Zwraca listę stringów z których każdy reprezentuje stan szachownicy po wykonaniu jednego z dostępnych ruchów
      */
-    private String[] getPossibleMoves(String board, int x, int y) {
+    public String[] getPossibleMoves(String board, int x, int y) {
+        if(!BoardValidator.isBoardStringValid(board)){
+            throw new IllegalArgumentException();
+        }
         String piece = get(board, x, y);
         if (isPawn(piece))
             return getPossibleMovesPawn(board, x, y);

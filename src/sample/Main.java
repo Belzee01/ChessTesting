@@ -25,7 +25,6 @@ public class Main extends Application {
         Sounds.getInstance().setSounds("...");
     }
 
-
     public static void main(String[] args) {
         launch(args);
     }
