@@ -273,7 +273,7 @@ public class BoardOverviewController{
             gameEngine.setMoveY(GridPane.getRowIndex(IV));
 
             String [] availableMovesList=gameEngine.getChessLogicService().getPossibleMoves(
-                    gameEngine.getInstance().getChessLogicService().getBoard().getBoard(),
+                    GameEngine.getInstance().getChessLogicService().getBoard().getBoard(),
                     GridPane.getColumnIndex(IV),
                     GridPane.getRowIndex(IV)
             );

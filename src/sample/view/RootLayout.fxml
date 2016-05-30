@@ -30,14 +30,4 @@
         </menus>
       </MenuBar>
    </top>
-   <right>
-      <AnchorPane prefHeight="571.0" prefWidth="161.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label layoutX="30.0" layoutY="56.0" prefHeight="29.0" prefWidth="92.0" text="Białe - czas" />
-            <Label fx:id="whiteTime" layoutX="30.0" layoutY="85.0" prefHeight="32.0" prefWidth="101.0" />
-            <Label layoutX="25.0" layoutY="151.0" prefHeight="28.0" prefWidth="121.0" text="Czarne - czas" />
-            <Label fx:id="blackTime" layoutX="25.0" layoutY="193.0" prefHeight="29.0" prefWidth="85.0" />
-         </children>
-      </AnchorPane>
-   </right>
 </BorderPane>

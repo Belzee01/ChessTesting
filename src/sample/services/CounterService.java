@@ -1,5 +1,6 @@
 package sample.services;
 
+import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Duration;
@@ -11,7 +12,9 @@ public class CounterService extends TimerTask{
     private Duration duration =Duration.ofSeconds(0);
     private Duration targetDuration = Duration.ofSeconds(0);
     private boolean timeOutEnable=false;
+
     private boolean timerRun=false;
+
     private Timer timer1 = new Timer();
 
     @Setter
@@ -25,6 +28,9 @@ public class CounterService extends TimerTask{
         timer1.schedule(this, 0, 1000);
     }
 
+    public boolean isStarted(){
+        return timerRun;
+    }
     public void startTiming(){
         timerRun=true;
     }

@@ -34,10 +34,8 @@ public class NetValidator {
             if(val==255)
                 maxes++;
         }
-        if(zeros==4 || maxes==4)
-            return false;
+        return !(zeros == 4 || maxes == 4);
 
-        return true;
     }
 
     /**
@@ -56,9 +54,7 @@ public class NetValidator {
                 return false;
             }
         }
-        if(Integer.valueOf(port)>49152 && Integer.valueOf(port)<65535)
-            return true;
-        else return false;
+        return Integer.valueOf(port) > 49152 && Integer.valueOf(port) < 65535;
     }
 
     /**
@@ -70,14 +66,10 @@ public class NetValidator {
     public boolean checkNick(String nick){
         if(nick==null)
             return false;
-        if(nick.length()==0)
-            return false;
-        return true;
+        return nick.length() != 0;
     }
 
     public boolean ifTimeChoosen(String time){
-        if(time==null)
-            return false;
-        return true;
+        return time != null;
     }
 }
