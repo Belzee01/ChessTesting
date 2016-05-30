@@ -138,16 +138,16 @@ public class GameCreatingController implements Initializable{
                 mode=10;
                 break;
             case "15":
-                mode=10;
+                mode=15;
                 break;
             case "20":
-                mode=10;
+                mode=20;
                 break;
             case "30":
-                mode=10;
+                mode=30;
                 break;
             case "40":
-                mode=10;
+                mode=40;
                 break;
             default:
                 mode=-1;

@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import sample.models.Sounds;
 import sample.models.StyleCss;
 
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class OptionsController implements Initializable{
         stylesBox.setItems(stylesList);
         stylesBox.getSelectionModel().select(0);
 
-        soundsList = FXCollections.observableArrayList("Bez dźwięku", "default sound");
+        soundsList = FXCollections.observableArrayList("Bez dźwięku", "classic", "funny", "alternative");
         soundsBox.setItems(soundsList);
         soundsBox.getSelectionModel().select(0);
     }
@@ -51,8 +52,11 @@ public class OptionsController implements Initializable{
      */
     public void applyOptions(ActionEvent event){
         String styleName = stylesBox.getValue();
-        //System.out.println(style);
+        System.out.println(styleName);
         StyleCss.getInstance().setStyle(styleName);
+
+        String sound = soundsBox.getValue();
+        Sounds.getInstance().setSounds(sound);
 
         Stage stage;
         AnchorPane anchorPane = new AnchorPane();

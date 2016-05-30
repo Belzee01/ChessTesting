@@ -11,9 +11,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import sample.GameEngine;
 import sample.models.StyleCss;
 
 import java.io.IOException;
@@ -40,7 +42,7 @@ public class LocalGameController implements Initializable {
     @FXML
     private ComboBox<String> localGameTimeBox;
 
-    ObservableList<String> timeList = FXCollections.observableArrayList("Bez limitu", "10", "15", "20", "30", "40");
+    ObservableList<String> timeList = FXCollections.observableArrayList("Bez limitu", "2","10", "15", "20", "30", "40");
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -57,7 +59,6 @@ public class LocalGameController implements Initializable {
         Scene scene = StyleCss.getInstance().getScene(root);
         stage.setScene(scene);
         stage.show();
-
     }
 
     /**
@@ -71,8 +72,32 @@ public class LocalGameController implements Initializable {
             e.printStackTrace();
         }
 
-        String time = localGameTimeBox.getValue();
+        int mode=-1;
 
+        switch (localGameTimeBox.getValue()){
+            case "2":
+                mode=2;
+                break;
+            case "10":
+                mode=10;
+                break;
+            case "15":
+                mode=15;
+                break;
+            case "20":
+                mode=20;
+                break;
+            case "30":
+                mode=30;
+                break;
+            case "40":
+                mode=40;
+                break;
+            default:
+                mode=-1;
+        }
+
+        GameEngine.getInstance().setTimeGameMode(mode);
         Stage oldStage = (Stage) backToGameType.getScene().getWindow();
         oldStage.close();
         showBoardOverview();
@@ -81,6 +106,7 @@ public class LocalGameController implements Initializable {
         primaryStage.show();
     }
 
+
     /**
      * Metoda wyświetlająca szachownicę
      */
@@ -88,8 +114,13 @@ public class LocalGameController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(LocalGameController.class.getResource("../view/LocalBoardOverview.fxml"));
+            FXMLLoader labels = new FXMLLoader();
+            labels.setLocation(LocalGameController.class.getResource("../view/TimeLabels.fxml"));
 
             rootLayout.setCenter(loader.load());
+            rootLayout.setRight(labels.load());
+
+            GameEngine.getInstance().setLocalTimeLabelsController(labels.getController());
 
             // Give the controller access to the main app.
 
@@ -101,5 +132,4 @@ public class LocalGameController implements Initializable {
             e.printStackTrace();
         }
     }
-
 }
