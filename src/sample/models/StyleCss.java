@@ -31,9 +31,9 @@ public class StyleCss {
         if (styleName != null)
             if (styleName.equals("classic")) {
                 this.path = null;
-                return;
+            } else {
+                this.path = StyleCss.class.getResource("../view/styles/"+styleName+".css").toString();
             }
-            this.path = StyleCss.class.getResource("../view/styles/"+styleName+".css").toString();
     }
 
     /**

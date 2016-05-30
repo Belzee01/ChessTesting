@@ -5,6 +5,7 @@ import lombok.Setter;
 import sample.controllers.CommunicationController;
 import sample.models.CheckMessage;
 import sample.models.CheckMatMessage;
+import sample.models.Sounds;
 import sample.services.ChessLogicService;
 import sample.services.CounterService;
 import sample.services.TCPConnectionService;
@@ -66,9 +67,11 @@ public class GameEngine {
 
         if(checkState!=-1){
             if(chessLogicService.getMat()){
+                Sounds.getInstance().getSound(4);
                 tcpConnectionService.sendObject(new CheckMatMessage());
             }
             else{
+                Sounds.getInstance().getSound(3);
                 tcpConnectionService.sendObject(new CheckMessage(checkState));
             }
         }
