@@ -1,5 +1,6 @@
 package sample.services;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -95,7 +96,7 @@ public class ChessLogicService {
     /*
     Zwraca tablicę z zaznaczonymi polami na które figula z pola o współrzędnych x,y może się poruszyć
      */
-    public boolean[][] getPossibleMovesArray(int x,int y){
+    public boolean[][] getPossibleMovesMask(int x, int y){
         if (x < 0 || x > 7 || y < 0 || y> 7){
             throw new IllegalArgumentException();
         }
@@ -121,6 +122,26 @@ public class ChessLogicService {
         return maskArray;
     }
 
+
+    /*
+    Zwraca tablicę z zaznaczonymi polami na które figula z pola o współrzędnych x,y może się poruszyć
+     */
+    public boolean[][] getPossibleMovesMask(ArrayList<String> possibleMoves){
+        boolean  maskArray[][] =new boolean[8][8];
+        String oldBoard=board.getBoard();
+
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                maskArray[i][j]=false;
+                for(int k=0;k<possibleMoves.size();k++){
+                    if(!get(oldBoard,i,j).equals(get(possibleMoves.get(k),i,j))) {
+                        maskArray[i][j]=true;
+                    }
+                }
+            }
+        }
+        return maskArray;
+    }
     /*
      Przeprowadza konwersję z zapisu szachownicy w postaci Stringa na
      tablicę charów wdł reguły :
