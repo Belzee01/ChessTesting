@@ -150,6 +150,7 @@ public class BoardOverviewController{
             showMovesHistory();
         }
     }
+
     public void onTimeOut(Duration d){
         GameEngine.getInstance().getCounterService().stopTiming();
         GameEngine.getInstance().getTcpConnectionService().sendObject(new TimeOutMessage());
@@ -369,6 +370,7 @@ public class BoardOverviewController{
         displayGameEndAlert("PRZECIWNIK ZREZYGNOWAŁ - WYGRANA");
     }
 
+
     /**
      * Metoda wysyłająca przeciwnikowi informację o zaakceptowaniu propozycji remisu.
      */
@@ -404,6 +406,7 @@ public class BoardOverviewController{
         stage.show();
 
     }
+
     /**
      * Metoda wyświetlająca okno z historią ruchów
      */
@@ -420,4 +423,5 @@ public class BoardOverviewController{
         stage.setScene(scene);
         stage.show();
     }
+
 }

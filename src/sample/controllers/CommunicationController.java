@@ -63,13 +63,13 @@ public class CommunicationController {
         if (seconds<10){
             secondsString="0";
         }
-        secondsString+=new Integer(seconds).toString();
+        secondsString+= Integer.toString(seconds);
 
         String minutesString="";
         if (minutes<10){
             minutesString="0";
         }
-        minutesString+=new Integer(minutes).toString();
+        minutesString+= Integer.toString(minutes);
 
         TimeLabel.setText(minutesString+" : " +secondsString);
     }

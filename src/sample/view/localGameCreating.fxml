@@ -7,17 +7,13 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.LocalGameController">
    <children>
-      <ComboBox fx:id="localGameTimeBox" layoutX="213.0" layoutY="257.0" prefHeight="25.0" prefWidth="180.0" promptText="(wybierz)" />
-      <Label layoutX="63.0" layoutY="141.0" prefHeight="25.0" prefWidth="155.0" text="Nick pierwszego gracza" />
-      <Label layoutX="74.0" layoutY="191.0" prefHeight="25.0" prefWidth="139.0" text="Nick drugiego gracza" />
-      <TextField fx:id="firstNick" layoutX="221.0" layoutY="141.0" />
-      <TextField fx:id="secondNick" layoutX="221.0" layoutY="191.0" />
+      <ComboBox fx:id="localGameTimeBox" layoutX="213.0" layoutY="165.0" prefHeight="25.0" prefWidth="180.0" promptText="(wybierz)" />
       <Button fx:id="backToGameType" layoutX="62.0" layoutY="55.0" mnemonicParsing="false" onAction="#handeButtonAction" text="Wstecz" />
-      <Button fx:id="startLocalGame" layoutX="289.0" layoutY="343.0" mnemonicParsing="false" onAction="#startLocalGame" prefHeight="55.0" prefWidth="126.0" text="Graj">
+      <Button fx:id="startLocalGame" layoutX="138.0" layoutY="257.0" mnemonicParsing="false" onAction="#startLocalGame" prefHeight="64.0" prefWidth="247.0" text="Graj">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Label layoutX="78.0" layoutY="257.0" prefHeight="25.0" prefWidth="126.0" text="Długość rozgrywki" />
+      <Label layoutX="75.0" layoutY="165.0" prefHeight="25.0" prefWidth="126.0" text="Długość rozgrywki" />
    </children>
 </AnchorPane>
