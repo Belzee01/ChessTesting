@@ -1,6 +1,5 @@
 package sample.models;
 
-import javafx.scene.text.Text;
 import lombok.Getter;
 import lombok.Setter;
 

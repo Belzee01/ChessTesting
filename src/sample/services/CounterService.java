@@ -1,18 +1,12 @@
 package sample.services;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.parser.Scanner;
 import lombok.Setter;
 
 import java.time.Duration;
-import java.util.TimerTask;
 import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.Consumer;
-import java.lang.IllegalStateException;
 
-/**
- * Created by krzysztof on 23.05.16.
- */
 public class CounterService extends TimerTask{
     private Duration duration =Duration.ofSeconds(0);
     private Duration targetDuration = Duration.ofSeconds(0);
