@@ -63,13 +63,13 @@ public class CommunicationController {
         if (seconds<10){
             secondsString="0";
         }
-        secondsString+=new Integer(seconds).toString();
+        secondsString+= Integer.toString(seconds);
 
         String minutesString="";
         if (minutes<10){
             minutesString="0";
         }
-        minutesString+=new Integer(minutes).toString();
+        minutesString+= Integer.toString(minutes);
 
         TimeLabel.setText(minutesString+" : " +secondsString);
     }
@@ -77,20 +77,36 @@ public class CommunicationController {
      * Handler odpowiedzialny za przesyłąnie wiadomości i wyświetlanie jej na ekrany obu graczy
      */
     public void sendAction(ActionEvent event){
-        Text nick = new Text(GameEngine.getInstance().getNick());
-        nick.setFill(Color.GREEN);
-        Text text = new Text(": " + textArea.getText() + "\n");
-        textFlow.getChildren().addAll(nick, text);
-        //textFlow.setStyle("-fx-background-color: white;");
+        if(textArea.getText().length()==0){
+
+        }
+        else if(textArea.getText().length()<200) {
+            Text nick = new Text(GameEngine.getInstance().getNick());
+            nick.setFill(Color.GREEN);
+            Text text = new Text(": " + textArea.getText() + "\n");
+            textFlow.getChildren().addAll(nick, text);
+            //textFlow.setStyle("-fx-background-color: white;");
 
 
-        Message msg=new Message();
-        msg.setTextMessage(textArea.getText());
-        msg.setNick(GameEngine.getInstance().getNick());
+            Message msg = new Message();
+            msg.setTextMessage(textArea.getText());
+            msg.setNick(GameEngine.getInstance().getNick());
 
-        textArea.clear();
+            textArea.clear();
 
-        GameEngine.getInstance().getTcpConnectionService().sendObject(msg);
+            GameEngine.getInstance().getTcpConnectionService().sendObject(msg);
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,"Nie może mieć więcej niż 200 znaków.");
+            alert.setHeaderText(null);
+            alert.setTitle("Wiadomość za długa");
+            alert.setGraphic(null);
+            alert.setWidth(300);
+            alert.show();
+
+            textArea.clear();
+        }
+
     }
 
     public void receive(Message msg){
