@@ -2,7 +2,6 @@ package test;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.omg.PortableInterceptor.ORBInitInfoPackage.DuplicateName;
 import sample.models.Board;
 import sample.services.ChessLogicService;
 
@@ -281,13 +280,13 @@ public class ChessLogicServiceTest {
             System.out.print(s+", ");
         }System.out.print("\n");
 
-        for(boolean[] b: logicService.getPossibleMovesArray(0, 5)){
+        for(boolean[] b: logicService.getPossibleMovesMask(0, 5)){
             for (boolean k: b){
                 System.out.print(k+", ");
             }System.out.print("\n");
         }
 
-        assertArrayEquals(logicService.getPossibleMovesArray(0, 5), arrayBoard);
+        assertArrayEquals(logicService.getPossibleMovesMask(0, 5), arrayBoard);
     }
 
     @Test
