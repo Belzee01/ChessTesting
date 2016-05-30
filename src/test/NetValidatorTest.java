@@ -55,7 +55,7 @@ public class NetValidatorTest {
 
         boolean returnBool = netValidator.checkIPAddress(ip);
 
-        assertEquals(returnBool, true);
+        assertEquals(returnBool, false);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class NetValidatorTest {
 
         boolean returnBool = netValidator.checkIPAddress(ip);
 
-        assertEquals(returnBool, true);
+        assertEquals(returnBool, false);
     }
 
     @Test

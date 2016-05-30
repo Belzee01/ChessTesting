@@ -20,7 +20,7 @@
                   <TextField fx:id="serverNick" layoutX="235.0" layoutY="193.0" />
                   <Label layoutX="76.0" layoutY="191.0" prefHeight="29.0" prefWidth="119.0" text="Podaj swój nick" />
                   <Label layoutX="62.0" layoutY="128.0" prefHeight="29.0" prefWidth="148.0" text="Podaj numer portu" />
-                  <TextField fx:id="listeningPortNumber" layoutX="235.0" layoutY="128.0" prefHeight="25.0" prefWidth="54.0" />
+                  <TextField fx:id="listeningPortNumber" layoutX="235.0" layoutY="128.0" prefHeight="25.0" prefWidth="68.0" />
                   <Label fx:id="myIP" layoutX="235.0" layoutY="65.0" prefHeight="29.0" prefWidth="170.0" text="192.168.0.1" />
                   <Button fx:id="createGameButton" layoutX="159.0" layoutY="360.0" mnemonicParsing="false" onAction="#createGame" prefHeight="52.0" prefWidth="183.0" text="Stwórz">
                      <font>
@@ -46,7 +46,7 @@
                   <TextField fx:id="clientNick" layoutX="235.0" layoutY="219.0" />
                   <Label layoutX="76.0" layoutY="217.0" prefHeight="29.0" prefWidth="119.0" text="Podaj swój nick" />
                   <Label layoutX="76.0" layoutY="139.0" prefHeight="29.0" prefWidth="148.0" text="Podaj numer portu" />
-                  <TextField fx:id="hostPortNumber" layoutX="235.0" layoutY="141.0" prefHeight="25.0" prefWidth="54.0" />
+                  <TextField fx:id="hostPortNumber" layoutX="235.0" layoutY="141.0" prefHeight="25.0" prefWidth="69.0" />
                   <Button fx:id="joinGameButton" layoutX="159.0" layoutY="327.0" mnemonicParsing="false" onAction="#joinGame" prefHeight="52.0" prefWidth="183.0" text="Dołącz">
                      <font>
                         <Font size="16.0" />

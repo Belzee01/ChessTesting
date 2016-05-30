@@ -67,7 +67,7 @@ public class GameCreatingController implements Initializable{
     @FXML
     private ComboBox<String> networkGameTimeBox;
 
-    ObservableList<String> timeList = FXCollections.observableArrayList("Bez limitu", "10", "15", "20", "30", "40");
+    ObservableList<String> timeList = FXCollections.observableArrayList("Bez limitu", "2","10", "15", "20", "30", "40");
 
 
     @Override
@@ -92,12 +92,16 @@ public class GameCreatingController implements Initializable{
      * Handler odpowiedzialny za tworzenie gry na podstawie wprowadzonych parametrów
      */
     public void createGame(ActionEvent event){
-        if(validator.checkPort(listeningPortNumber.getText())) {
-            wrongPort.setText("Oczekiwanie na przeciwnika....");
-        }
-        else{
-            wrongPort.setText("Niewłaściwy nr portu");
+        if(!(validator.checkPort(listeningPortNumber.getText()))) {
+            wrongPort.setText("Niewłaściwy nr portu!!!");
             return;
+        } else if(!(validator.checkNick(serverNick.getText()))) {
+            wrongPort.setText("Podaj nick!!!");
+            return;
+        } else if(!(validator.ifTimeChoosen(networkGameTimeBox.getValue()))){
+            wrongPort.setText("Wybierz długość rozgrywki!!!");
+        } else{
+            wrongPort.setText("Oczekiwanie na przeciwnika....");
         }
 
         String time = networkGameTimeBox.getValue();
@@ -124,6 +128,32 @@ public class GameCreatingController implements Initializable{
             });
         });
 
+        int mode=-1;
+
+        switch (networkGameTimeBox.getValue()){
+            case "2":
+                mode=2;
+                break;
+            case "10":
+                mode=10;
+                break;
+            case "15":
+                mode=10;
+                break;
+            case "20":
+                mode=10;
+                break;
+            case "30":
+                mode=10;
+                break;
+            case "40":
+                mode=10;
+                break;
+            default:
+                mode=-1;
+        }
+        GameEngine.getInstance().setTimeGameMode(mode);
+
         GameEngine.getInstance().setNick(serverNick.getText());
         GameEngine.getInstance().getTcpConnectionService().startConnection();
         GameEngine.getInstance().setServerRole(true);
@@ -133,9 +163,15 @@ public class GameCreatingController implements Initializable{
     /**
      * Handler odpowiedzialny za dołączanie do rozgrywki założonej przez drugiego gracza
      */
-    public void joinGame(ActionEvent event){
-        if(!(validator.checkIPAddress(hostIP.getText()) && validator.checkPort(hostPortNumber.getText()))){
-            wrongData.setText("Niewłaściwy adres IP lu nr portu!!!");
+    public void joinGame(ActionEvent event) {
+        if (!(validator.checkIPAddress(hostIP.getText()))) {
+            wrongData.setText("Niewłaściwy adres IP!!!");
+            return;
+        } else if (!(validator.checkPort(hostPortNumber.getText()))) {
+            wrongData.setText("Niewłaściwy nr portu!!!");
+            return;
+        } else if (!(validator.checkNick(clientNick.getText()))){
+            wrongData.setText("Podaj nick!!!");
             return;
         } else{
             wrongData.setText("Oczekiwanie na przeciwnika....");
