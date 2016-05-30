@@ -1,6 +1,5 @@
 package sample.controllers;
 
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +28,9 @@ public class LocalBoardController {
     private GameEngine gameEngine = GameEngine.getInstance();
     private Images images = new Images();
 
+    private CounterService blackCounter;
+    private CounterService whiteCounter;
+
     private String evenColor;
     private String oddColor;
 
@@ -45,27 +47,36 @@ public class LocalBoardController {
         GameEngine.getInstance().setChessLogicService(new ChessLogicService(new Board()));
         gameEngine.setServerRole(true);
 
-        if(GameEngine.getInstance().isServerRole()){
-            if(GameEngine.getInstance().getTimeGameMode()==-1){
-                GameEngine.getInstance().getCounterService().disableTimeOutMode();
-            }
-            else{
-                GameEngine.getInstance().getCounterService().enableTimeOutMode(Duration.ofMinutes(
-                        GameEngine.getInstance().getTimeGameMode()
+
+        blackCounter=new CounterService();
+        whiteCounter=new CounterService();
+
+        if(GameEngine.getInstance().getTimeGameMode()==-1){
+            blackCounter.disableTimeOutMode();
+            whiteCounter.disableTimeOutMode();
+        }
+        else{
+            blackCounter.enableTimeOutMode(Duration.ofMinutes(
+                    GameEngine.getInstance().getTimeGameMode()
                 ));
-            }
-            GameEngine.getInstance().getCounterService().stopTiming();
+
+            whiteCounter.enableTimeOutMode(Duration.ofMinutes(
+                GameEngine.getInstance().getTimeGameMode()
+            ));
         }
 
+        whiteCounter.stopTiming();
+        blackCounter.stopTiming();
 
+    }
+
+/*
         GameEngine.getInstance().getCounterService().setOnTimeOut(data->{
             Platform.runLater(()->{
                 onTimeOut(data);
             });
         });
-
-
-    }
+ */
 
     public void onEnemyTimeOut(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -244,7 +255,7 @@ public class LocalBoardController {
 
             gameEngine.setMoveX(GridPane.getColumnIndex(IV));
             gameEngine.setMoveY(GridPane.getRowIndex(IV));
-            boolean[][] possibleMoves = gameEngine.getChessLogicService().getPossibleMovesArray(GridPane.getColumnIndex(IV), GridPane.getRowIndex(IV));
+            boolean[][] possibleMoves = gameEngine.getChessLogicService().getPossibleMovesMask(GridPane.getColumnIndex(IV), GridPane.getRowIndex(IV));
 
 
             possibleMoves[gameEngine.getMoveX()][gameEngine.getMoveY()]=false;
