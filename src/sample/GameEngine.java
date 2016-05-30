@@ -31,7 +31,7 @@ public class GameEngine {
     @Getter @Setter
     TCPConnectionService tcpConnectionService;
 
-    @Getter @Setter
+    @Setter @Getter
     boolean serverRole;
 
     @Getter @Setter
@@ -81,4 +81,31 @@ public class GameEngine {
 
         GameEngine.getInstance().getCounterService().stopTiming();
     }
+
+
+    public String localMove(int x, int y){
+        chessLogicService.getBoard().setBoard(chessLogicService.move(chessLogicService.getBoard().getBoard(), moveX, moveY, x, y));
+        checkState = chessLogicService.getCheck();
+
+        String check = "";
+
+        if(checkState!=-1){
+            if(chessLogicService.getMat()){
+                check = "SZACH MAT";
+            }
+            else{
+                check = "SZACH";
+            }
+        }
+
+
+        // change player
+        chessLogicService.getBoard().setServerTurn(!serverRole);
+        serverRole = !serverRole;
+
+        GameEngine.getInstance().getCounterService().stopTiming();
+
+        return check;
+    }
+
 }

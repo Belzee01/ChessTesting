@@ -1,45 +1,29 @@
 package sample.controllers;
 
+
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.GameEngine;
 import sample.models.*;
-import sample.models.Board;
-import sample.models.CheckMessage;
-import sample.models.Images;
-import sample.models.Message;
 import sample.services.ChessLogicService;
 import sample.services.CounterService;
 
-import javax.swing.text.Style;
 import java.io.IOException;
-import java.net.URL;
 import java.time.Duration;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
-
-/**
- * Kontroler wyglądu szachownicy
- */
-public class BoardOverviewController{
+public class LocalBoardController {
     @FXML
     private GridPane gridPane;
     private GameEngine gameEngine = GameEngine.getInstance();
@@ -48,81 +32,31 @@ public class BoardOverviewController{
     private String evenColor;
     private String oddColor;
 
-    public BoardOverviewController() {
+    @FXML
+    private Label whiteTime;
+
+    @FXML
+    private Label blackTime;
+
+
+
+    public LocalBoardController() {
         GameEngine.getInstance().setCounterService(new CounterService());
         GameEngine.getInstance().setChessLogicService(new ChessLogicService(new Board()));
-
-
-        if(GameEngine.getInstance().isServerRole()){
-                if(GameEngine.getInstance().getTimeGameMode()==-1){
-                    GameEngine.getInstance().getCounterService().disableTimeOutMode();
-                }
-                else{
-                    GameEngine.getInstance().getCounterService().enableTimeOutMode(Duration.ofMinutes(
-                            GameEngine.getInstance().getTimeGameMode()
-                    ));
-                }
-                GameEngine.getInstance().getCounterService().stopTiming();
-        }
-
-        GameEngine.getInstance().getTcpConnectionService().setOnReceiveNewData(data -> {
-            Platform.runLater(() ->{
-                if(data instanceof TimeGameModeMessage){
-                    TimeGameModeMessage mode=(TimeGameModeMessage) data;
-                    if(mode.getTimeGameMode()==-1){
-                        GameEngine.getInstance().getCounterService().disableTimeOutMode();
-                    }
-                    else{
-                        GameEngine.getInstance().getCounterService().enableTimeOutMode(Duration.ofMinutes(mode.getTimeGameMode()));
-                    }
-                    GameEngine.getInstance().getCounterService().stopTiming();
-                    GameEngine.getInstance().setTimeGameMode(mode.getTimeGameMode());
-                }
-
-                if (data instanceof Board) {
-                    GameEngine.getInstance().getCounterService().startTiming();
-                    GameEngine.getInstance().getChessLogicService().setBoard((Board) data);
-                    Sounds.getInstance().opponentMove();
-                    refreshBoard();
-                }
-                if(data instanceof Message){
-                    GameEngine.getInstance().getCommunicationController().receive((Message)data);
-                }
-                if(data instanceof CheckMessage){
-                    CheckMessage msg=(CheckMessage) data;
-                    onCheckedAppear(msg.getCheckedColor());
-                }
-                if(data instanceof DrawRequest){
-                    showDrawRequest();
-                }
-                if(data instanceof DrawAnswer){
-                    DrawAnswer answer = (DrawAnswer)data;
-                    if(answer.isAccepted())
-                        showDrawAnswer(true);
-                    else
-                        showDrawAnswer(false);
-                }
-                if(data instanceof ResignationMessage){
-                    showResignationMessage();
-                }
-                if(data instanceof CheckMatMessage){
-                    onCheckMated();
-                    GameEngine.getInstance().getTcpConnectionService().sendObject(new CheckMatConfirmationMessage());
-                }
-                if(data instanceof CheckMatConfirmationMessage){
-                    onEnemyCheckMated();
-                }
-                if(data instanceof TimeOutMessage){
-                    onEnemyTimeOut();
-                }
-            });
-        });
+        gameEngine.setServerRole(true);
 
         if(GameEngine.getInstance().isServerRole()){
-            GameEngine.getInstance().getTcpConnectionService().sendObject(new TimeGameModeMessage(
-                    GameEngine.getInstance().getTimeGameMode()
-            ));
+            if(GameEngine.getInstance().getTimeGameMode()==-1){
+                GameEngine.getInstance().getCounterService().disableTimeOutMode();
+            }
+            else{
+                GameEngine.getInstance().getCounterService().enableTimeOutMode(Duration.ofMinutes(
+                        GameEngine.getInstance().getTimeGameMode()
+                ));
+            }
+            GameEngine.getInstance().getCounterService().stopTiming();
         }
+
 
         GameEngine.getInstance().getCounterService().setOnTimeOut(data->{
             Platform.runLater(()->{
@@ -130,8 +64,6 @@ public class BoardOverviewController{
             });
         });
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(BoardOverviewController.class.getResource("../view/ChatWindow.fxml"));
 
     }
 
@@ -180,22 +112,10 @@ public class BoardOverviewController{
         }
     }
 
-    public void onCheckedAppear(int checkColor){
-        GameEngine.getInstance().setCheckState(checkColor);
-        int myColor=0;
-        if(GameEngine.getInstance().isServerRole()==false){
-            myColor=1;
-        }
-        if(myColor==checkColor){
-            onChecked();
-        }
-        else{
-            onEnemyChecked();
-        }
-    }
+
     public void onEnemyCheckMated(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("KONIEC GRY - WYGRAŁEŚ");
+        alert.setContentText("KONIEC GRY");
         alert.setHeaderText(null);
         alert.setTitle(null);
         alert.setGraphic(null);
@@ -217,7 +137,7 @@ public class BoardOverviewController{
 
     public void onCheckMated(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("KONIEC GRY - PRZEGRAŁEŚ");
+        alert.setContentText("KONIEC GRY");
         alert.setHeaderText(null);
         alert.setTitle(null);
         alert.setGraphic(null);
@@ -237,7 +157,6 @@ public class BoardOverviewController{
     }
 
     public void onChecked(){
-        System.out.println("I'm checked");
         Alert alert = new Alert(Alert.AlertType.INFORMATION,"SZACH");
         alert.setHeaderText(null);
         alert.setTitle(null);
@@ -245,9 +164,7 @@ public class BoardOverviewController{
         alert.setWidth(300);
         alert.show();
     }
-    public void onEnemyChecked(){
-        System.out.println("Enemy checked");
-    }
+
     /**
      * Inicjalizacja koloru pól szachownicy
      */
@@ -323,7 +240,6 @@ public class BoardOverviewController{
      * @param IV obiekt klasy ImageView dla którego sprawdzane są możliwe ruchy
      */
     private void showMoves(ImageView IV) {
-        if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
             refreshBoard();
 
             gameEngine.setMoveX(GridPane.getColumnIndex(IV));
@@ -345,7 +261,6 @@ public class BoardOverviewController{
                     }
                 }
             }
-        }
     }
 
     /**
@@ -353,63 +268,38 @@ public class BoardOverviewController{
      * @param iv - obiekt klasy ImageView; miejsce w które zostaje przesunięta figura dla której metoda zostaje wywołana
      */
     private void move(ImageView iv) {
-        if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
-            gameEngine.move(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
+        String check = gameEngine.localMove(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
 
-            refreshBoard();
+        refreshBoard();
+
+        if(!check.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText(check);
+            alert.setHeaderText(null);
+            alert.setTitle(null);
+            alert.setGraphic(null);
+
+            alert.showAndWait();
+
+        }
+
+        if(check.equals("SZACH MAT")){
+           endGame(gameEngine.isServerRole() ? "BIAŁE" : "CZARNE");
         }
     }
 
-    /**
-     * Metoda wyświetlająca komunikat z informacją, że przeciwnik zaproponował remis.
-     */
-    public void showDrawRequest(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("Przeciwnik zaproponował remis.\nZgadzasz się?");
-        alert.setHeaderText(null);
-        alert.setTitle(null);
-        alert.setGraphic(null);
 
-        ButtonType YES = new ButtonType("Tak");
-        ButtonType NO = new ButtonType("Nie");
-
-        alert.getButtonTypes().setAll(YES,NO);
-
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if(result.get() == YES){
-            acceptDraw();
-        } else if(result.get() == NO){
-            declineDraw();
-        }
-    }
-
-    /**
-     * Metoda wyświetlająca komunikat z odpowiedzią na opozycję remisu
-     * @param accepted - true-remis zaakceptowany, false-propozycja remisu odrzucona
-     */
-    public void showDrawAnswer(boolean accepted){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        if(accepted==true)
-            alert.setContentText("Przeciwnik zaakceptował remis.");
-        else
-            alert.setContentText("Przeciwnik odrzucił remis.");
-        alert.setHeaderText(null);
-        alert.setTitle(null);
-        alert.setGraphic(null);
-
-        alert.showAndWait();
-
-        if(accepted==true)
-            makeDraw();
-    }
 
     /**
      * Metoda wyświetlająca informację, że przeciwnik zrezygnował z gry i kończąca grę.
      */
-    public void showResignationMessage(){
+    public void endGame(String winner){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("PRZECIWNIK ZREZYGNOWAŁ - WYGRANA");
+        if(winner==null)
+            winner = "";
+        else
+            winner = " - WYGRAŁY "+winner;
+        alert.setContentText("KONIEC GRY"+winner);
         alert.setHeaderText(null);
         alert.setTitle(null);
         alert.setGraphic(null);
@@ -430,45 +320,8 @@ public class BoardOverviewController{
     }
 
 
-    /**
-     * Metoda wysyłająca przeciwnikowi informację o zaakceptowaniu propozycji remisu.
-     */
-    public void acceptDraw(){
-        DrawAnswer answer = new DrawAnswer(true);
-        GameEngine.getInstance().getTcpConnectionService().sendObject(answer);
-        makeDraw();
-    }
-
-    public void declineDraw(){
-        DrawAnswer answer = new DrawAnswer(false);
-        GameEngine.getInstance().getTcpConnectionService().sendObject(answer);
-    }
-
-
-    public void makeDraw(){
-        /* KONIEC GRY - REMIS */
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("KONIEC GRY - REMIS");
-        alert.setHeaderText(null);
-        alert.setTitle(null);
-        alert.setGraphic(null);
-
-        ButtonType back = new ButtonType("Wróć do menu");
-        ButtonType show = new ButtonType("Pokaż historię ruchów");
-
-        alert.getButtonTypes().setAll(back,show);
-
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if(result.get() == back){
-            backToMenu();
-        } else if(result.get() == show){
-            showMovesHistory();
-        }
-    }
-
     public void backToMenu(){
-        Stage stage = (Stage) GameEngine.getInstance().getCommunicationController().getResignButton().getScene().getWindow();
+        Stage stage = (Stage) gridPane.getScene().getWindow();
         AnchorPane anchorPane = new AnchorPane();
         try{
             anchorPane = FXMLLoader.load(getClass().getResource("../view/newGame.fxml"));
@@ -487,7 +340,7 @@ public class BoardOverviewController{
      * Metoda wyświetlająca okno z historią ruchów
      */
     public void showMovesHistory(){
-        Stage stage = (Stage) GameEngine.getInstance().getCommunicationController().getResignButton().getScene().getWindow();
+        Stage stage = (Stage) gridPane.getScene().getWindow();
         Parent root = new Parent(){};
         try{
             root = FXMLLoader.load(getClass().getResource("../view/MovesHistory.fxml"));
