@@ -1,5 +1,6 @@
 package sample.controllers;
 
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,7 @@ import sample.services.CounterService;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class LocalBoardController {
@@ -27,9 +29,6 @@ public class LocalBoardController {
     private GridPane gridPane;
     private GameEngine gameEngine = GameEngine.getInstance();
     private Images images = new Images();
-
-    private CounterService blackCounter;
-    private CounterService whiteCounter;
 
     private String evenColor;
     private String oddColor;
@@ -47,36 +46,27 @@ public class LocalBoardController {
         GameEngine.getInstance().setChessLogicService(new ChessLogicService(new Board()));
         gameEngine.setServerRole(true);
 
-
-        blackCounter=new CounterService();
-        whiteCounter=new CounterService();
-
-        if(GameEngine.getInstance().getTimeGameMode()==-1){
-            blackCounter.disableTimeOutMode();
-            whiteCounter.disableTimeOutMode();
-        }
-        else{
-            blackCounter.enableTimeOutMode(Duration.ofMinutes(
-                    GameEngine.getInstance().getTimeGameMode()
+        if(GameEngine.getInstance().isServerRole()){
+            if(GameEngine.getInstance().getTimeGameMode()==-1){
+                GameEngine.getInstance().getCounterService().disableTimeOutMode();
+            }
+            else{
+                GameEngine.getInstance().getCounterService().enableTimeOutMode(Duration.ofMinutes(
+                        GameEngine.getInstance().getTimeGameMode()
                 ));
-
-            whiteCounter.enableTimeOutMode(Duration.ofMinutes(
-                GameEngine.getInstance().getTimeGameMode()
-            ));
+            }
+            GameEngine.getInstance().getCounterService().stopTiming();
         }
 
-        whiteCounter.stopTiming();
-        blackCounter.stopTiming();
 
-    }
-
-/*
         GameEngine.getInstance().getCounterService().setOnTimeOut(data->{
             Platform.runLater(()->{
                 onTimeOut(data);
             });
         });
- */
+
+
+    }
 
     public void onEnemyTimeOut(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -251,11 +241,28 @@ public class LocalBoardController {
      * @param IV obiekt klasy ImageView dla którego sprawdzane są możliwe ruchy
      */
     private void showMoves(ImageView IV) {
-            refreshBoard();
+        refreshBoard();
 
-            gameEngine.setMoveX(GridPane.getColumnIndex(IV));
-            gameEngine.setMoveY(GridPane.getRowIndex(IV));
-            boolean[][] possibleMoves = gameEngine.getChessLogicService().getPossibleMovesMask(GridPane.getColumnIndex(IV), GridPane.getRowIndex(IV));
+        gameEngine.setMoveX(GridPane.getColumnIndex(IV));
+        gameEngine.setMoveY(GridPane.getRowIndex(IV));
+
+        String [] availableMovesList=gameEngine.getChessLogicService().getPossibleMoves(
+                gameEngine.getInstance().getChessLogicService().getBoard().getBoard(),
+                GridPane.getColumnIndex(IV),
+                GridPane.getRowIndex(IV)
+        );
+
+        ArrayList<String> listOfSaveMoves=new ArrayList<String>();
+
+        for(int i=0;i<availableMovesList.length;i++) {
+            ChessLogicService localService = new ChessLogicService();
+            localService.setBoard(new Board(availableMovesList[i], false));
+
+            if(localService.getCheck()!=(gameEngine.isServerRole()?0:1)) {
+                listOfSaveMoves.add(availableMovesList[i]);
+            }
+        }
+        boolean[][] possibleMoves = gameEngine.getChessLogicService().getPossibleMovesMask(listOfSaveMoves);
 
 
             possibleMoves[gameEngine.getMoveX()][gameEngine.getMoveY()]=false;
@@ -295,7 +302,7 @@ public class LocalBoardController {
         }
 
         if(check.equals("SZACH MAT")){
-           endGame(gameEngine.isServerRole() ? "BIAŁE" : "CZARNE");
+           endGame(gameEngine.isServerRole() ? "CZARNE" : "BIAŁE");
         }
     }
 

@@ -14,6 +14,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import sample.GameEngine;
 import sample.models.StyleCss;
 
 import java.io.IOException;

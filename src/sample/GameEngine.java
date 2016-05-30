@@ -7,6 +7,7 @@ import sample.models.CheckMessage;
 import sample.models.CheckMatMessage;
 import sample.services.ChessLogicService;
 import sample.services.CounterService;
+import sample.services.HistoryService;
 import sample.services.TCPConnectionService;
 
 /**
@@ -40,8 +41,10 @@ public class GameEngine {
     @Getter
     CommunicationController communicationController;
 
+    @Getter @Setter
+    HistoryService historyService = new HistoryService();
+
     public void setCommunicationController(CommunicationController cc){
-        System.out.println("Tworze communication controller");
         communicationController=cc;
     }
 
@@ -61,6 +64,7 @@ public class GameEngine {
     public static final String COLOR = "WHITE";
 
     public void move(int x, int y) {
+        GameEngine.getInstance().getHistoryService().addBoard(chessLogicService.getBoard());
         chessLogicService.getBoard().setBoard(chessLogicService.move(chessLogicService.getBoard().getBoard(), moveX, moveY, x, y));
         checkState = chessLogicService.getCheck();
 
@@ -84,6 +88,7 @@ public class GameEngine {
 
 
     public String localMove(int x, int y){
+        GameEngine.getInstance().getHistoryService().addBoard(chessLogicService.getBoard());
         chessLogicService.getBoard().setBoard(chessLogicService.move(chessLogicService.getBoard().getBoard(), moveX, moveY, x, y));
         checkState = chessLogicService.getCheck();
 

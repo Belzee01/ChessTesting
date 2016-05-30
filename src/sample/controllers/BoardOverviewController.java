@@ -71,6 +71,7 @@ public class BoardOverviewController{
                 }
 
                 if (data instanceof Board) {
+                    GameEngine.getInstance().getHistoryService().addBoard((Board) data);
                     GameEngine.getInstance().getCounterService().startTiming();
                     GameEngine.getInstance().getChessLogicService().setBoard((Board) data);
                     Sounds.getInstance().opponentMove();
