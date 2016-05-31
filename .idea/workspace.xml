@@ -1,36 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/sample/controllers/LocalBoardController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/sample/services/BoardValidator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/sample/view/LocalBoardOverview.fxml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/target/classes/sample/view/LocalBoardOverview.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SecondTry.iml" afterPath="$PROJECT_DIR$/SecondTry.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/GameEngine.java" afterPath="$PROJECT_DIR$/src/sample/GameEngine.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/controllers/BoardOverviewController.java" afterPath="$PROJECT_DIR$/src/sample/controllers/BoardOverviewController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/controllers/CommunicationController.java" afterPath="$PROJECT_DIR$/src/sample/controllers/CommunicationController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/controllers/LocalGameController.java" afterPath="$PROJECT_DIR$/src/sample/controllers/LocalGameController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/controllers/MovesHistoryController.java" afterPath="$PROJECT_DIR$/src/sample/controllers/MovesHistoryController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/controllers/OptionsController.java" afterPath="$PROJECT_DIR$/src/sample/controllers/OptionsController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/models/Board.java" afterPath="$PROJECT_DIR$/src/sample/models/Board.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/services/ChessLogicService.java" afterPath="$PROJECT_DIR$/src/sample/services/ChessLogicService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/services/HistoryService.java" afterPath="$PROJECT_DIR$/src/sample/services/HistoryService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/view/MovesHistory.fxml" afterPath="$PROJECT_DIR$/src/sample/view/MovesHistory.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/view/Options.fxml" afterPath="$PROJECT_DIR$/src/sample/view/Options.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/view/RootLayout.fxml" afterPath="$PROJECT_DIR$/src/sample/view/RootLayout.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/view/gameType.fxml" afterPath="$PROJECT_DIR$/src/sample/view/gameType.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/view/localGameCreating.fxml" afterPath="$PROJECT_DIR$/src/sample/view/localGameCreating.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/view/networkGameCreating.fxml" afterPath="$PROJECT_DIR$/src/sample/view/networkGameCreating.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/ChessLogicServiceTest.java" afterPath="$PROJECT_DIR$/src/test/ChessLogicServiceTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/sample/view/MovesHistory.fxml" afterPath="$PROJECT_DIR$/target/classes/sample/view/MovesHistory.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/sample/view/Options.fxml" afterPath="$PROJECT_DIR$/target/classes/sample/view/Options.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/sample/view/RootLayout.fxml" afterPath="$PROJECT_DIR$/target/classes/sample/view/RootLayout.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/sample/view/gameType.fxml" afterPath="$PROJECT_DIR$/target/classes/sample/view/gameType.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/sample/view/localGameCreating.fxml" afterPath="$PROJECT_DIR$/target/classes/sample/view/localGameCreating.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/sample/view/networkGameCreating.fxml" afterPath="$PROJECT_DIR$/target/classes/sample/view/networkGameCreating.fxml" />
-    </list>
+    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="" />
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -160,7 +131,7 @@
       <file leaf-file-name="LocalBoardController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sample/controllers/LocalBoardController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.35893154">
+            <state vertical-scroll-proportion="0.50233644">
               <caret line="246" column="73" selection-start-line="246" selection-start-column="73" selection-end-line="246" selection-end-column="73" />
               <folding />
             </state>
@@ -1248,7 +1219,7 @@
       <workItem from="1464634308371" duration="72000" />
       <workItem from="1464634424708" duration="39000" />
       <workItem from="1464634490033" duration="606000" />
-      <workItem from="1464684688613" duration="51000" />
+      <workItem from="1464684688613" duration="81000" />
     </task>
     <servers />
   </component>
@@ -1285,7 +1256,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="105851000" />
+    <option name="totallyTimeSpent" value="105881000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1297,7 +1268,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1360" height="743" extended-state="1" />
+    <frame x="0" y="0" width="1360" height="743" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1306,9 +1277,9 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32695374" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32852808" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32695374" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27316293" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27316293" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2636778" sideWeight="0.6703755" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2636778" sideWeight="0.6703755" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32882884" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24967825" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1731,7 +1702,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/controllers/LocalBoardController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35893154">
+        <state vertical-scroll-proportion="0.50233644">
           <caret line="246" column="73" selection-start-line="246" selection-start-column="73" selection-end-line="246" selection-end-column="73" />
           <folding />
         </state>
