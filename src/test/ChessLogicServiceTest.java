@@ -2,7 +2,6 @@ package test;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.omg.PortableInterceptor.ORBInitInfoPackage.DuplicateName;
 import sample.models.Board;
 import sample.services.ChessLogicService;
 
@@ -67,7 +66,7 @@ public class ChessLogicServiceTest {
         assertEquals(logicService.move(boardInitializer, x1, y1, x2, y2), newBoard);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void testMoveMethodWithEdgeValues_LessThanZeroInitialValues(){
         /**
          * Error within method move, if initial xy are less than 0, method will acquire position of figure as 0
@@ -87,7 +86,7 @@ public class ChessLogicServiceTest {
         assertEquals(logicService.move(boardInitializer2, x1a, y1a, x2a, y2a), newBoard2);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void testMoveMethodWithEdgeValues_GreaterThanNineInitialValues(){
         /**
          * Error within method move, if initial xy are greater than 7, method will acquire position of figure as 0
@@ -107,7 +106,7 @@ public class ChessLogicServiceTest {
         assertEquals(logicService.move(boardInitializer3, x1b, y1b, x2b, y2b), newBoard3);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void testMoveMethodWithEdgeValues_LessThanZeroSecondValues(){
         /**
          * Error within method move, if second xy are less than 0, method will move figure to position 0
@@ -127,7 +126,7 @@ public class ChessLogicServiceTest {
         assertEquals(logicService.move(boardInitializer1, x1b, y1b, x2b, y2b), newBoard1);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void testMoveMethodWithEdgeValues_GreaterThanSevenSecondValues(){
         /**
          * Error within method move, if second xy are greater than 7, method will move figure to position 0
@@ -147,7 +146,7 @@ public class ChessLogicServiceTest {
         assertEquals(logicService.move(boardInitializer1, x1b, y1b, x2b, y2b), newBoard1);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void testMoveMethodWithNullValue(){
         /**
          * Method doesn't check if object arguments aren't null
@@ -167,7 +166,7 @@ public class ChessLogicServiceTest {
         assertEquals(logicService.move(boardInitializer1, x1b, y1b, x2b, y2b), newBoard1);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void testMoveMethodWithNotProperInput(){
         /**
          * Method does not check if given Strings are in proper format
@@ -201,7 +200,7 @@ public class ChessLogicServiceTest {
         }
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void testGetPossibleMovesMethodWithNullValue(){
         /**
          * Error, method does not check if given String is not null
@@ -223,7 +222,7 @@ public class ChessLogicServiceTest {
         assertArrayEquals(emptyArray, logicService.getPossibleMoves(newBoard1, false));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testGetPossibleMovesMethodWithInvalidBoard(){
         String newBoard1         = "llllllll" + "        " + "        " + "        " + "        "
                 + "        " + "        " + "zzzzzzzz";
@@ -243,7 +242,7 @@ public class ChessLogicServiceTest {
         assertArrayEquals(emptyArray, logicService.getPossibleMoves(newBoard1, false));
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void testGetPossibleMovesMethodWithInvalidFormatOfBoard(){
         /**
          * "StringIndexOutOfBoundsException: String index out of range: 56"
@@ -281,13 +280,13 @@ public class ChessLogicServiceTest {
             System.out.print(s+", ");
         }System.out.print("\n");
 
-        for(boolean[] b: logicService.getPossibleMovesArray(0, 5)){
+        for(boolean[] b: logicService.getPossibleMovesMask(0, 5)){
             for (boolean k: b){
                 System.out.print(k+", ");
             }System.out.print("\n");
         }
 
-        assertArrayEquals(logicService.getPossibleMovesArray(0, 5), arrayBoard);
+        assertArrayEquals(logicService.getPossibleMovesMask(0, 5), arrayBoard);
     }
 
     @Test
@@ -305,7 +304,7 @@ public class ChessLogicServiceTest {
         assertArrayEquals(logicService.getFiguresArray(), figures);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void testGetFiguresArrayWithInvalidInput(){
         /**
          * Method does not check validity of given String
@@ -319,16 +318,19 @@ public class ChessLogicServiceTest {
                 figures[i][j] = boardInitializer1.charAt(j + (7-i)*8);
             }
         }
-
+        // TODO: 30.05.16 jak to ma działać ?
+        logicService.setBoard(new Board(boardInitializer1,false));
         assertArrayEquals(logicService.getFiguresArray(), figures);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void testGetFiguresArrayWithInvalidFormatString(){
         /**
          * Method does not check validity of format of given String
          */
-        String boardInitializer1 = "rnbqkbnr" + "pppppppp" + "        ";
+
+        String boardInitializer1= "rnbqkbnr" + "pppppppp" + "        " + "        " + "        "
+                + "        " + "PPPPPPPP" + "RNBQKBNR";
 
         char[][] figures = new char[8][8];
         for(int i=0;i<8;i++){
@@ -336,17 +338,21 @@ public class ChessLogicServiceTest {
                 figures[i][j] = boardInitializer1.charAt(j + (7-i)*8);
             }
         }
+
+        boardInitializer1 = "rnbqkbnr" + "pppppppp" + "        ";
+
         logicService.setBoard(new Board(boardInitializer1, false));
         assertArrayEquals(logicService.getFiguresArray(), figures);
 
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void testGetFiguresArrayWithNullValue(){
         /**
          * Method does not check if board is not null
          */
-        String boardInitializer1 = null;
+        String boardInitializer1 = "rnbqkbnr" + "pppppppp" + "        " + "        " + "        "
+                + "        " + "PPPPPPPP" + "RNBQKBNR";
 
         char[][] figures = new char[8][8];
         for(int i=0;i<8;i++){
@@ -354,6 +360,9 @@ public class ChessLogicServiceTest {
                 figures[i][j] = boardInitializer1.charAt(j + (7-i)*8);
             }
         }
+
+        boardInitializer1=null;
+
         logicService.setBoard(new Board(boardInitializer1, false));
         assertArrayEquals(logicService.getFiguresArray(), figures);
     }
@@ -385,7 +394,12 @@ public class ChessLogicServiceTest {
     }
 
     @Test
+    /**
+     * Test passed
+     * validation on upper stage
+     */
     public void testGetCheckWithInvalidInput(){
+
         /**
          * Method should check if there is game over
          */
@@ -393,7 +407,7 @@ public class ChessLogicServiceTest {
                 + "        " + "PPPPPpPP" + "RNBQ BNR";
 
         logicService.setBoard(new Board(boardInitializer1, false));
-        assertEquals(logicService.getCheck(), -1);
+        assertEquals(logicService.getCheck(), 1);
     }
 
     @Test
@@ -417,7 +431,7 @@ public class ChessLogicServiceTest {
         assertArrayEquals(possibleMove, logicService.getPossibleMoves(boardInitializer, 0, 7));
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void testGetPossibleMovesXYWithInvalidInput(){
         /**
          * Method does not check if given String is correct
@@ -431,7 +445,7 @@ public class ChessLogicServiceTest {
         assertArrayEquals(possibleMove, logicService.getPossibleMoves(boardInitializer, 0, 6));
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void testGetPossibleMovesXYWithNullValue(){
         /**
          * Method does not check if given String is not null

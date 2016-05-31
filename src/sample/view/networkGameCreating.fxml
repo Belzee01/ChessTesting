@@ -12,13 +12,13 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.GameCreatingController">
   <tabs>
-    <Tab text="Stwórz grę" id="Setup">
+    <Tab id="Setup" text="Stwórz grę">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label layoutX="76.0" layoutY="65.0" prefHeight="29.0" prefWidth="119.0" text="Twój adres IP" />
+                  <Label layoutX="62.0" layoutY="65.0" prefHeight="29.0" prefWidth="119.0" text="Twój adres IP" />
                   <TextField fx:id="serverNick" layoutX="235.0" layoutY="193.0" />
-                  <Label layoutX="76.0" layoutY="191.0" prefHeight="29.0" prefWidth="119.0" text="Podaj swój nick" />
+                  <Label layoutX="62.0" layoutY="191.0" prefHeight="29.0" prefWidth="119.0" text="Podaj swój nick" />
                   <Label layoutX="62.0" layoutY="128.0" prefHeight="29.0" prefWidth="148.0" text="Podaj numer portu" />
                   <TextField fx:id="listeningPortNumber" layoutX="235.0" layoutY="128.0" prefHeight="25.0" prefWidth="68.0" />
                   <Label fx:id="myIP" layoutX="235.0" layoutY="65.0" prefHeight="29.0" prefWidth="170.0" text="192.168.0.1" />
@@ -38,7 +38,7 @@
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab text="Dołącz do gry" id="Join">
+      <Tab id="Join" text="Dołącz do gry">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>

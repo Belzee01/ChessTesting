@@ -36,10 +36,13 @@ public class OptionsController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         stylesList = FXCollections.observableArrayList("classic", "dark", "blue", "green", "yellow");
+
         stylesBox.setItems(stylesList);
+        stylesBox.getSelectionModel().select(0);
 
         soundsList = FXCollections.observableArrayList("Bez dźwięku", "default sound");
         soundsBox.setItems(soundsList);
+        soundsBox.getSelectionModel().select(0);
     }
 
     /**

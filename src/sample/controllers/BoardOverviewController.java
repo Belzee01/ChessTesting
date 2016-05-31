@@ -1,23 +1,16 @@
 package sample.controllers;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.GameEngine;
 import sample.models.*;
@@ -28,12 +21,10 @@ import sample.models.Message;
 import sample.services.ChessLogicService;
 import sample.services.CounterService;
 
-import javax.swing.text.Style;
 import java.io.IOException;
-import java.net.URL;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 
 /**
@@ -136,8 +127,12 @@ public class BoardOverviewController{
     }
 
     public void onEnemyTimeOut(){
+        displayGameEndAlert("KONIEC GRY - PRZECIWNIKOWI SKOŃCZYŁ SIĘ CZAS");
+    }
+
+    public void displayGameEndAlert(String message){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("KONIEC GRY - PRZECIWNIKOWI SKOŃCZYŁ SIĘ CZAS");
+        alert.setContentText(message);
         alert.setHeaderText(null);
         alert.setTitle(null);
         alert.setGraphic(null);
@@ -159,25 +154,7 @@ public class BoardOverviewController{
     public void onTimeOut(Duration d){
         GameEngine.getInstance().getCounterService().stopTiming();
         GameEngine.getInstance().getTcpConnectionService().sendObject(new TimeOutMessage());
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("KONIEC GRY - SKOŃCZYŁ CI SIĘ CZAS");
-        alert.setHeaderText(null);
-        alert.setTitle(null);
-        alert.setGraphic(null);
-
-        ButtonType back = new ButtonType("Wróć do menu");
-        ButtonType show = new ButtonType("Pokaż historię ruchów");
-
-        alert.getButtonTypes().setAll(back,show);
-
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if(result.get() == back){
-            backToMenu();
-        } else if(result.get() == show){
-            showMovesHistory();
-        }
+        displayGameEndAlert("KONIEC GRY - SKOŃCZYŁ CI SIĘ CZAS");
     }
 
     public void onCheckedAppear(int checkColor){
@@ -194,46 +171,11 @@ public class BoardOverviewController{
         }
     }
     public void onEnemyCheckMated(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("KONIEC GRY - WYGRAŁEŚ");
-        alert.setHeaderText(null);
-        alert.setTitle(null);
-        alert.setGraphic(null);
-
-        ButtonType back = new ButtonType("Wróć do menu");
-        ButtonType show = new ButtonType("Pokaż historię ruchów");
-
-        alert.getButtonTypes().setAll(back,show);
-
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if(result.get() == back){
-            backToMenu();
-        } else if(result.get() == show){
-            showMovesHistory();
-        }
-
+        displayGameEndAlert("KONIEC GRY - WYGRAŁEŚ");
     }
 
     public void onCheckMated(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("KONIEC GRY - PRZEGRAŁEŚ");
-        alert.setHeaderText(null);
-        alert.setTitle(null);
-        alert.setGraphic(null);
-
-        ButtonType back = new ButtonType("Wróć do menu");
-        ButtonType show = new ButtonType("Pokaż historię ruchów");
-
-        alert.getButtonTypes().setAll(back,show);
-
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if(result.get() == back){
-            backToMenu();
-        } else if(result.get() == show){
-            showMovesHistory();
-        }
+        displayGameEndAlert("KONIEC GRY - PRZEGRAŁEŚ");
     }
 
     public void onChecked(){
@@ -328,8 +270,24 @@ public class BoardOverviewController{
 
             gameEngine.setMoveX(GridPane.getColumnIndex(IV));
             gameEngine.setMoveY(GridPane.getRowIndex(IV));
-            boolean[][] possibleMoves = gameEngine.getChessLogicService().getPossibleMovesArray(GridPane.getColumnIndex(IV), GridPane.getRowIndex(IV));
 
+            String [] availableMovesList=gameEngine.getChessLogicService().getPossibleMoves(
+                    gameEngine.getInstance().getChessLogicService().getBoard().getBoard(),
+                    GridPane.getColumnIndex(IV),
+                    GridPane.getRowIndex(IV)
+            );
+
+            ArrayList<String> listOfSaveMoves=new ArrayList<String>();
+
+            for(int i=0;i<availableMovesList.length;i++) {
+                ChessLogicService localService = new ChessLogicService();
+                localService.setBoard(new Board(availableMovesList[i], false));
+
+                if(localService.getCheck()!=(gameEngine.isServerRole()?0:1)) {
+                    listOfSaveMoves.add(availableMovesList[i]);
+                }
+            }
+            boolean[][] possibleMoves = gameEngine.getChessLogicService().getPossibleMovesMask(listOfSaveMoves);
 
             possibleMoves[gameEngine.getMoveX()][gameEngine.getMoveY()]=false;
 
@@ -354,9 +312,10 @@ public class BoardOverviewController{
      */
     private void move(ImageView iv) {
         if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
-            gameEngine.move(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
 
-            refreshBoard();
+                gameEngine.move(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
+                refreshBoard();
+
         }
     }
 
@@ -408,25 +367,7 @@ public class BoardOverviewController{
      * Metoda wyświetlająca informację, że przeciwnik zrezygnował z gry i kończąca grę.
      */
     public void showResignationMessage(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("PRZECIWNIK ZREZYGNOWAŁ - WYGRANA");
-        alert.setHeaderText(null);
-        alert.setTitle(null);
-        alert.setGraphic(null);
-
-        ButtonType back = new ButtonType("Wróć do menu");
-        ButtonType show = new ButtonType("Pokaż historię ruchów");
-
-        alert.getButtonTypes().setAll(back,show);
-
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if(result.get() == back){
-            backToMenu();
-        } else if(result.get() == show){
-            showMovesHistory();
-        }
-
+        displayGameEndAlert("PRZECIWNIK ZREZYGNOWAŁ - WYGRANA");
     }
 
 
@@ -447,24 +388,7 @@ public class BoardOverviewController{
 
     public void makeDraw(){
         /* KONIEC GRY - REMIS */
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("KONIEC GRY - REMIS");
-        alert.setHeaderText(null);
-        alert.setTitle(null);
-        alert.setGraphic(null);
-
-        ButtonType back = new ButtonType("Wróć do menu");
-        ButtonType show = new ButtonType("Pokaż historię ruchów");
-
-        alert.getButtonTypes().setAll(back,show);
-
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if(result.get() == back){
-            backToMenu();
-        } else if(result.get() == show){
-            showMovesHistory();
-        }
+        displayGameEndAlert("KONIEC GRY - REMIS");
     }
 
     public void backToMenu(){
