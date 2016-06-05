@@ -1,13 +1,19 @@
 package test;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
+import sample.GameEngine;
 import sample.Main;
 
 import static org.junit.Assert.assertEquals;
@@ -322,6 +328,12 @@ public class IntegrationTests extends ApplicationTest{
         TextField textField1 = find("#serverNick");
         textField1.setText("a");
 
+        ComboBox comboBox = (ComboBox)find("#networkGameTimeBox");
+
+        clickOn(comboBox);
+        ObservableList<String> stringObservableList = comboBox.getItems();
+        clickOn(stringObservableList.get(1));
+
         assertNotEquals(find("#createGameButton"), null);
         clickOn((Button)find("#createGameButton"));
 
@@ -354,6 +366,123 @@ public class IntegrationTests extends ApplicationTest{
         clickOn(button2);
 
         Thread.sleep(20000);
+    }
+
+    /**
+     * Test if turn change works properly
+     * @throws InterruptedException
+     */
+    @Test
+    public void testLocalGameCreated() throws InterruptedException {
+        Button button = find("#newGameButton");
+        assertNotEquals(button, null);
+
+        clickOn(button);
+        clickOn("#localGameButton");
+
+        clickOn("#localGameTimeBox");
+        ComboBox<String> comboBox = find("#localGameTimeBox");
+        ObservableList<String> stringObservableList = comboBox.getItems();
+        clickOn(stringObservableList.get(1));
+
+        clickOn("#startLocalGame");
+
+        GridPane gridPane = find("#gridPane");
+        clickOn(gridPane.getChildren().get(57));
+
+        clickOn(gridPane.getChildren().get(40));
+
+        clickOn(gridPane.getChildren().get(40));
+
+        clickOn(gridPane.getChildren().get(57));
+
+        clickOn(gridPane.getChildren().get(9));
+
+        clickOn(gridPane.getChildren().get(17));
+    }
+
+    /**
+     * Test if next boards are properly recorded by history service
+     * Standard check if for valid input we receive valid output
+     */
+    @Test
+    public void testHistoryService() throws InterruptedException {
+        Button button = find("#newGameButton");
+        assertNotEquals(button, null);
+
+        clickOn(button);
+
+        Button button1 = find("#networkGameButton");
+        assertNotEquals(button1, null);
+
+        clickOn(button1);
+
+        clickOn("#Join");
+
+        TextField textField = find("#hostPortNumber");
+        textField.setText("50000");
+        TextField textField1 = find("#clientNick");
+        textField1.setText("b");
+        TextField textField2 = find("#hostIP");
+        textField2.setText("10.20.106.251");
+
+        Button button2 = find("#joinGameButton");
+        assertNotEquals(button2, null);
+        clickOn(button2);
+
+        Thread.sleep(3000);
+        GridPane gridPane = find("#gridPane");
+        clickOn(gridPane.getChildren().get(55));
+        clickOn(gridPane.getChildren().get(47));
+
+        clickOn(gridPane.getChildren().get(8));
+        clickOn(gridPane.getChildren().get(16));
+        clickOn(gridPane.getChildren().get(16));
+        clickOn(gridPane.getChildren().get(24));
+
+        String boardInitializer1 = "rnbqkbnr" + "pppppppp" + "        " + "        " + "        "
+                + "P       " + " PPPPPPP" + "RNBQKBNR";
+
+        String boardInitializer2 = "rnbqkbnr" + "ppppppp " + "       p" + "        " + "        "
+                + "P       " + " PPPPPPP" + "RNBQKBNR";
+
+        assertEquals(GameEngine.getInstance().getHistoryService().current().getBoard(), boardInitializer2);
+        assertEquals(GameEngine.getInstance().getHistoryService().prev().getBoard(), boardInitializer1);
+
+    }
+
+    @Test
+    public void testCheckAndMat(){
+        Button button = find("#newGameButton");
+        assertNotEquals(button, null);
+
+        clickOn(button);
+        clickOn("#localGameButton");
+
+        clickOn("#localGameTimeBox");
+        ComboBox<String> comboBox = find("#localGameTimeBox");
+        ObservableList<String> stringObservableList = comboBox.getItems();
+        clickOn(stringObservableList.get(1));
+
+        clickOn("#startLocalGame");
+
+        GridPane gridPane = find("#gridPane");
+        ObservableList<Node> simulation = gridPane.getChildren();
+        clickOn(gridPane.getChildren().get(52));
+        clickOn(simulation.get(36));
+        clickOn(simulation.get(8));
+        clickOn(simulation.get(16));
+        clickOn(simulation.get(61));
+        clickOn(simulation.get(34));
+        clickOn(simulation.get(16));
+        clickOn(simulation.get(24));
+        clickOn(simulation.get(59));
+        clickOn(simulation.get(45));
+        clickOn(simulation.get(24));
+        clickOn(simulation.get(32));
+
+        clickOn(simulation.get(45));
+        clickOn(simulation.get(13));
     }
 
 }

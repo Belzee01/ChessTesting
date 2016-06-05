@@ -14,10 +14,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import sample.GameEngine;
 import sample.models.*;
-import sample.models.Board;
-import sample.models.CheckMessage;
-import sample.models.Images;
-import sample.models.Message;
 import sample.services.ChessLogicService;
 import sample.services.CounterService;
 
@@ -30,6 +26,7 @@ import java.util.Optional;
 /**
  * Kontroler wyglądu szachownicy
  */
+@SuppressWarnings("Duplicates")
 public class BoardOverviewController{
     @FXML
     private GridPane gridPane;
@@ -71,9 +68,10 @@ public class BoardOverviewController{
                 }
 
                 if (data instanceof Board) {
+                    GameEngine.getInstance().getHistoryService().addBoard((Board) data);
                     GameEngine.getInstance().getCounterService().startTiming();
                     GameEngine.getInstance().getChessLogicService().setBoard((Board) data);
-                    Sounds.getInstance().opponentMove();
+                    Sounds.getInstance().getSound(2);
                     refreshBoard();
                 }
                 if(data instanceof Message){
@@ -84,9 +82,11 @@ public class BoardOverviewController{
                     onCheckedAppear(msg.getCheckedColor());
                 }
                 if(data instanceof DrawRequest){
+                    Sounds.getInstance().getSound(0);
                     showDrawRequest();
                 }
                 if(data instanceof DrawAnswer){
+                    Sounds.getInstance().getSound(0);
                     DrawAnswer answer = (DrawAnswer)data;
                     if(answer.isAccepted())
                         showDrawAnswer(true);
@@ -94,6 +94,7 @@ public class BoardOverviewController{
                         showDrawAnswer(false);
                 }
                 if(data instanceof ResignationMessage){
+                    Sounds.getInstance().getSound(0);
                     showResignationMessage();
                 }
                 if(data instanceof CheckMatMessage){
@@ -265,6 +266,7 @@ public class BoardOverviewController{
      * @param IV obiekt klasy ImageView dla którego sprawdzane są możliwe ruchy
      */
     private void showMoves(ImageView IV) {
+        Sounds.getInstance().getSound(1);
         if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
             refreshBoard();
 
@@ -272,7 +274,7 @@ public class BoardOverviewController{
             gameEngine.setMoveY(GridPane.getRowIndex(IV));
 
             String [] availableMovesList=gameEngine.getChessLogicService().getPossibleMoves(
-                    gameEngine.getInstance().getChessLogicService().getBoard().getBoard(),
+                    GameEngine.getInstance().getChessLogicService().getBoard().getBoard(),
                     GridPane.getColumnIndex(IV),
                     GridPane.getRowIndex(IV)
             );
@@ -311,11 +313,10 @@ public class BoardOverviewController{
      * @param iv - obiekt klasy ImageView; miejsce w które zostaje przesunięta figura dla której metoda zostaje wywołana
      */
     private void move(ImageView iv) {
+        Sounds.getInstance().getSound(2);
         if(gameEngine.isServerRole()==gameEngine.getChessLogicService().getBoard().getServerTurn()) {
-
-                gameEngine.move(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
-                refreshBoard();
-
+            gameEngine.move(GridPane.getColumnIndex(iv), GridPane.getRowIndex(iv));
+            refreshBoard();
         }
     }
 

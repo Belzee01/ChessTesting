@@ -3,10 +3,13 @@ package sample;
 import lombok.Getter;
 import lombok.Setter;
 import sample.controllers.CommunicationController;
+import sample.controllers.LocalTimeLabelsController;
 import sample.models.CheckMessage;
 import sample.models.CheckMatMessage;
+import sample.models.Sounds;
 import sample.services.ChessLogicService;
 import sample.services.CounterService;
+import sample.services.HistoryService;
 import sample.services.TCPConnectionService;
 
 /**
@@ -40,8 +43,13 @@ public class GameEngine {
     @Getter
     CommunicationController communicationController;
 
+    @Getter @Setter
+    LocalTimeLabelsController localTimeLabelsController;
+
+    @Getter @Setter
+    HistoryService historyService = new HistoryService();
+
     public void setCommunicationController(CommunicationController cc){
-        System.out.println("Tworze communication controller");
         communicationController=cc;
     }
 
@@ -61,14 +69,17 @@ public class GameEngine {
     public static final String COLOR = "WHITE";
 
     public void move(int x, int y) {
+        GameEngine.getInstance().getHistoryService().addBoard(chessLogicService.getBoard());
         chessLogicService.getBoard().setBoard(chessLogicService.move(chessLogicService.getBoard().getBoard(), moveX, moveY, x, y));
         checkState = chessLogicService.getCheck();
 
         if(checkState!=-1){
             if(chessLogicService.getMat()){
+                Sounds.getInstance().getSound(4);
                 tcpConnectionService.sendObject(new CheckMatMessage());
             }
             else{
+                Sounds.getInstance().getSound(3);
                 tcpConnectionService.sendObject(new CheckMessage(checkState));
             }
         }
@@ -82,30 +93,41 @@ public class GameEngine {
         GameEngine.getInstance().getCounterService().stopTiming();
     }
 
-
-    public String localMove(int x, int y){
+    // 0 if OK
+    // -1 if white checked
+    // 1  if black checked
+    // -2 if white checkedMated
+    // 2 if black check mated
+    public int localMove(int x, int y){
+        GameEngine.getInstance().getHistoryService().addBoard(chessLogicService.getBoard());
         chessLogicService.getBoard().setBoard(chessLogicService.move(chessLogicService.getBoard().getBoard(), moveX, moveY, x, y));
         checkState = chessLogicService.getCheck();
 
-        String check = "";
-
-        if(checkState!=-1){
-            if(chessLogicService.getMat()){
-                check = "SZACH MAT";
-            }
-            else{
-                check = "SZACH";
+        int returnCode=0;
+        if(checkState==-1) {
+            returnCode= 0;
+        }
+        else if(checkState==1) {
+            if (chessLogicService.getMat()) {
+                returnCode = 2;
+            } else {
+                returnCode = 1;
             }
         }
-
+        else {
+            if (chessLogicService.getMat()) {
+                returnCode = -2;
+            } else {
+                returnCode = -1;
+            }
+        }
 
         // change player
         chessLogicService.getBoard().setServerTurn(!serverRole);
         serverRole = !serverRole;
 
-        GameEngine.getInstance().getCounterService().stopTiming();
+        return returnCode;
 
-        return check;
     }
 
 }

@@ -1,17 +1,18 @@
 package test;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.collections.ObservableList;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
+import sample.GameEngine;
 import sample.Main;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.loadui.testfx.GuiTest.find;
 import static org.testfx.api.FxToolkit.*;
@@ -185,7 +186,7 @@ public class MainTests extends ApplicationTest{
         TextField textField1 = find("#clientNick");
         textField1.setText("b");
         TextField textField2 = find("#hostIP");
-        textField2.setText("192.168.0.4");
+        textField2.setText("192.168.43.135");
 
         Button button2 = find("#joinGameButton");
         assertNotEquals(button2, null);
@@ -194,6 +195,7 @@ public class MainTests extends ApplicationTest{
         TextArea textArea = find("#textArea");
 
         assertNotEquals(textArea, null);
+
 
         clickOn(textArea);
 
@@ -235,5 +237,171 @@ public class MainTests extends ApplicationTest{
         clickOn("#optionsButton");
 
         clickOn("#stylesBox").clickOn("blue").clickOn("#applyOptionsButton");
+    }
+
+    /**
+     * Nazwa przypadku użycia: Kolorowanie możliwych ruchów figury (KRF).
+     */
+    @Test
+    public void testColoringFields() throws InterruptedException {
+        Button button = find("#newGameButton");
+        assertNotEquals(button, null);
+
+        clickOn(button);
+        clickOn("#localGameButton");
+
+        clickOn("#localGameTimeBox");
+        ComboBox<String> comboBox = find("#localGameTimeBox");
+        ObservableList<String> stringObservableList = comboBox.getItems();
+        clickOn(stringObservableList.get(1));
+
+        clickOn("#startLocalGame");
+
+        GridPane gridPane = find("#gridPane");
+        clickOn(gridPane.getChildren().get(49));
+
+        Thread.sleep(2000);
+    }
+
+    /**
+     * Scenariusz alternatywny 1, punkt 1: Użytkownik klika na nie swoją figurę:
+     • Nie podświetla się figura kliknięta,
+     • Nie podświetlają się żadne możliwe ruchy danej figury.
+     */
+    @Test
+    public void testColoringFieldsSA1() throws InterruptedException {
+        Button button = find("#newGameButton");
+        assertNotEquals(button, null);
+
+        clickOn(button);
+        clickOn("#localGameButton");
+
+        clickOn("#localGameTimeBox");
+        ComboBox<String> comboBox = find("#localGameTimeBox");
+        ObservableList<String> stringObservableList = comboBox.getItems();
+        clickOn(stringObservableList.get(1));
+
+        clickOn("#startLocalGame");
+
+        GridPane gridPane = find("#gridPane");
+        clickOn(gridPane.getChildren().get(11));
+
+        Thread.sleep(2000);
+    }
+
+    /**
+     * Scenariusz alternatywny 2, punkt 1: Użytkownik klika na swoją
+     * figurę, kiedy nie jest jego kolej na wykonanie ruchu:
+     • Nie podświetla się figura kliknięta,
+     • Nie podświetlają się żadne możliwe ruchy danej figury.
+     */
+    @Test
+    public void testColoringFieldsSA2() throws InterruptedException {
+        Button button = find("#newGameButton");
+        assertNotEquals(button, null);
+
+        clickOn(button);
+        clickOn("#localGameButton");
+
+        clickOn("#localGameTimeBox");
+        ComboBox<String> comboBox = find("#localGameTimeBox");
+        ObservableList<String> stringObservableList = comboBox.getItems();
+        clickOn(stringObservableList.get(1));
+
+        clickOn("#startLocalGame");
+
+        GridPane gridPane = find("#gridPane");
+        clickOn(gridPane.getChildren().get(55));
+        clickOn(gridPane.getChildren().get(47));
+
+        clickOn(gridPane.getChildren().get(8));
+        clickOn(gridPane.getChildren().get(16));
+        clickOn(gridPane.getChildren().get(16));
+        clickOn(gridPane.getChildren().get(24));
+
+        String board = GameEngine.getInstance().getChessLogicService().getBoard().getBoard();
+        String boardInitializer2 = "rnbqkbnr" + "ppppppp " + "       p" + "        " + "        "
+                + "P       " + " PPPPPPP" + "RNBQKBNR";
+        assertEquals(board, boardInitializer2);
+
+        Thread.sleep(2000);
+    }
+
+    /**
+     * Nazwa przypadku użycia: Wybór pomiędzy grą bez limitu
+     * czasowego, a grą z limitem czasowym (L/NL).
+     * @throws InterruptedException
+     */
+    /**
+     * Scenariusz alternatywny 2, punkt 5: Użytkownik wybrał opcje
+     * „XX min” (XX jest to liczba minut do wyboru):
+     • Po wykonaniu dalszych czynności opisanych w scenariuszu
+        „Główny przebieg gry” użytkownicy przeprowadzają
+        normalną rozgrywkę z zegarem odmierzającym czas do
+        końca przebiegu rozgrywki
+     * @throws InterruptedException
+     */
+    @Test(timeout = 130000)
+    public void testTimeLimit() throws InterruptedException {
+        Button button = find("#newGameButton");
+        assertNotEquals(button, null);
+
+        clickOn(button);
+        clickOn("#localGameButton");
+
+        clickOn("#localGameTimeBox");
+        ComboBox<String> comboBox = find("#localGameTimeBox");
+        ObservableList<String> stringObservableList = comboBox.getItems();
+        clickOn(stringObservableList.get(1));
+
+        clickOn("#startLocalGame");
+
+        GridPane gridPane = find("#gridPane");
+        clickOn(gridPane.getChildren().get(55));
+        clickOn(gridPane.getChildren().get(47));
+
+        clickOn(gridPane.getChildren().get(8));
+        clickOn(gridPane.getChildren().get(16));
+        clickOn(gridPane.getChildren().get(16));
+        clickOn(gridPane.getChildren().get(24));
+
+
+        Thread.sleep(120001);
+    }
+
+    /**
+     * Nazwa przypadku użycia: Rezygnacja z dalszej gry (RG).
+     */
+    @Test
+    public void testSurrendering() throws InterruptedException {
+
+        Button button = find("#newGameButton");
+        assertNotEquals(button, null);
+
+        clickOn(button);
+
+        Button button1 = find("#networkGameButton");
+        assertNotEquals(button1, null);
+
+        clickOn(button1);
+
+        clickOn("#Join");
+
+        TextField textField = find("#hostPortNumber");
+        textField.setText("50000");
+        TextField textField1 = find("#clientNick");
+        textField1.setText("b");
+        TextField textField2 = find("#hostIP");
+        textField2.setText("10.20.106.251");
+
+        Button button2 = find("#joinGameButton");
+        assertNotEquals(button2, null);
+        clickOn(button2);
+
+        Button button3 = find("#resignButton");
+        clickOn(button3);
+
+        Thread.sleep(10000);
+
     }
 }

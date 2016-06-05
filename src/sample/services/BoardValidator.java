@@ -1,8 +1,5 @@
 package sample.services;
 
-/**
- * Created by krzysztof on 30.05.16.
- */
 public class BoardValidator {
     public static boolean isBoardStringValid(String boardString){
         if(boardString==null){

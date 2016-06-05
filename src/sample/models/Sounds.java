@@ -2,22 +2,14 @@ package sample.models;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;;
-
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Klasa reprezentująca efekty dźwiękowe.
  */
 public class Sounds {
     private static Sounds instance = null;
-    private String path;
-    private List<Media> media = null;
-
-    private Sounds() {
-        path = "target/classes/sample/sounds/9mm_gunshot.mp3";
-    }
+    private Media[] media = null;
 
     /**
      * Singleton
@@ -34,16 +26,40 @@ public class Sounds {
      * @param name - nazwa motywu dźwiękowego
      */
     public void setSounds(String name) {
-        media = new ArrayList<>();
-        media.add(new Media(new File(path).toURI().toString()));
+        if (name == null) {
+            media = null;
+        } else {
+            if (!name.equals("funny") && !name.equals("classic") && !name.equals("alternative"))
+                return;
+            String path = "target/classes/sample/sounds/" + name + "/";
+            media = new Media[5];
+            media[0] = new Media(new File(path+"alert.mp3").toURI().toString());
+            media[1] = new Media(new File(path+"choose.mp3").toURI().toString());
+            media[2] = new Media(new File(path+"move.mp3").toURI().toString());
+            media[3] = new Media(new File(path+"check.mp3").toURI().toString());
+            media[4] = new Media(new File(path+"mat.mp3").toURI().toString());
+        }
+
     }
 
     /**
-     * Dźwięk ruchu przeciwnika.
+     * Dźwięk ruchu.
+     * @param sound index danego dźwięku
+     *              0 - alert
+     *              1 - choose figure
+     *              2 - move figure
+     *              3 - check
+     *              4 - mat / game_over
+     * @return jeśli index jest poprawny true jeśli nie false
      */
-    public void opponentMove() {
-        MediaPlayer mp = new MediaPlayer(media.get(0));
+    public boolean getSound(int sound) {
+        if (media == null)
+            return true;
+        if (sound<0 || sound>=media.length)
+            return false;
+        MediaPlayer mp = new MediaPlayer(media[sound]);
         mp.play();
+        return true;
     }
 }
 

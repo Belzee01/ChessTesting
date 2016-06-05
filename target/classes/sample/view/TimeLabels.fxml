@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="332.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.LocalTimeLabelsController">
+   <children>
+      <Label layoutX="168.0" layoutY="56.0" prefHeight="33.0" prefWidth="102.0" text="Białe - czas" />
+      <Label fx:id="whiteTime" layoutX="168.0" layoutY="99.0" prefHeight="27.0" prefWidth="88.0" />
+      <Label layoutX="171.0" layoutY="157.0" prefHeight="27.0" prefWidth="96.0" text="Czarne - czas" />
+      <Label fx:id="blackTime" layoutX="168.0" layoutY="193.0" prefHeight="27.0" prefWidth="88.0" />
+      <Button layoutX="146.0" layoutY="255.0" mnemonicParsing="false" onMouseClicked="#onExitGameClicked" prefHeight="33.0" prefWidth="110.0" text="Przerwij grę" />
+   </children>
+</AnchorPane>
